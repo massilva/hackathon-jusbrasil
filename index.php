@@ -73,6 +73,10 @@ if(isSet($_GET['busca'])){
     <script type="text/javascript" src="js/jquery.flexslider.js"></script>
     <script type="text/javascript" src="js/message-form.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
+    <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
 	<script type="text/javascript">
 		$(window).scroll(function () {
 			if (jQuery(this).scrollTop() > 550) {
@@ -270,47 +274,63 @@ if(isSet($_GET['busca'])){
             </div>
             <div class="row_1">
                 <div class="container" id="graphs">
-                    <h3 class="border">What We Do</h3>
+                    <h3 class="border">Dados</h3>
                     <div class="row">
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-1.png" alt=""></div>
-                            <h6><a href="#">Strategy</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
-                        </article>
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-2.png" alt=""></div>
-                            <h6><a href="#">user experience</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
-                        </article>
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-3.png" alt=""></div>
-                            <h6><a href="#">design</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
-                        </article>
+                        <article class="span8">                            
+                      
+                        <div id="graph"></div>
+                          </article>
+                        <script type="text/javascript">
+                        // Use Morris.Bar
+                        Morris.Bar({
+                          element: 'graph',
+                          data: [
+                            {x: '2011 Q1', y: 25},
+                            {x: '2011 Q2', y: 1},
+                            {x: '2011 Q3', y: 2},
+                            {x: '2011 Q4', y: 3},
+                            {x: '2012 Q1', y: 4},
+                            {x: '2012 Q2', y: 5},
+                            {x: '2012 Q3', y: 6},
+                            {x: '2012 Q4', y: 7},
+                            {x: '2013 Q1', y: 8}
+                          ],
+                          xkey: 'x',
+                          ykeys: ['y'],
+                          labels: ['Y'],
+                          barColors: function (row, series, type) {
+                            this.ymax = 15;
+                            if (type === 'bar') {
+                              var red = Math.ceil(255 * row.y / this.ymax);
+                              return 'rgb(' + red + ',0,0)';
+                            }
+                            else {
+                              return '#000';
+                            }
+                          }
+                        });
+                        </script>                       
                     </div>
                     <div class="row">
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-4.png" alt=""></div>
-                            <h6><a href="#">development</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
+                        <article class="span8">
+                            <div id="graph2"></div>
                         </article>
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-5.png" alt=""></div>
-                            <h6><a href="#">Wordpress</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
-                        </article>
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-6.png" alt=""></div>
-                            <h6><a href="#">ceo</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
-                        </article>
+                        <script type="type/javascript">
+                        Morris.Donut({
+                          element: 'graph2',
+                          data: [
+                            {value: 70, label: 'foo'},
+                            {value: 15, label: 'bar'},
+                            {value: 10, label: 'baz'},
+                            {value: 5, label: 'A really really long label'}
+                          ],
+                          formatter: function (x) { return x + "%"}
+                        }).on('click', function(i, row){
+                          console.log(i, row);
+                        });
+                        </script>
                     </div>
+           
                 </div>
             </div>
             <div class="row_1" >
