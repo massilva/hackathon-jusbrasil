@@ -184,6 +184,7 @@ if(isSet($_GET['busca'])){
     $uf = $busca['uf'];
     $orgao_busca = $busca['orgao'];
     $processo = $busca['processo'];
+    $motivo2 = $busca['tipo_sancao'];
     
     $resultado = array();
     $limite = isSet($_GET['l']) ? $_GET['l'] : 100;
@@ -192,7 +193,7 @@ if(isSet($_GET['busca'])){
 
         // Com o objeto PDO instanciado
         // preparo uma query a ser executada
-        if(empty($nome) && empty($cnpj) && $uf == "UF" && $orgao_busca == "ORGAO" && empty($processo)){
+        if(empty($nome) && empty($cnpj) && $uf == "UF" && $orgao_busca == "ORGAO" && $motivo2 == "MOTIVO" && empty($processo)){
             $stmt = $pdo->prepare("SELECT * FROM ceis LIMIT ".$limite);
         }
         else{
@@ -201,16 +202,20 @@ if(isSet($_GET['busca'])){
                 $uf = "";
             if($orgao_busca == "ORGAO")
                 $orgao_busca = "";
+             if($motivo2 == "MOTIVO")
+                $motivo2 = "";
             
             $uf = "%".$uf."%";
             $orgao_busca = "%".$orgao_busca."%";
-            $nome = "%".$nome."%";           
-            $stmt = $pdo->prepare("SELECT * FROM ceis WHERE (nome like :nome OR cnpj_cpf = :cnpj OR num_processo = :num_processo) AND uf_pessoa like :uf_pessoa  AND orgao like :orgao_busca LIMIT ".$limite);
+            $nome = "%".$nome."%";  
+            $motivo2 = "%".$motivo2."%";         
+            $stmt = $pdo->prepare("SELECT * FROM ceis WHERE (nome like :nome OR cnpj_cpf = :cnpj OR num_processo = :num_processo) AND uf_pessoa like :uf_pessoa  AND orgao like :orgao_busca AND tipo_sancao like :tipo_sancao  LIMIT ".$limite);
             $stmt->bindParam(":nome", utf8_decode($nome) , PDO::PARAM_STR);
             $stmt->bindParam(":cnpj", $cnpj , PDO::PARAM_STR);
             $stmt->bindParam(":num_processo", $processo , PDO::PARAM_STR);
             $stmt->bindParam(":uf_pessoa", $uf , PDO::PARAM_STR);
             $stmt->bindParam(":orgao_busca", utf8_decode($orgao_busca) , PDO::PARAM_STR);
+            $stmt->bindParam(":tipo_sancao", utf8_decode($motivo2) , PDO::PARAM_STR);
 
         }
         // Executa query
@@ -391,6 +396,18 @@ if(isSet($_GET['busca'])){
                                                                   </select>
                                                             </div>
                                                         </li>
+                                                        <li>
+                                                            <div class="btn-group ">
+                                                                 <select style="width:180px;" id="motivo" class="dropdown" name="busca[tipo_sancao]">
+                                                                    <option value="MOTIVO">MOTIVO</option>
+                                                                    <?php
+                                                                    foreach ($tipo_sancao as $key => $obj){
+                                                                       echo "<option value='" .utf8_encode($obj->tipo_sancao) . "'>" . utf8_encode($obj->tipo_sancao) . "</option>";
+                                                                    }
+                                                                    ?>
+                                                                </select>
+                                                            </div>
+                                                        </li>    
                                                   </ul>
                                              </div>
                                        </div>     
