@@ -262,7 +262,7 @@ if(isSet($_POST['busca'])){
                 <div class="container">
                     <h3 class="border">Busca</h3>
                     <div class="row">
-                        <form class="form-inline" action="index.php" method="POST" >
+                        <form class="form-inline" action="index.php#search" method="POST" >
                         <article id="busca" class="span12">
                             <div class="form-group span6">
                                 <label for="nome" class="span3">Nome, Razão social ou Nome fantasia</label>
@@ -474,46 +474,12 @@ if(isSet($_POST['busca'])){
             <div id="about">
                 <div class="map_wrapper">
                     <div class="container">
-                        <h3 class="border">Send Us a Message</h3>
-                        <div class="row">
-                            <section class="span3">
-                                <div class="indent1">
-                                    <h6>postal address</h6>
-                                    <h5><span>Ground Floor 49 Cheltenham Place Brighton</span></h5>
-                                    <h5 class="color_1">Monday - Thursday 5:30AM - 10PM</h5>
-                                    <h5 class="color_1">T - 123.456.7890<br>F - 123.789.3456</h5>
-                                    <h6><a href="mailto:@oursitemail.com">@oursitemail.com</a></h6>
-                                </div>
-                            </section>
-                            <section class="span9">
-                                <div class="indent2">
-                                    <h6>Do you have a cool idea? Drop us a line or two.</h6>
-                                    <form id="message_form">
-                                        <div class="success"></div>
-                                        <fieldset>
-                                            <div class="row">
-                                                <div class="span3">
-                                                    <label class="name">
-                                                        <input type="text" value="Your Name">
-                                                    </label>
-                                                    <label class="email">
-                                                        <input type="text" value="Email">
-                                                    </label>
-                                                    <label class="notRequired">
-                                                        <input type="text" value="Website">
-                                                    </label>
-                                                </div>
-                                                <div class="span4">
-                                                    <label class="message">
-                                                        <textarea>Message</textarea>
-                                                    </label>
-                                                    <a class="btn btn_1" data-type="submit">Send Message</a>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                    </form>
-                                </div>
-                            </section>
+                        <h3 class="border">Sobre</h3>
+                        <div class="center">
+                            SISTEMA PARA CONSULTA PUBLICA DE INFORMAÇÕES SOBRE EMPRESAS INIDÔNEAS E SUSPENSAS EM TODO O TERRITÓRIO NACIONAL.
+                        </div>
+                        <div class="row center">
+                            <iframe width="560" height="315" src="//www.youtube.com/embed/AK2thtaR-Wc" frameborder="0" allowfullscreen></iframe>
                         </div>
                     </div>
                 </div>
