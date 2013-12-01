@@ -1,6 +1,6 @@
-@import url(http://fonts.googleapis.com/css?family=Arimo); /*font-family: 'Arimo', sans-serif;*/
-@import url(http://fonts.googleapis.com/css?family=Playfair+Display); /*font-family: 'Playfair Display', serif;*/
-@import url(http://fonts.googleapis.com/css?family=Playfair+Display:400italic); /*font-family: 'Playfair Display', serif;*/
+@import url(https://fonts.googleapis.com/css?family=Arimo); /*font-family: 'Arimo', sans-serif;*/
+@import url(https://fonts.googleapis.com/css?family=Playfair+Display); /*font-family: 'Playfair Display', serif;*/
+@import url(https://fonts.googleapis.com/css?family=Playfair+Display:400italic); /*font-family: 'Playfair Display', serif;*/
 /*@import "../css/mobilemenu.css";*/
 @charset "utf-8";
 /* 
@@ -1125,6 +1125,9 @@ h3 {
 	float: right;
 }
 
+.center{
+	text-align: center;
+}
 /** DATATABLE **/
 #table_resultado,
 .dataTables_wrapper{
@@ -1180,3 +1183,5 @@ table.dataTable th:active {
 .clear-margim{
 	margin: 0 !important;
 }
+
+/****/

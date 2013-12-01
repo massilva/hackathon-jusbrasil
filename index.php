@@ -1,102 +1,19 @@
 <?php
+//PDO em ação!
+$pdo = new PDO ( "mysql:host=us-cdbr-east-04.cleardb.com;dbname=heroku_3acb595e064fe48", "bd5233fd978702", "57345e20");
 
-
-$pdo = new PDO("mysql:host=localhost;dbname=checar_empresa", "root", "");
 if(!$pdo){
-   die('Erro ao criar a conexão !');
+   die('Erro ao criar a conexão');
 }
 
-$tipo_sancao = array();
-$orgao = array();
-
-function getTipoSancao($pdo){
-
-        
-     if(!$pdo){
-           die('Erro ao criar a conexão!');
-       }
-       else{
-
-         $stmt = $pdo->prepare("SELECT DISTINCT tipo_sancao FROM ceis order by tipo_sancao");
-         $stmt->execute();
-
-
-
-
-
-         while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
-                $tipo_sancao[] = $obj;
-
-        }
-
-        }
-
-        return $tipo_sancao;
-
-}
-
-function getOrgao($pdo){
-
-        
-     if(!$pdo){
-           die('Erro ao criar a conexão!');
-       }
-       else{
-
-         $stmt = $pdo->prepare("SELECT DISTINCT orgao FROM ceis order by orgao");
-         $stmt->execute();
-
-
-
-
-
-         while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
-                $orgao[] = $obj;
-
-        }
-
-        }
-
-        return $orgao;
-
-}
-
-$tipo_sancao= getTipoSancao($pdo);
-$orgao= getOrgao($pdo);
-
-
-
-
-
-if(isSet($_GET['busca'])){
-
-    $busca = $_GET['busca'];
-    $nome = $busca['nome'];
-    $cnpj = $busca['cnpj'];
-    $resultado = array();
-    $limite = isSet($_GET['l']) ? $_GET['l'] : 100;
-
-    try {
-        //PDO em ação!
-
-        $pdo = new PDO("mysql:host=localhost;dbname=checar_empresa", "root", "");
-
-        if(!$pdo){
-           die('Erro ao criar a conexão');
-       }
-       else{
-
+function getInidonioByEstado($pdo){
+    $top = array();
+    try{
+       if($pdo){
             // Com o objeto PDO instanciado
             // preparo uma query a ser executada
-            if(empty($nome) && empty($cnpj)){
-                $stmt = $pdo->prepare("SELECT * FROM ceis LIMIT ".$limite);
-            }
-            else{
-                $nome = "%".$nome .= "%";
-                $stmt = $pdo->prepare("SELECT * FROM ceis WHERE nome like %:nome% OR cnpj = :cnpj LIMIT ".$limite);
-                $stmt->bindParam(":nome", $nome , PDO::PARAM_STR);
-                $stmt->bindParam(":cnpj", $cnpj , PDO::PARAM_STR);
-            }
+            $stmt = $pdo->prepare("SELECT COUNT(*) as qtd, uf_pessoa FROM `ceis` WHERE uf_pessoa <> '--' GROUP BY uf_pessoa ORDER BY qtd DESC");
+            
             // Executa query
             $stmt->execute();
 
@@ -105,11 +22,110 @@ if(isSet($_GET['busca'])){
             //correspondem aos nomes das colunas retornadas no seu conjunto de resultados
             //Ou seja o objeto "anônimo" possui os atributos resultantes de sua query
             while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
-                $resultado[] = $obj;
+                $top[] = $obj;
             }
+       }        
+    } catch(PDOException $e){
+        echo $e->getMessage();
+    }   
+    return $top;
+}
+
+function getTopInidonio($pdo){
+    $ranking = array();
+    try {
+       if($pdo){
+            // Com o objeto PDO instanciado
+            // preparo uma query a ser executada
+            $stmt = $pdo->prepare("SELECT nome, COUNT(*) as qtd, uf_pessoa FROM `ceis` GROUP BY cnpj_cpf ORDER BY qtd desc LIMIT 3");
             
-       }     
-        
+            // Executa query
+            $stmt->execute();
+
+            // lembra do mysql_fetch_array?
+            //PDO:: FETCH_OBJ: retorna um objeto anônimo com nomes de propriedades que
+            //correspondem aos nomes das colunas retornadas no seu conjunto de resultados
+            //Ou seja o objeto "anônimo" possui os atributos resultantes de sua query
+            while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
+                $ranking[] = $obj;
+            }
+       }       
+    // tratamento da exeção
+    } catch ( PDOException $e ) {
+        echo $e->getMessage();
+    }    
+    return $ranking;
+}
+
+function getTipoSancao($pdo){        
+    if(!$pdo){
+        die('Erro ao criar a conexão!');
+    }
+    else{
+        $stmt = $pdo->prepare("SELECT DISTINCT tipo_sancao FROM ceis order by tipo_sancao");
+        $stmt->execute();
+
+        while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
+            $tipo_sancao[] = $obj;
+        }
+    }
+    return $tipo_sancao;
+}
+
+function getOrgao($pdo){
+    if(!$pdo){
+       die('Erro ao criar a conexão!');
+    }
+    else{
+        $stmt = $pdo->prepare("SELECT DISTINCT orgao FROM ceis order by orgao");
+        $stmt->execute();
+
+        while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
+            $orgao[] = $obj;
+        }
+    }
+    return $orgao;
+}
+
+$tipo_sancao = array();
+$orgao = array();
+
+$ranking = getTopInidonio($pdo);
+$byEstado = getInidonioByEstado($pdo);
+$tipo_sancao= getTipoSancao($pdo);
+$orgao= getOrgao($pdo);
+
+
+if(isSet($_GET['busca'])){
+    $busca = $_GET['busca'];
+    $nome = $busca['nome'];
+    $cnpj = $busca['cnpj'];
+    $resultado = array();
+    $limite = isSet($_GET['l']) ? $_GET['l'] : 100;
+    try {
+
+        // Com o objeto PDO instanciado
+        // preparo uma query a ser executada
+        if(empty($nome) && empty($cnpj)){
+            $stmt = $pdo->prepare("SELECT * FROM ceis LIMIT ".$limite);
+        }
+        else{
+            $nome = "%".$nome .= "%";
+            $stmt = $pdo->prepare("SELECT * FROM ceis WHERE nome like %:nome% OR cnpj = :cnpj LIMIT ".$limite);
+            $stmt->bindParam(":nome", $nome , PDO::PARAM_STR);
+            $stmt->bindParam(":cnpj", $cnpj , PDO::PARAM_STR);
+        }
+        // Executa query
+        $stmt->execute();
+
+        // lembra do mysql_fetch_array?
+        //PDO:: FETCH_OBJ: retorna um objeto anônimo com nomes de propriedades que
+        //correspondem aos nomes das colunas retornadas no seu conjunto de resultados
+        //Ou seja o objeto "anônimo" possui os atributos resultantes de sua query
+        while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
+            $resultado[] = $obj;
+        } 
+
     // tratamento da exeção
     } catch ( PDOException $e ) {
         echo $e->getMessage();
@@ -131,11 +147,12 @@ if(isSet($_GET['busca'])){
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.css">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/mobilemenu.css">
-	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
-	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-	<script type="text/javascript" src="js/jquery-latest.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <link rel="stylesheet" href="css/morris.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="js/select2.js"></script>
     <script type="text/javascript" src="js/bootstrap.js"></script>
@@ -143,13 +160,11 @@ if(isSet($_GET['busca'])){
     <script type="text/javascript" src="js/parallax.js"></script>
     <script type="text/javascript" src="js/jquery.flexslider.js"></script>
     <script type="text/javascript" src="js/message-form.js"></script>
-    <script type="text/javascript" src="js/script.js"></script>
-	<script type="text/javascript">
-
-   
+    <script type="text/javascript" src="js/script.js"></script>    
+    <script type="text/javascript" src="js/morris.min.js"></script>
     
-   
 
+    <script type="text/javascript">
     overflow = true;
 
     $(document).ready(function() {
@@ -165,29 +180,24 @@ if(isSet($_GET['busca'])){
             $('#collapseOne').css("overflow","auto");
             overflow=true;
           }
-        
-    });   
-    
-     
+         });   
+    });
 
-  
-    
-});
-		$(window).scroll(function () {
-			if (jQuery(this).scrollTop() > 550) {
-				jQuery('header').addClass('scrolled');
-			} else {
-				jQuery('header').removeClass('scrolled');
-			}
-			$('.flexslider').flexslider({
-				animation: "fade",
-				animationSpeed: 500,
-				smoothHeight: true,
-				animationLoop: true,
-				touch: true,
-				directionNav: false
-			});
+	$(window).scroll(function () {
+		if (jQuery(this).scrollTop() > 550) {
+			jQuery('header').addClass('scrolled');
+		} else {
+			jQuery('header').removeClass('scrolled');
+		}
+		$('.flexslider').flexslider({
+			animation: "fade",
+			animationSpeed: 500,
+			smoothHeight: true,
+			animationLoop: true,
+			touch: true,
+			directionNav: false
 		});
+	});
     </script>
 </head>
 	<body>
@@ -195,19 +205,17 @@ if(isSet($_GET['busca'])){
         	<h1>ChecarEmpresa</h1>
             <!-- <div class="container"><div class="slogan">Serve, ainda, como ferramenta de transparência para a sociedade em geral.<br>noncommercial needs!</div></div> -->
 		</div>
-
 		<header class="home_page">
 			<div class="container">
             	<div class="row">
                     <div class="span12">
                         <a class="logo" href="index.php">ChecarEmpresa</a>
-                        <button class="nav-button">menu</button>
                         <ul class="menu">
                             <li><a class="home" href="#home">Inicio</a></li>
                             <li><a class="search" href="#search">Buscar</a></li>
-                            <li><a class="graphs" href="#graphs">Gráficos</a></li>                            
+                            <li><a class="graphs" href="#graphs">Gráficos</a></li>
+                            <li><a class="ranking" href="#ranking">Ranking</a></li>
                             <li><a class="about" href="#about">Sobre</a></li>
-                          
                         </ul>
                     </div>
                 </div>
@@ -231,7 +239,6 @@ if(isSet($_GET['busca'])){
                             <div class="form-group span1">
                                 <input type="submit" value="Filtrar" class="btn btn_1">
                             </div>
-
                             <div class="form-group span11">
                                <div class="accordion" id="accordion2">
                                     <div class="accordion-group" style="border:0;padding-left:15px;">
@@ -243,6 +250,7 @@ if(isSet($_GET['busca'])){
                                         </div>
                                          <div id="collapseOne" class="accordion-body collapse" style="overflow:auto">
                                             <div class="accordion-inner">
+
                                                 <div class="clear-margim span3">
 
                                                     <label>Tipo:</label>
@@ -303,10 +311,13 @@ if(isSet($_GET['busca'])){
                                                                     
                                                                   </select>
                                                                  
+
+                                             
                                                             </div>
                                                         </li>
                                                         <li>
                                                             <div class="btn-group ">
+
                                                                  
                                                                  <select class="dropdown" name="Combo_Motivos">
                                                                     <option value="MOTIVO">MOTIVO</option>
@@ -323,17 +334,14 @@ if(isSet($_GET['busca'])){
                                                                     
                                                                 </select>
                                                             </div>
-                                                        </li>
-                                                        
+                                                        </li>                                             
+                                                                                                                                          
+                                                  </ul>
+                                             </div>
+
+                                       </div>
                                                        
-                                                                                        
 
-                                                         
-
-                                              </ul>
-                                                </div>
-                                            
-                                            </div>
 
                                             <div class="accordion-inner" style="border-top:0">
                                                 <div class="clear-margim" style="padding-top:30px" >
@@ -346,18 +354,10 @@ if(isSet($_GET['busca'])){
 
 
                                                 </div>
-                                            </div>
-
-
-                                            
-                                                                                            
-                                          </div>
+                                            </div>                                                                                                                                                                            </div>                                             
                                         </div>
                                     </div>
-                    </div>
-
-
-
+                           </div>
                         </article>
                         <article id="resultado">
                             <?php if(isSet($_GET['busca'])){ ?>
@@ -406,99 +406,87 @@ if(isSet($_GET['busca'])){
                     </div>
                 </div>
             </div>
+            <?php
+            $estado = array();
+            foreach ($byEstado as $key => $obj){
+                $estado[$key]["x"] = $obj->uf_pessoa;
+                $estado[$key]["y"] = $obj->qtd;
+            }
+            ?>
             <div class="row_1">
                 <div class="container" id="graphs">
-                    <h3 class="border">What We Do</h3>
+                    <h3 class="border">Dados</h3>
                     <div class="row">
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-1.png" alt=""></div>
-                            <h6><a href="#">Strategy</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
+                        <h2 class="center span12">Inidonios por Estado</h2>
+                        <article class="span12">
+                            <div id="graph"></div>
                         </article>
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-2.png" alt=""></div>
-                            <h6><a href="#">user experience</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
-                        </article>
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-3.png" alt=""></div>
-                            <h6><a href="#">design</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
-                        </article>
+                        <script type="text/javascript">
+                        // Use Morris.Bar
+                        Morris.Bar({
+                          element: 'graph',
+                          data: <?=json_encode($estado)?>,
+                          xkey: 'x',
+                          ykeys: ['y'],
+                          labels: ['Y'],
+                          barColors: function (row, series, type) {
+                            this.ymax = 15;
+                            if (type === 'bar') {
+                              var red = Math.ceil(255 * row.y / this.ymax);
+                              return 'rgb(' + red + ',0,0)';
+                            }
+                            else {
+                              return '#000';
+                            }
+                          }
+                        });
+                        </script>                       
                     </div>
                     <div class="row">
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-4.png" alt=""></div>
-                            <h6><a href="#">development</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
+                        <h2 class="center span12">Inidonios por Motivo</h2>
+                        <article class="span12">
+                            <div id="donutGraph"></div>
                         </article>
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-5.png" alt=""></div>
-                            <h6><a href="#">Wordpress</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
-                        </article>
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-6.png" alt=""></div>
-                            <h6><a href="#">ceo</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
-                        </article>
+                        <script type="text/javascript">
+                        new Morris.Donut({
+                          element: 'donutGraph',
+                          data: [
+                            { label: '2008', value: 20 },
+                            { label: '2009', value: 10 },
+                            { label: '2010', value: 5 },
+                            { label: '2011', value: 5 },
+                            { label: '2012', value: 20 }
+                          ],
+                          }); 
+                        </script>
+                    </div>
+           
+                </div>
+            </div>
+            <div class="row_1" id="ranking">
+                <div class="container">
+                    <h3 class="border">Top Inidônios</h3>
+                    <div class="row">
+                        <?php
+                        foreach ($ranking as $key => $obj){
+                        ?>
+                        <section class="span3 gallery_item gallery_item_<?=($key+1)?>">
+                            <figure class="">                           
+                                <img src="images/gallery_item_bg<?=($key%2 + 1)?>.png" alt="">
+                                <figcaption>                   
+                                    <p><strong><?=($key+1)?> - </strong><?=$obj->nome?></p>
+                                    <h2><?=$obj->uf_pessoa?></h2>
+                                    <h2><?=$obj->qtd?></h2>
+                                </figcaption>
+                            </figure>
+                        </section>  
+                        <?php  
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
-            <div class="row_1" >
-                 <div id="contact">
-                <div class="map_wrapper" >
-                    <div class="row_1" id="work">
-                        <div class="container" id="work">
-                            <h3 class="border">Top Inidônios</h3>
-                            
-                                <div class="row gallery_wrapper">
-                                    <section class="span3 gallery_item gallery_item_1">
-                                        <figure class="">                                            
-                                            <img src="images/gallery_item_bg 1.png" alt="">
-                                            <figcaption>                                                
-                                                <p><strong>1&ordm; - </strong>Wordpress Theme Front-End Development</p>
-                                                <h2>BA</h2>
-                                                <h2>20<span>%</span></h2>
-                                            </figcaption>
-                                        </figure>
-                                    </section>
-                                    <section class="span3 gallery_item gallery_item_2">
-                                        <figure class="">
-                                            <img src="images/gallery_item_bg 2.png" alt="">
-                                            <figcaption>                                                
-                                                <p><strong>2&ordm; - </strong>Wordpress Theme Front-End Development</p>
-                                                <h2>SP</h2>
-                                                <h2>20<span>%</span></h2>
-                                            </figcaption>
-                                        </figure>
-                                    </section>
-                                    <section class="span3 gallery_item gallery_item_3">
-                                        <figure class="">
 
-                                            <img src="images/gallery_item_bg 1.png" alt="">
-
-                                            <figcaption>
-                                                <p><strong>3&ordm; - </strong>Wordpress Theme Front-End Development</p>
-                                                <h2>RJ</h2>
-                                                <h2>60<span>%</span></h2>
-                                               
-                                            </figcaption>
-                                        </figure>
-                                    </section>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-            
             <div id="about">
             	<div class="map_wrapper">
                     <div class="container">
@@ -542,7 +530,6 @@ if(isSet($_GET['busca'])){
                                     </form>
                                 </div>
                             </section>
-
                         </div>
                     </div>
                 </div>
@@ -557,12 +544,12 @@ if(isSet($_GET['busca'])){
                 </div>
             </footer>
 		</div><!--/container-fill-->
-<script type="text/javascript">
-	$(window).load(function(){
-		$('#message_form').forms({
-			ownerEmail:'test@test.test'
-		});
-	})
-</script>
+        <script type="text/javascript">
+        	$(window).load(function(){
+        		$('#message_form').forms({
+        			ownerEmail:'test@test.test'
+        		});
+        	})
+        </script>
 </body>
 </html>
