@@ -142,8 +142,6 @@ if(isSet($_GET['busca'])){
         }
         else{
 
-
-
             if($uf == "UF")
                 $uf = "";
             if($orgao_busca == "ORGAO")
@@ -151,12 +149,10 @@ if(isSet($_GET['busca'])){
             if($motivo == "MOTIVO")
                 $motivo = "";
             
-           $uf = "%".$uf."%";
-           $motivo = "%".$motivo."%";
-           $orgao_busca = "%".$orgao_busca."%";
-           $nome = "%".$nome."%";
-           
-            
+            $uf = "%".$uf."%";
+            $motivo = "%".$motivo."%";
+            $orgao_busca = "%".$orgao_busca."%";
+            $nome = "%".$nome."%";           
             $stmt = $pdo->prepare("SELECT * FROM ceis WHERE (nome like :nome OR cnpj_cpf = :cnpj) AND uf_pessoa like :uf_pessoa  AND orgao like :orgao_busca AND tipo_sancao like :tipo_sancao AND num_processo = :num_processo  LIMIT ".$limite);
             $stmt->bindParam(":nome", utf8_decode($nome) , PDO::PARAM_STR);
             $stmt->bindParam(":cnpj", $cnpj , PDO::PARAM_STR);
@@ -213,18 +209,10 @@ if(isSet($_GET['busca'])){
     <script type="text/javascript" src="js/message-form.js"></script>
     <script type="text/javascript" src="js/script.js"></script>    
     <script type="text/javascript" src="js/morris.min.js"></script>
-    
-
     <script type="text/javascript">
     overflow = true;
 
     $(document).ready(function() {
-<<<<<<< HEAD
-=======
-
-        $("#e1").select2();
-
->>>>>>> 636c27025bd501f82ef53e2c284a714873129fce
          $('#lbl_busca').click(function() { 
           if(overflow){
             $('#collapseOne').css("overflow","initial");
@@ -236,7 +224,6 @@ if(isSet($_GET['busca'])){
           }
          });   
     });
-
 	$(window).scroll(function () {
 		if (jQuery(this).scrollTop() > 550) {
 			jQuery('header').addClass('scrolled');
@@ -257,7 +244,6 @@ if(isSet($_GET['busca'])){
 	<body>
 		<div class="header_top_wrap">
         	<h1>ChecarEmpresa</h1>
-            <!-- <div class="container"><div class="slogan">Serve, ainda, como ferramenta de transparência para a sociedade em geral.<br>noncommercial needs!</div></div> -->
 		</div>
 		<header class="home_page">
 			<div class="container">
@@ -297,19 +283,16 @@ if(isSet($_GET['busca'])){
                                <div class="accordion" id="accordion2">
                                     <div class="accordion-group" style="border:0;padding-left:15px;">
                                         <div class="accordion-heading">
-                                            <a id="lbl_busca" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" style="color:gray;
+                                            <a id="lbl_busca" class=" accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" style="color:gray;
                                             text-decoration: underline;  font-size:15px;">
                                                 Busca Avançada
                                             </a>
                                         </div>
                                          <div id="collapseOne" class="accordion-body collapse" style="overflow:auto">
                                             <div class="accordion-inner">
-
                                                 <div class="clear-margim span3">
-
                                                    <label for="num_processo" style="padding-left:30px;" class="">N° Processo</label>
                                                    <input id="num_processo" name="busca[processo]" class="form-control" type="text" style="width:117px;">
-
                                                 </div>
                                                 <div class="btn-group span3" >
                                                     <ul class="avancada">
@@ -352,26 +335,16 @@ if(isSet($_GET['busca'])){
                                                                  <select id="orgao" class="dropdown" name="busca[orgao]">
                                                                     <option value="ORGAO">ORGÃO</option>
                                                                     <?php
-                                                                    
-
-                                                                    foreach ($orgao as $key => $obj){                                                                   
-                                                                       
+                                                                    foreach ($orgao as $key => $obj){
                                                                        echo "<option value='" .utf8_encode($obj->orgao) . "'>" . utf8_encode($obj->orgao) . "</option>";
-                                                                                                                                                                                                                     
                                                                     }
 
                                                                     ?>
-                                                                    
                                                                   </select>
-                                                                 
-
-                                             
                                                             </div>
                                                         </li>
                                                         <li>
                                                             <div class="btn-group ">
-
-                                                                 
                                                                  <select id="motivo" class="dropdown" name="busca[motivo]">
                                                                     <option value="MOTIVO">MOTIVO</option>
                                                                     <?php
@@ -384,16 +357,12 @@ if(isSet($_GET['busca'])){
                                                                     }
 
                                                                     ?>
-                                                                    
                                                                 </select>
                                                             </div>
-                                                        </li>                                             
-                                                                                                                                          
+                                                        </li>          
                                                   </ul>
                                              </div>
-
-                                       </div>                                                     
-                                                                                                                                                                           </div>                                             
+                                       </div>     
                                   </div>
                               </div>
                            </div>
@@ -460,7 +429,7 @@ if(isSet($_GET['busca'])){
                 <div class="container" id="graphs">
                     <!-- <h3 class="border">Dados</h3> -->
                     <div class="row">
-                        <h3 class="center span12">Inidonios por Estado</h3>
+                        <h3 class="center border span12">Inidônios por Estado</h3>
                         <article class="span12">
                             <div id="graph"></div>
                         </article>
@@ -486,7 +455,7 @@ if(isSet($_GET['busca'])){
                         </script>                       
                     </div>
                     <div class="row">
-                        <h3 class="center span12">Inidonios por Motivo</h3>
+                        <h3 class="center border span12">Inidônios por Motivo</h3>
                         <article class="span12">
                             <div id="donutGraph"></div>
                         </article>
@@ -523,7 +492,6 @@ if(isSet($_GET['busca'])){
                     </div>
                 </div>
             </div>
-
             <div id="about">
             	<div class="map_wrapper">
                     <div class="container">
