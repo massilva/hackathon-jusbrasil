@@ -125,7 +125,7 @@ if(isSet($_GET['busca'])){
     <link rel="stylesheet" href="css/bootstrap-responsive.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/mobilemenu.css">
-    <link rel="stylesheet" href="http//cdn.oesmith.co.uk/morris-0.4.3.min.css">
+    <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
@@ -137,7 +137,7 @@ if(isSet($_GET['busca'])){
     <script type="text/javascript" src="js/message-form.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    <script src="http//cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+    <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
 	  <script type="text/javascript">
 
     overflow = true;
