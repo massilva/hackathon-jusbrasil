@@ -175,6 +175,8 @@ h1 {
 	overflow:hidden;
 }
 
+
+
 .slogan {
 	text-transform:uppercase;
 	font-size:24px;
@@ -1163,4 +1165,8 @@ table {
 
 table.dataTable th:active {
 	outline: none;
+}
+
+.clear-margim{
+	margin: 0 !important;
 }

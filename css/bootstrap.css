@@ -1743,6 +1743,18 @@ select:focus:invalid:focus {
   background-color: #a9dba9;
   border-color: #46a546;
 }
+.btn-group ul li{
+  display: inline;
+  padding-left: 35px;
+  padding-right: 65px;
+}
+
+.form-group2 ul li{
+  display: inline;
+  padding-left: 35px;
+  padding-right: 65px;
+}
+
 
 .input-prepend .add-on,
 .input-prepend .btn {
