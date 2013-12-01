@@ -1,3 +1,51 @@
+<?php
+
+if(isSet($_GET['busca'])){
+
+    $busca = $_GET['busca'];
+    $nome = $busca['nome'];
+    $cnpj = $busca['cnpj'];
+    $resultado = array();
+    
+    try {
+        //PDO em ação!
+        $pdo = new PDO ( "mysql:host=localhost;dbname=checar_empresa", "root", "123");
+        if(!$pdo){
+           die('Erro ao criar a conexão');
+       }
+       else{
+            // Com o objeto PDO instanciado
+            // preparo uma query a ser executada
+            if(empty($nome) && empty($cnpj)){
+                $stmt = $pdo->prepare("SELECT * FROM ceis");
+            }
+            else{
+                $stmt = $pdo->prepare("SELECT * FROM ceis WHERE nome like ? OR cnpj = ?");
+                $stmte->bindParam(1, $nome , PDO::PARAM_STR);
+                $stmte->bindParam(2, $cnpj , PDO::PARAM_STR);
+            }
+            // Executa query
+            $stmt->execute();
+         
+            // lembra do mysql_fetch_array?
+            //PDO:: FETCH_OBJ: retorna um objeto anônimo com nomes de propriedades que
+            //correspondem aos nomes das colunas retornadas no seu conjunto de resultados
+            //Ou seja o objeto "anônimo" possui os atributos resultantes de sua query
+            while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
+                $resultado[] = $obj;
+            }
+            // fecho o banco
+            $pdo = null;
+       }     
+        
+    // tratamento da exeção
+    } catch ( PDOException $e ) {
+        echo $e->getMessage();
+    }
+    
+}
+?>
+
 <!DOCTYPE HTML>
 <html lang="en-us">
 <head>
@@ -54,7 +102,7 @@
                         <button class="nav-button">menu</button>
                         <ul class="menu">
                             <li><a class="home" href="#home">Home</a></li>
-                            <li><a class="about" href="#about">About</a></li>
+                            <li><a class="about" href="#about">Busca</a></li>
                             <li><a class="work" href="#work">Work</a></li>
                             <li><a href="blog.htm">Blog</a></li>
                             <li><a class="contact" href="#contact">Contact</a></li>
@@ -68,7 +116,7 @@
                 <div class="container">
                     <h3 class="border">Busca</h3>
                     <div class="row">
-                        <form class="form-inline">
+                        <form class="form-inline" action="index.php" method="get" >
                         <article id="busca" class="span12">
                             <div class="form-group span6">
                                 <label for="nome" class="span3">Nome, Razão social ou Nome fantasia</label>
@@ -79,11 +127,13 @@
                                 <input id="cnpj" name="busca[cnpj]" class="form-control" type="text">
                             </div>
                             <div class="form-group span1">
-                                <input type="submit" value="Filtrar" class="btn btn-default">
+                                <input type="submit" value="Filtrar" class="btn btn_1">
                             </div>
                         </article>
                         <article id="resultado" class="span12">
-                            
+                            <?php if(isSet($_GET['busca'])){
+                                //var_dump($resultado);
+                            } ?>
                         </article>
                         </form>
                     </div>

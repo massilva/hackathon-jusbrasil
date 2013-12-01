@@ -1094,6 +1094,7 @@ h3 {
 	background: #fff;	
 }
 
-#busca input{
+#busca input,
+#busca .btn{
 	padding: 8px;
 }
