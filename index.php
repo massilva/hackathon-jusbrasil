@@ -81,6 +81,94 @@
                             <div class="form-group span1">
                                 <input type="submit" value="Filtrar" class="btn btn-default">
                             </div>
+
+                            <div class="form-group span11">
+                               <div class="accordion" id="accordion2">
+                                    <div class="accordion-group" style="border:0;padding-left:15px;">
+                                        <div class="accordion-heading">
+                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" style="color:gray;
+                                            text-decoration: underline;  font-size:15px;">
+                                                Busca Avançada
+                                            </a>
+                                        </div>
+                                         <div id="collapseOne" class="accordion-body collapse" style="overflow:auto">
+                                            <div class="accordion-inner">
+                                                <label>Tipo:</label>
+                                                <label class="checkbox"><input type="checkbox" name="inputWalls" id="inputWalls" value="juridica" checked>Jurídica </label>
+                                                <label class="checkbox"><input type="checkbox" name="inputWalls" id="inputWalls" value="fisica" checked  style="padding-left:30px;">Física</label>
+
+
+                                                <div class="btn-group" style="padding-left:30px;">
+                                                    <ul>
+                                                        <li>
+                                                            <div class="btn-group ">
+                                                                  <button type="button" class="btn btn-default" style="width:90px;">UF</button>
+                                                                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                                    <span class="caret"></span>
+                                                                    <span class="sr-only"></span>
+                                                                  </button>
+                                                                  <ul class="dropdown-menu">
+                                                                    <!-- Dropdown menu links -->
+                                                                  </ul>
+                                                                </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="btn-group ">
+                                                                  <button type="button" class="btn btn-default" style="width:130px;">Orgão</button>
+                                                                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                                    <span class="caret"></span>
+                                                                    <span class="sr-only"></span>
+                                                                  </button>
+                                                                  <ul class="dropdown-menu">
+                                                                    <!-- Dropdown menu links -->
+                                                                  </ul>
+                                                                </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="btn-group ">
+                                                                  <button type="button" class="btn btn-default" style="width:130px;">Motivo</button>
+                                                                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                                    <span class="caret"></span>
+                                                                    <span class="sr-only"></span>
+                                                                  </button>
+                                                                  <ul class="dropdown-menu">
+                                                                    <!-- Dropdown menu links -->
+                                                                  </ul>
+                                                                </div>
+                                                        </li>
+
+                                              </ul>
+                                                </div>
+                                            
+                                            </div>
+
+                                             <div class="accordion-inner" style="border-top:0" >
+                                                
+                                                              <div class="clear-margim span3">
+                                                                    <label for="data_inicio" class="">Data Ínicio</label>
+                                                                    <input id="data_inicio" name="data_inicio" class="form-control" type="text" style="width:150px;">
+                                                              </div>
+                                                       
+                                                              <div class="clear-margim span3">
+                                                                    <label for="data_fim" class="">Data Fim</label>
+                                                                    <input id="data_fim" name="data_fim" class="form-control" type="text" style="width:150px;">
+                                                              </div>
+                                                              <div class="clear-margim span4">
+                                                                    <label for="num_processo" class="">N° Processo</label>
+                                                                    <input id="num_processo" name="num_processo" class="form-control" type="text" style="width:230px;">
+                                                              </div>                                                        
+
+                                                </div>                                        
+
+                                            
+                                                                                            
+                                          </div>
+                                        </div>
+                                    </div>
+                    </div>
+
+
+
                         </article>
                         <article id="resultado" class="span12">
                             
