@@ -149,12 +149,12 @@ if(isSet($_GET['busca'])){
             $uf = "%".$uf."%";
             $orgao_busca = "%".$orgao_busca."%";
             $nome = "%".$nome."%";           
-            $stmt = $pdo->prepare("SELECT * FROM ceis WHERE (nome like :nome OR cnpj_cpf = :cnpj) AND uf_pessoa like :uf_pessoa  AND orgao like :orgao_busca AND num_processo = :num_processo  LIMIT ".$limite);
+            $stmt = $pdo->prepare("SELECT * FROM ceis WHERE (nome like :nome OR cnpj_cpf = :cnpj OR num_processo = :num_processo) AND uf_pessoa like :uf_pessoa  AND orgao like :orgao_busca LIMIT ".$limite);
             $stmt->bindParam(":nome", utf8_decode($nome) , PDO::PARAM_STR);
             $stmt->bindParam(":cnpj", $cnpj , PDO::PARAM_STR);
+            $stmt->bindParam(":num_processo", $processo , PDO::PARAM_STR);
             $stmt->bindParam(":uf_pessoa", $uf , PDO::PARAM_STR);
             $stmt->bindParam(":orgao_busca", utf8_decode($orgao_busca) , PDO::PARAM_STR);
-            $stmt->bindParam(":num_processo", $processo , PDO::PARAM_STR);
 
         }
         // Executa query
@@ -415,7 +415,8 @@ if(isSet($_GET['busca'])){
                           data: <?=json_encode($estado)?>,
                           xkey: 'x',
                           ykeys: ['y'],
-                          labels: ['Y'],
+                          labels: ['Quant.'],
+                          grid: true,
                           barColors: function (row, series, type) {
                             this.ymax = 15;
                             if (type === 'bar') {
@@ -427,7 +428,8 @@ if(isSet($_GET['busca'])){
                             }
                           }
                         });
-                        </script>                       
+                        </script>
+                        <h6 class="center legend span12">Relação de pessoas inidonia ou suspensa por estado</h6>
                     </div>
                     <div class="row">
                         <h3 class="center border span12">Inidônios por Motivo</h3>
