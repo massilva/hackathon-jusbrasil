@@ -1105,10 +1105,12 @@ h3 {
 
 	border: 1px solid #999;
 	background: #fff;	
+	/**
 	-moz-box-shadow: 1px 10px 10px #656565;
 	-webkit-box-shadow: 1px 10px 10px #656565;
 	-o-box-shadow: 1px 10px 10px #656565;
 	box-shadow: 1px 10px 10px #656565;
+	**/
 }
 
 #busca input,
@@ -1193,4 +1195,11 @@ table.dataTable th:active {
 	margin: 0 !important;
 }
 
+[class^='span'] [class^='span']{
+	margin: 0;
+}
+
+#busca{
+	padding-top: 20px;
+}
 /****/
