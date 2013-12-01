@@ -37,8 +37,7 @@ $ranking = getTopInidonio($pdo);
 $tipo_sancao = array();
 $orgao = array();
 
-function getTipoSancao($pdo){
-        
+function getTipoSancao($pdo){        
     if(!$pdo){
         die('Erro ao criar a conexão!');
     }
@@ -50,12 +49,10 @@ function getTipoSancao($pdo){
             $tipo_sancao[] = $obj;
         }
     }
-
     return $tipo_sancao;
 }
 
 function getOrgao($pdo){
-
     if(!$pdo){
        die('Erro ao criar a conexão!');
     }
@@ -118,53 +115,57 @@ if(isSet($_GET['busca'])){
     <meta name="keywords" content="4everyone">
     <meta name="author" content="4everyone">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>	
+    
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.css">
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/mobilemenu.css">
     <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-    <script type="text/javascript" src="js/jquery-latest.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="js/bootstrap.js"></script>
     <script type="text/javascript" src="js/jquery.session.js"></script>
     <script type="text/javascript" src="js/parallax.js"></script>
     <script type="text/javascript" src="js/jquery.flexslider.js"></script>
     <script type="text/javascript" src="js/message-form.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="//cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
-    <script type="text/javascript" src="js/script.js"></script>
-	<script type="text/javascript">    
-        overflow = true;
-        $(document).ready(function(){
-             $('#lbl_busca').click(function() { 
-              if(overflow){
-                $('#collapseOne').css("overflow","initial");
-                overflow=false;
-              }else{
-                
-                $('#collapseOne').css("overflow","auto");
-                overflow=true;
-              }        
-            });
-        });
-		$(window).scroll(function () {
-			if (jQuery(this).scrollTop() > 550) {
-				jQuery('header').addClass('scrolled');
-			} else {
-				jQuery('header').removeClass('scrolled');
-			}
-			$('.flexslider').flexslider({
-				animation: "fade",
-				animationSpeed: 500,
-				smoothHeight: true,
-				animationLoop: true,
-				touch: true,
-				directionNav: false
-			});
+	<script type="text/javascript">
+
+    overflow = true;
+
+    $(document).ready(function() {
+
+         $('#lbl_busca').click(function() { 
+          if(overflow){
+            $('#collapseOne').css("overflow","initial");
+            overflow=false;
+          }else{
+            
+            $('#collapseOne').css("overflow","auto");
+            overflow=true;
+          }
+         });   
+    });
+
+	$(window).scroll(function () {
+		if (jQuery(this).scrollTop() > 550) {
+			jQuery('header').addClass('scrolled');
+		} else {
+			jQuery('header').removeClass('scrolled');
+		}
+		$('.flexslider').flexslider({
+			animation: "fade",
+			animationSpeed: 500,
+			smoothHeight: true,
+			animationLoop: true,
+			touch: true,
+			directionNav: false
 		});
+	});
     </script>
 </head>
 	<body>
@@ -177,7 +178,6 @@ if(isSet($_GET['busca'])){
             	<div class="row">
                     <div class="span12">
                         <a class="logo" href="index.php">ChecarEmpresa</a>
-                        <button class="nav-button">menu</button>
                         <ul class="menu">
                             <li><a class="home" href="#home">Inicio</a></li>
                             <li><a class="search" href="#search">Buscar</a></li>
@@ -371,12 +371,63 @@ if(isSet($_GET['busca'])){
             </div>
             <div class="row_1">
                 <div class="container" id="graphs">
-                    <h3 class="border">What We Do</h3>
+                    <h3 class="border">Dados</h3>
                     <div class="row">
-                        <article class="span4 box_1">
-                            <div id="myfirstchart" style="height: 250px;"></div>
-                        </article>
+                        <article class="span8">                            
+                      
+                        <div id="graph"></div>
+                          </article>
+                        <script type="text/javascript">
+                        // Use Morris.Bar
+                        Morris.Bar({
+                          element: 'graph',
+                          data: [
+                            {x: '2011 Q1', y: 25},
+                            {x: '2011 Q2', y: 1},
+                            {x: '2011 Q3', y: 2},
+                            {x: '2011 Q4', y: 3},
+                            {x: '2012 Q1', y: 4},
+                            {x: '2012 Q2', y: 5},
+                            {x: '2012 Q3', y: 6},
+                            {x: '2012 Q4', y: 7},
+                            {x: '2013 Q1', y: 8}
+                          ],
+                          xkey: 'x',
+                          ykeys: ['y'],
+                          labels: ['Y'],
+                          barColors: function (row, series, type) {
+                            this.ymax = 15;
+                            if (type === 'bar') {
+                              var red = Math.ceil(255 * row.y / this.ymax);
+                              return 'rgb(' + red + ',0,0)';
+                            }
+                            else {
+                              return '#000';
+                            }
+                          }
+                        });
+                        </script>                       
                     </div>
+                    <div class="row">
+                        <article class="span8">
+                            <div id="graph2"></div>
+                        </article>
+                        <script type="type/javascript">
+                        Morris.Donut({
+                          element: 'graph2',
+                          data: [
+                            {value: 70, label: 'foo'},
+                            {value: 15, label: 'bar'},
+                            {value: 10, label: 'baz'},
+                            {value: 5, label: 'A really really long label'}
+                          ],
+                          formatter: function (x) { return x + "%"}
+                        }).on('click', function(i, row){
+                          console.log(i, row);
+                        });
+                        </script>
+                    </div>
+           
                 </div>
             </div>
             <div class="row_1" id="ranking">
