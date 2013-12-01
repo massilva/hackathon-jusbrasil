@@ -138,13 +138,11 @@ if(isSet($_GET['busca'])){
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="//cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
-<<<<<<< HEAD
     <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
-	<script type="text/javascript">
-=======
+	  <script type="text/javascript">
 	  <script type="text/javascript">
 
 
@@ -170,7 +168,6 @@ if(isSet($_GET['busca'])){
     
 });
 
->>>>>>> e4698cece4c77802f127363e73bf39a7f9e91397
 		$(window).scroll(function () {
 			if (jQuery(this).scrollTop() > 550) {
 				jQuery('header').addClass('scrolled');
