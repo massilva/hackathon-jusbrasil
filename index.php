@@ -428,53 +428,48 @@
                 </div>
             </div>
             <div id="contact">
-            	<div class="map_wrapper">
-                    <div class="container">
-                        <h3 class="border">Send Us a Message</h3>
-                        <div class="row">
-                            <section class="span3">
-                            	<div class="indent1">
-                                	<h6>postal address</h6>
-                                    <h5><span>Ground Floor 49 Cheltenham Place Brighton</span></h5>
-                                    <h5 class="color_1">Monday - Thursday 5:30AM - 10PM</h5>
-                                    <h5 class="color_1">T - 123.456.7890<br>F - 123.789.3456</h5>
-                                    <h6><a href="mailto:@oursitemail.com">@oursitemail.com</a></h6>
-                                </div>
-                            </section>
-                            <section class="span9">
-                            	<div class="indent2">
-                                	<h6>Do you have a cool idea? Drop us a line or two.</h6>
-                                    <form id="message_form">
-                                        <div class="success"></div>
-                                        <fieldset>
-                                            <div class="row">
-                                                <div class="span3">
-                                                    <label class="name">
-                                                        <input type="text" value="Your Name">
-                                                    </label>
-                                                    <label class="email">
-                                                        <input type="text" value="Email">
-                                                    </label>
-                                                    <label class="notRequired">
-                                                        <input type="text" value="Website">
-                                                    </label>
-                                                </div>
-                                                <div class="span4">
-                                                    <label class="message">
-                                                        <textarea>Message</textarea>
-                                                    </label>
-                                                    <a class="btn btn_1" data-type="submit">Send Message</a>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                    </form>
-                                </div>
-                            </section>
+            	<div class="map_wrapper" >
+                    <div class="row_1" id="work">
+                        <div class="container" id="work">
+                            <h3 class="border">Top Inidônios</h3>
+                            
+                                <div class="row gallery_wrapper">
+                                    <section class="span3 gallery_item gallery_item_1">
+                                        <figure class="">                                            
+                                            <img src="images/gallery_item_bg 1.png" alt="">
+                                            <figcaption>                                                
+                                                <p><strong>1&ordm; - </strong>Wordpress Theme Front-End Development</p>
+                                                <h2>BA</h2>
+                                                <h2>20<span>%</span></h2>
+                                            </figcaption>
+                                        </figure>
+                                    </section>
+                                    <section class="span3 gallery_item gallery_item_2">
+                                        <figure class="">
+                                            <img src="images/gallery_item_bg 2.png" alt="">
+                                            <figcaption>                                                
+                                                <p><strong>2&ordm; - </strong>Wordpress Theme Front-End Development</p>
+                                                <h2>SP</h2>
+                                                <h2>20<span>%</span></h2>
+                                            </figcaption>
+                                        </figure>
+                                    </section>
+                                    <section class="span3 gallery_item gallery_item_3">
+                                        <figure class="">
+
+                                            <img src="images/gallery_item_bg 1.png" alt="">
+
+                                            <figcaption>
+                                                <p><strong>3&ordm; - </strong>Wordpress Theme Front-End Development</p>
+                                                <h2>RJ</h2>
+                                                <h2>60<span>%</span></h2>
+                                               
+                                            </figcaption>
+                                        </figure>
+                                    </section>
+                                </div>                            
                         </div>
                     </div>
-                    <figure class="map">
-                        <iframe width="100%" src="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Brooklyn,+New+York,+NY,+United+States&amp;aq=0&amp;sll=37.0625,-95.677068&amp;sspn=61282355,146.513672&amp;ie=UTF8&amp;hq=&amp;hnear=Brooklyn,+Kings,+New+York&amp;ll=40.649974,-73.950005&amp;spn=0.01628,0.025663&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe>
-                    </figure>
                 </div>
             </div>
             <footer>
