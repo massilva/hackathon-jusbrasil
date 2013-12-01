@@ -52,16 +52,6 @@
 <![endif]-->
 </head>
 	<body>
-        <div class="color_wrap color_wrap_open">
-        	<a class="btn_skin"></a>
-        	<div>skin</div>
-            <div class="basic"><a onclick="get_theme('style')">Basic</a></div>
-            <div class="theme_1"><a onclick="get_theme('theme_1')">theme_1</a></div>
-            <div class="theme_2"><a onclick="get_theme('theme_2')">theme_2</a></div>
-            <div class="theme_3"><a onclick="get_theme('theme_3')">theme_3</a></div>
-            <div class="theme_4"><a onclick="get_theme('theme_4')">theme_4</a></div>
-            <div class="theme_5"><a onclick="get_theme('theme_5')">theme_5</a></div>
-        </div>
 
 		<div class="header_top_wrap">
         	<h1>4everyone</h1>
