@@ -39,20 +39,8 @@
 			});
 		});
     </script>
-<!--[if lt IE 8]>
-<div style=' clear: both; text-align:center; position: relative;'>
- <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
-   <img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." />
-</a>
-</div>
-<![endif]-->
-<!--[if lt IE 9]>
-    <script type="text/javascript" src="js/html5.js"></script>
-    <link rel="stylesheet" type="text/css" media="screen" href="css/ie.css">
-<![endif]-->
 </head>
 	<body>
-
 		<div class="header_top_wrap">
         	<h1>4everyone</h1>
             <div class="container"><div class="slogan">It's suitable for corporate, creative, personal,<br>noncommercial needs!</div></div>
@@ -78,17 +66,26 @@
 		<div class="container-fill">
 			<div class="row_1" id="about">
                 <div class="container">
-                    <h3 class="border">Welcome!</h3>
+                    <h3 class="border">Busca</h3>
                     <div class="row">
-                        <article class="span4">
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh eui smod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis.</p>
+                        <form class="form-inline">
+                        <article id="busca" class="span12">
+                            <div class="form-group span6">
+                                <label for="nome" class="span3">Nome, Razão social ou Nome fantasia</label>
+                                <input id="nome" name="busca[nome]" class="form-control" type="text">
+                            </div>
+                            <div class="form-group span4">
+                                <label for="cnpj" class="">CNPJ/CPF</label>
+                                <input id="cnpj" name="busca[cnpj]" class="form-control" type="text">
+                            </div>
+                            <div class="form-group span1">
+                                <input type="submit" value="Filtrar" class="btn btn-default">
+                            </div>
                         </article>
-                        <article class="span4">
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh eui smod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullam corper suscipit lobortis nisl ut.</p>
+                        <article id="resultado" class="span12">
+                            
                         </article>
-                        <article class="span4">
-                            <p>Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis.</p>
-                        </article>
+                        </form>
                     </div>
                 </div>
             </div>

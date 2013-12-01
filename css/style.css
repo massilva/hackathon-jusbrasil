@@ -1082,3 +1082,18 @@ h3 {
 }
 /* /small phones */
 
+
+/* Customize */
+#busca{
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+
+	border: 1px solid #999;
+	padding: 10px;
+	background: #fff;	
+}
+
+#busca input{
+	padding: 8px;
+}
