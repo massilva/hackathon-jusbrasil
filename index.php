@@ -1,6 +1,7 @@
 <?php
 //PDO em ação!
 $pdo = new PDO ( "mysql:host=us-cdbr-east-04.cleardb.com;dbname=heroku_3acb595e064fe48", "bd5233fd978702", "57345e20");
+
 if(!$pdo){
    die('Erro ao criar a conexão');
 }
@@ -9,7 +10,6 @@ function getTopInidonio($pdo){
     $ranking = array();
     try {
        if($pdo){
-
             // Com o objeto PDO instanciado
             // preparo uma query a ser executada
             $stmt = $pdo->prepare("SELECT nome, COUNT(*) as qtd, uf_pessoa FROM `ceis` GROUP BY cnpj_cpf ORDER BY qtd desc LIMIT 3");
@@ -24,8 +24,7 @@ function getTopInidonio($pdo){
             while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
                 $ranking[] = $obj;
             }
-
-       }            
+       }       
     // tratamento da exeção
     } catch ( PDOException $e ) {
         echo $e->getMessage();
@@ -34,6 +33,45 @@ function getTopInidonio($pdo){
 }
 
 $ranking = getTopInidonio($pdo);
+
+$tipo_sancao = array();
+$orgao = array();
+
+function getTipoSancao($pdo){
+        
+    if(!$pdo){
+        die('Erro ao criar a conexão!');
+    }
+    else{
+        $stmt = $pdo->prepare("SELECT DISTINCT tipo_sancao FROM ceis order by tipo_sancao");
+        $stmt->execute();
+
+        while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
+            $tipo_sancao[] = $obj;
+        }
+    }
+
+    return $tipo_sancao;
+}
+
+function getOrgao($pdo){
+
+    if(!$pdo){
+       die('Erro ao criar a conexão!');
+    }
+    else{
+        $stmt = $pdo->prepare("SELECT DISTINCT orgao FROM ceis order by orgao");
+        $stmt->execute();
+
+        while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
+            $orgao[] = $obj;
+        }
+    }
+    return $orgao;
+}
+
+$tipo_sancao= getTipoSancao($pdo);
+$orgao= getOrgao($pdo);
 
 if(isSet($_GET['busca'])){
 
@@ -44,33 +82,27 @@ if(isSet($_GET['busca'])){
     $limite = isSet($_GET['l']) ? $_GET['l'] : 100;
 
     try {
-        
-       if($pdo){
-            // Com o objeto PDO instanciado
-            // preparo uma query a ser executada
-            if(empty($nome) && empty($cnpj)){
-                $stmt = $pdo->prepare("SELECT * FROM ceis LIMIT ".$limite);
-            }
-            else{
-                $nome = "%".$nome .= "%";
-                $stmt = $pdo->prepare("SELECT * FROM ceis WHERE nome like %:nome% OR cnpj = :cnpj LIMIT ".$limite);
-                $stmt->bindParam(":nome", $nome , PDO::PARAM_STR);
-                $stmt->bindParam(":cnpj", $cnpj , PDO::PARAM_STR);
-            }
-            // Executa query
-            $stmt->execute();
+        // Com o objeto PDO instanciado
+        // preparo uma query a ser executada
+        if(empty($nome) && empty($cnpj)){
+            $stmt = $pdo->prepare("SELECT * FROM ceis LIMIT ".$limite);
+        }
+        else{
+            $nome = "%".$nome .= "%";
+            $stmt = $pdo->prepare("SELECT * FROM ceis WHERE nome like %:nome% OR cnpj = :cnpj LIMIT ".$limite);
+            $stmt->bindParam(":nome", $nome , PDO::PARAM_STR);
+            $stmt->bindParam(":cnpj", $cnpj , PDO::PARAM_STR);
+        }
+        // Executa query
+        $stmt->execute();
 
-            // lembra do mysql_fetch_array?
-            //PDO:: FETCH_OBJ: retorna um objeto anônimo com nomes de propriedades que
-            //correspondem aos nomes das colunas retornadas no seu conjunto de resultados
-            //Ou seja o objeto "anônimo" possui os atributos resultantes de sua query
-            while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
-                $resultado[] = $obj;
-            }
-            // fecho o banco
-            $pdo = null;
-       }     
-        
+        // lembra do mysql_fetch_array?
+        //PDO:: FETCH_OBJ: retorna um objeto anônimo com nomes de propriedades que
+        //correspondem aos nomes das colunas retornadas no seu conjunto de resultados
+        //Ou seja o objeto "anônimo" possui os atributos resultantes de sua query
+        while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
+            $resultado[] = $obj;
+        } 
     // tratamento da exeção
     } catch ( PDOException $e ) {
         echo $e->getMessage();
@@ -104,6 +136,29 @@ if(isSet($_GET['busca'])){
     <script type="text/javascript" src="js/message-form.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
 	<script type="text/javascript">
+
+
+    overflow = true;
+
+    $(document).ready(function() {
+
+         $('#lbl_busca').click(function() { 
+          if(overflow){
+            $('#collapseOne').css("overflow","initial");
+            overflow=false;
+          }else{
+            
+            $('#collapseOne').css("overflow","auto");
+            overflow=true;
+          }
+        
+    });   
+    
+     
+
+  
+    
+});
 		$(window).scroll(function () {
 			if (jQuery(this).scrollTop() > 550) {
 				jQuery('header').addClass('scrolled');
@@ -167,7 +222,7 @@ if(isSet($_GET['busca'])){
                                <div class="accordion" id="accordion2">
                                     <div class="accordion-group" style="border:0;padding-left:15px;">
                                         <div class="accordion-heading">
-                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" style="color:gray;
+                                            <a id="lbl_busca" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" style="color:gray;
                                             text-decoration: underline;  font-size:15px;">
                                                 Busca Avançada
                                             </a>
@@ -175,21 +230,50 @@ if(isSet($_GET['busca'])){
                                          <div id="collapseOne" class="accordion-body collapse" style="overflow:auto">
                                             <div class="accordion-inner">
                                                 <label>Tipo:</label>
-                                                <label class="checkbox"><input type="checkbox" name="inputWalls" id="inputWalls" value="juridica" checked>Jurídica </label>
+                                                <label class="checkbox"><input type="checkbox" name="ck_juridica" id="ck_juridica" value="ck_juridica"  checked >Jurídica </label>
                                                 <label class="checkbox"><input type="checkbox" name="inputWalls" id="inputWalls" value="fisica" checked  style="padding-left:30px;">Física</label>
 
 
                                                 <div class="btn-group" style="padding-left:30px;">
-                                                    <ul>
+                                                    <ul class="avancada">
                                                         <li>
                                                             <div class="btn-group ">
                                                                   <button type="button" class="btn btn-default" style="width:90px;">UF</button>
-                                                                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                                  <button id="dd_uf" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                                                     <span class="caret"></span>
                                                                     <span class="sr-only"></span>
                                                                   </button>
                                                                   <ul class="dropdown-menu">
-                                                                    <!-- Dropdown menu links -->
+
+                                                                     <li></li>
+                                                                     <li>AC</li>
+                                                                     <li>AL</li>
+                                                                     <li>AM</li>
+                                                                     <li>AP</li>
+                                                                     <li>BA</li>
+                                                                     <li>CE</li>
+                                                                     <li>DF</li>
+                                                                     <li>ES</li>
+                                                                     <li>GO</li>
+                                                                     <li>MA</li>
+                                                                     <li>MG</li>
+                                                                     <li>MS</li>
+                                                                     <li>MT</li>
+                                                                     <li>PA</li>
+                                                                     <li>PB</li>
+                                                                     <li>PE</li>
+                                                                     <li>PI</li>
+                                                                     <li>PR</li>
+                                                                     <li>RJ</li>
+                                                                     <li>RN</li>
+                                                                     <li>RO</li>
+                                                                     <li>RR</li>
+                                                                     <li>RS</li>
+                                                                     <li>SC</li>
+                                                                     <li>SE</li>
+                                                                     <li>SP</li>
+                                                                     <li>TO</li>
+
                                                                   </ul>
                                                                 </div>
                                                         </li>
@@ -201,7 +285,17 @@ if(isSet($_GET['busca'])){
                                                                     <span class="sr-only"></span>
                                                                   </button>
                                                                   <ul class="dropdown-menu">
-                                                                    <!-- Dropdown menu links -->
+                                                                    <li></li>
+                                                                   
+                                                                    <?php
+
+                                                                    foreach ($orgao as $key => $obj){                                                                   
+                                                                       
+                                                                       echo "<li>".utf8_encode($obj->orgao)."</li>";
+                                                                                                                                              
+                                                                    }
+
+                                                                    ?>
                                                                   </ul>
                                                                 </div>
                                                         </li>
@@ -213,7 +307,18 @@ if(isSet($_GET['busca'])){
                                                                     <span class="sr-only"></span>
                                                                   </button>
                                                                   <ul class="dropdown-menu">
-                                                                    <!-- Dropdown menu links -->
+                                                                     <li></li>
+                                                                   
+                                                                    <?php
+
+                                                                    foreach ($tipo_sancao as $key => $obj){                                                                   
+                                                                       
+                                                                       echo "<li>".utf8_encode($obj->tipo_sancao)."</li>";
+                                                                                                                                              
+                                                                    }
+
+                                                                    ?>
+                                                                    
                                                                   </ul>
                                                                 </div>
                                                         </li>

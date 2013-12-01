@@ -1743,7 +1743,13 @@ select:focus:invalid:focus {
   background-color: #a9dba9;
   border-color: #46a546;
 }
-.btn-group ul li{
+.btn-group ul.dropdown-menu li{
+  display: block !important;
+  padding-left: 35px;
+  padding-right: 65px;
+}
+
+.btn-group ul.avancada li{
   display: inline;
   padding-left: 35px;
   padding-right: 65px;
