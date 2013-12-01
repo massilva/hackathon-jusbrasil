@@ -33,6 +33,14 @@ $(document).ready(function() {
 		});
     	return false;
     });
+    $('a.ranking').click(function(){
+    	$('html, body').animate({
+    		scrollTop:$('#ranking').offset().top
+    	}, 1000, function() {
+	    	parallaxScroll(); // Callback is required for iOS
+		});
+    	return false;
+    });
 	$('a.about').click(function(){
     	$('html, body').animate({
     		scrollTop:$('#about').offset().top

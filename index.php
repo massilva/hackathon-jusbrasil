@@ -6,6 +6,31 @@ if(!$pdo){
    die('Erro ao criar a conexão');
 }
 
+function getMotivo($pdo){
+    $sancao = array();
+    try{
+       if($pdo){
+            // Com o objeto PDO instanciado
+            // preparo uma query a ser executada
+            $stmt = $pdo->prepare("SELECT COUNT(*) as qtd, tipo_sancao FROM ceis GROUP BY tipo_sancao ORDER BY qtd DESC");
+            
+            // Executa query
+            $stmt->execute();
+
+            // lembra do mysql_fetch_array?
+            //PDO:: FETCH_OBJ: retorna um objeto anônimo com nomes de propriedades que
+            //correspondem aos nomes das colunas retornadas no seu conjunto de resultados
+            //Ou seja o objeto "anônimo" possui os atributos resultantes de sua query
+            while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
+                $sancao[] = $obj;
+            }
+       }        
+    } catch(PDOException $e){
+        echo $e->getMessage();
+    }   
+    return $sancao;
+}
+
 function getInidonioByEstado($pdo){
     $top = array();
     try{
@@ -94,6 +119,7 @@ $ranking = getTopInidonio($pdo);
 $byEstado = getInidonioByEstado($pdo);
 $tipo_sancao= getTipoSancao($pdo);
 $orgao= getOrgao($pdo);
+$tipoSancao = getMotivo($pdo);
 
 
 if(isSet($_GET['busca'])){
@@ -117,6 +143,7 @@ if(isSet($_GET['busca'])){
         else{
 
 
+
             if($uf == "UF")
                 $uf = "";
             if($orgao_busca == "ORGAO")
@@ -137,6 +164,8 @@ if(isSet($_GET['busca'])){
             $stmt->bindParam(":orgao_busca", utf8_decode($orgao_busca) , PDO::PARAM_STR);
             $stmt->bindParam(":tipo_sancao", utf8_decode($motivo) , PDO::PARAM_STR);
             $stmt->bindParam(":num_processo", $processo , PDO::PARAM_STR);
+
+           
         }
         // Executa query
         $stmt->execute();
@@ -191,9 +220,6 @@ if(isSet($_GET['busca'])){
     overflow = true;
 
     $(document).ready(function() {
-
-        $("#e1").select2();
-
          $('#lbl_busca').click(function() { 
           if(overflow){
             $('#collapseOne').css("overflow","initial");
@@ -409,8 +435,8 @@ if(isSet($_GET['busca'])){
                                     </div>";
                                     ?>
                             <?php } ?>
-                        </article>
-                        </form>
+                     </article>;
+                      </form>
                     </div>
                 </div>
             </div>
@@ -420,12 +446,16 @@ if(isSet($_GET['busca'])){
                 $estado[$key]["x"] = $obj->uf_pessoa;
                 $estado[$key]["y"] = $obj->qtd;
             }
+            foreach ($tipoSancao as $key => $obj){
+                $motivo[$key]['label'] = utf8_encode($obj->tipo_sancao);
+                $motivo[$key]['value'] = $obj->qtd;
+            }
             ?>
             <div class="row_1">
                 <div class="container" id="graphs">
-                    <h3 class="border">Dados</h3>
+                    <!-- <h3 class="border">Dados</h3> -->
                     <div class="row">
-                        <h2 class="center span12">Inidonios por Estado</h2>
+                        <h3 class="center span12">Inidonios por Estado</h3>
                         <article class="span12">
                             <div id="graph"></div>
                         </article>
@@ -451,20 +481,14 @@ if(isSet($_GET['busca'])){
                         </script>                       
                     </div>
                     <div class="row">
-                        <h2 class="center span12">Inidonios por Motivo</h2>
+                        <h3 class="center span12">Inidonios por Motivo</h3>
                         <article class="span12">
                             <div id="donutGraph"></div>
                         </article>
                         <script type="text/javascript">
                         new Morris.Donut({
                           element: 'donutGraph',
-                          data: [
-                            { label: '2008', value: 20 },
-                            { label: '2009', value: 10 },
-                            { label: '2010', value: 5 },
-                            { label: '2011', value: 5 },
-                            { label: '2012', value: 20 }
-                          ],
+                          data: <?=json_encode($motivo)?>,
                           }); 
                         </script>
                     </div>

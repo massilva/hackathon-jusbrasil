@@ -1128,6 +1128,11 @@ h3 {
 .center{
 	text-align: center;
 }
+
+.container{
+	min-height: 450px;
+}
+
 /** DATATABLE **/
 #table_resultado,
 .dataTables_wrapper{
