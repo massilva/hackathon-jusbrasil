@@ -1,6 +1,6 @@
 <?php
 //PDO em ação!
-$pdo = new PDO ( "mysql:host=localhost;dbname=checar_empresa", "root", "123");
+$pdo = new PDO ( "mysql:host=us-cdbr-east-04.cleardb.com;dbname=heroku_3acb595e064fe48", "bd5233fd978702", "57345e20");
 if(!$pdo){
    die('Erro ao criar a conexão');
 }
@@ -46,7 +46,6 @@ if(isSet($_GET['busca'])){
     try {
         
        if($pdo){
-
             // Com o objeto PDO instanciado
             // preparo uma query a ser executada
             if(empty($nome) && empty($cnpj)){
@@ -247,10 +246,7 @@ if(isSet($_GET['busca'])){
                                           </div>
                                         </div>
                                     </div>
-                    </div>
-
-
-
+                           </div>
                         </article>
                         <article id="resultado">
                             <?php if(isSet($_GET['busca'])){ ?>
@@ -268,7 +264,7 @@ if(isSet($_GET['busca'])){
                                         <th>Origem da Informação</th>
                                         <th>Data da Informação</th>
                                     <tr>
-                                    </thread>
+                                    </thead>
                                     <tbody>
                                         <?php if(empty($resultado)){
                                             echo "<tr><td colspan='100'>Sem resultado.</td></tr>";
