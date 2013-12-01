@@ -282,7 +282,7 @@ a.logo {
 
 .btn_1 {
 	padding:14px 20px 11px;
-	background:#a8d46f;
+	background:#5DA7DF;
 	color:#f2f2e8;
 	font-size:12px;
 	line-height:15px;
@@ -368,7 +368,7 @@ img {
 	left: 0;
 	height:545px;
 	margin: 0 auto;
-	background:#a8d46f;
+	background:#5DA7DF;
 	border-top:4px solid #34322a;
 	z-index: -9999;
 }
@@ -1116,7 +1116,7 @@ h3 {
 #busca input,
 #busca .btn{
 	padding: 8px;
-	font-size: 14pt;
+	font-size: 12pt;
 }
 
 #busca, #resultado{
