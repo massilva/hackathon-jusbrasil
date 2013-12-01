@@ -6,7 +6,7 @@ if(!$pdo){
    die('Erro ao criar a conexão');
 }
 
-function POSTMotivo($pdo){
+function getMotivo($pdo){
     $sancao = array();
     try{
        if($pdo){
@@ -26,12 +26,12 @@ function POSTMotivo($pdo){
             }
        }        
     } catch(PDOException $e){
-        echo $e->POSTMessage();
+        echo $e->getMessage();
     }   
     return $sancao;
 }
 
-function POSTInidonioByEstado($pdo){
+function getInidonioByEstado($pdo){
     $top = array();
     try{
        if($pdo){
@@ -51,12 +51,12 @@ function POSTInidonioByEstado($pdo){
             }
        }        
     } catch(PDOException $e){
-        echo $e->POSTMessage();
+        echo $e->getMessage();
     }   
     return $top;
 }
 
-function POSTTopInidonio($pdo){
+function getTopInidonio($pdo){
     $ranking = array();
     try {
        if($pdo){
@@ -77,12 +77,12 @@ function POSTTopInidonio($pdo){
        }       
     // tratamento da exeção
     } catch ( PDOException $e ) {
-        echo $e->POSTMessage();
+        echo $e->getMessage();
     }    
     return $ranking;
 }
 
-function POSTTipoSancao($pdo){        
+function getTipoSancao($pdo){        
     if(!$pdo){
         die('Erro ao criar a conexão!');
     }
@@ -97,7 +97,7 @@ function POSTTipoSancao($pdo){
     return $tipo_sancao;
 }
 
-function POSTOrgao($pdo){
+function getOrgao($pdo){
     if(!$pdo){
        die('Erro ao criar a conexão!');
     }
@@ -115,15 +115,14 @@ function POSTOrgao($pdo){
 $tipo_sancao = array();
 $orgao = array();
 
-$ranking = POSTTopInidonio($pdo);
-$byEstado = POSTInidonioByEstado($pdo);
-$tipo_sancao= POSTTipoSancao($pdo);
-$orgao= POSTOrgao($pdo);
-$tipoSancao = POSTMotivo($pdo);
+$ranking = getTopInidonio($pdo);
+$byEstado = getInidonioByEstado($pdo);
+$tipo_sancao= getTipoSancao($pdo);
+$orgao= getOrgao($pdo);
+$tipoSancao = getMotivo($pdo);
 
-if(isSet($_POST['busca'])){
-    
-    $busca = $_POST['busca'];
+if(isSet($_GET['busca'])){
+    $busca = $_GET['busca'];
     $nome = $busca['nome'];
     $cnpj = $busca['cnpj'];
     $uf = $busca['uf'];
@@ -131,7 +130,7 @@ if(isSet($_POST['busca'])){
     $processo = $busca['processo'];
     
     $resultado = array();
-    $limite = isSet($_POST['l']) ? $_POST['l'] : 100;
+    $limite = isSet($_GET['l']) ? $_GET['l'] : 100;
     
     try {
 
@@ -171,7 +170,7 @@ if(isSet($_POST['busca'])){
         $pdo = null;
     // tratamento da exeção
     } catch ( PDOException $e ) {
-        echo $e->POSTMessage();
+        echo $e->getMessage();
     }
     
 }
@@ -182,9 +181,6 @@ if(isSet($_POST['busca'])){
 <head>
     <title>ChecarEmpresa</title>
     <meta charset="utf-8">
-    <meta name="description" content="4everyone">
-    <meta name="keywords" content="4everyone">
-    <meta name="author" content="4everyone">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
     <link rel="stylesheet" href="css/select2.css">
     <link rel="stylesheet" href="css/bootstrap.css">
@@ -262,7 +258,7 @@ if(isSet($_POST['busca'])){
                 <div class="container">
                     <h3 class="border">Busca</h3>
                     <div class="row">
-                        <form class="form-inline" action="index.php#search" method="POST" >
+                        <form class="form-inline" action="index.php#search" method="get" >
                         <article id="busca" class="span12">
                             <div class="form-group span6">
                                 <label for="nome" class="span3">Nome, Razão social ou Nome fantasia</label>
@@ -347,7 +343,7 @@ if(isSet($_POST['busca'])){
                            </div>
                         </article>
                         <article id="resultado">
-                            <?php if(isSet($_POST['busca'])){ ?>
+                            <?php if(isSet($_GET['busca'])){ ?>
                                 <div class="table-responsive span12">
                                   <table id="table_resultado" class="table table-striped">
                                     <thead>
@@ -384,11 +380,11 @@ if(isSet($_POST['busca'])){
                                     </tbody>
                                   </table>
                                   <?php
-                                  echo "<a href='index.php?busca[nome]=".$busca['nome']."&busca[cnpj]=".$busca['cnpj']."&busca[processo]=".$busca['processo']."&busca[uf]=".$busca['uf']."&busca[orgao]=".$busca['orgao']."&busca[motivo]=".$busca['motivo']."&l=".($limite+100)."' class='btn btn_1 right'>MAIS</a>
+                                  echo "<a href='index.php?busca[nome]=".$busca['nome']."&busca[cnpj]=".$busca['cnpj']."&busca[processo]=".$busca['processo']."&busca[uf]=".$busca['uf']."&busca[orgao]=".$busca['orgao']."&busca[motivo]=".$busca['motivo']."&l=".($limite+100)."' class='btn btn_1 right'>MAIS +100</a>
                                     </div>";
-                                    ?>
-                            <?php } ?>
-                     </article>;
+                                    } 
+                                ?>
+                     </article>
                       </form>
                     </div>
                 </div>
