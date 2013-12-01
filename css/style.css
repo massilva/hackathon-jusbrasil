@@ -262,6 +262,7 @@ a:hover {
 a.logo {
 	text-indent: -9999px;
 	float: left;
+	size:50px;
 	width: 195px;
 	height: 40px;
 	background:url(../images/logo.png) left top no-repeat;
@@ -1098,8 +1099,10 @@ h3 {
 
 #busca input{
 	padding: 8px;
+
 }
 
 .clear-margim{
 	margin: 0 !important;
 }
+

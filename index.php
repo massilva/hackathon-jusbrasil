@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en-us">
 <head>
-    <title>4everyone</title>
+    <title>ChecarEmpresa</title>
   	<meta charset="utf-8">
     <meta name="description" content="4everyone">
     <meta name="keywords" content="4everyone">
@@ -42,22 +42,21 @@
 </head>
 	<body>
 		<div class="header_top_wrap">
-        	<h1>4everyone</h1>
-            <div class="container"><div class="slogan">It's suitable for corporate, creative, personal,<br>noncommercial needs!</div></div>
+        	<h1>ChecarEmpresa</h1>
+            <!-- <div class="container"><div class="slogan">Serve, ainda, como ferramenta de transparência para a sociedade em geral.<br>noncommercial needs!</div></div> -->
 		</div>
 
 		<header class="home_page">
 			<div class="container">
             	<div class="row">
                     <div class="span12">
-                        <a class="logo" href="index.htm">4everyone</a>
+                        <a class="logo" href="index.php">ChecarEmpresa</a>
                         <button class="nav-button">menu</button>
                         <ul class="menu">
-                            <li><a class="home" href="#home">Home</a></li>
-                            <li><a class="about" href="#about">About</a></li>
-                            <li><a class="work" href="#work">Work</a></li>
-                            <li><a href="blog.htm">Blog</a></li>
-                            <li><a class="contact" href="#contact">Contact</a></li>
+                            <li><a class="home" href="#home">Inicio</a></li>
+                            <li><a class="about" href="#about">Sobre</a></li>
+                            <li><a class="work" href="#work">Work</a></li>                            
+                            <li><a class="contact" href="#contact">Contato</a></li>
                         </ul>
                     </div>
                 </div>
