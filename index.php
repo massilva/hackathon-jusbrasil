@@ -74,13 +74,11 @@ $tipo_sancao= getTipoSancao($pdo);
 $orgao= getOrgao($pdo);
 
 if(isSet($_GET['busca'])){
-
     $busca = $_GET['busca'];
     $nome = $busca['nome'];
     $cnpj = $busca['cnpj'];
     $resultado = array();
     $limite = isSet($_GET['l']) ? $_GET['l'] : 100;
-
     try {
         // Com o objeto PDO instanciado
         // preparo uma query a ser executada
@@ -138,31 +136,20 @@ if(isSet($_GET['busca'])){
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="//cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
-	  <script type="text/javascript">
-
-
-    overflow = true;
-
-    $(document).ready(function() {
-
-         $('#lbl_busca').click(function() { 
-          if(overflow){
-            $('#collapseOne').css("overflow","initial");
-            overflow=false;
-          }else{
-            
-            $('#collapseOne').css("overflow","auto");
-            overflow=true;
-          }
-        
-    });   
-    
-     
-
-  
-    
-});
-
+	<script type="text/javascript">    
+        overflow = true;
+        $(document).ready(function(){
+             $('#lbl_busca').click(function() { 
+              if(overflow){
+                $('#collapseOne').css("overflow","initial");
+                overflow=false;
+              }else{
+                
+                $('#collapseOne').css("overflow","auto");
+                overflow=true;
+              }        
+            });
+        });
 		$(window).scroll(function () {
 			if (jQuery(this).scrollTop() > 550) {
 				jQuery('header').addClass('scrolled');
@@ -185,7 +172,6 @@ if(isSet($_GET['busca'])){
         	<h1>ChecarEmpresa</h1>
             <!-- <div class="container"><div class="slogan">Serve, ainda, como ferramenta de transparência para a sociedade em geral.<br>noncommercial needs!</div></div> -->
 		</div>
-
 		<header class="home_page">
 			<div class="container">
             	<div class="row">
@@ -195,9 +181,9 @@ if(isSet($_GET['busca'])){
                         <ul class="menu">
                             <li><a class="home" href="#home">Inicio</a></li>
                             <li><a class="search" href="#search">Buscar</a></li>
-                            <li><a class="graphs" href="#graphs">Gráficos</a></li>                            
+                            <li><a class="graphs" href="#graphs">Gráficos</a></li>
+                            <li><a class="ranking" href="#ranking">Ranking</a></li>
                             <li><a class="about" href="#about">Sobre</a></li>
-                          
                         </ul>
                     </div>
                 </div>
@@ -221,7 +207,6 @@ if(isSet($_GET['busca'])){
                             <div class="form-group span1">
                                 <input type="submit" value="Filtrar" class="btn btn_1">
                             </div>
-
                             <div class="form-group span11">
                                <div class="accordion" id="accordion2">
                                     <div class="accordion-group" style="border:0;padding-left:15px;">
@@ -236,8 +221,6 @@ if(isSet($_GET['busca'])){
                                                 <label>Tipo:</label>
                                                 <label class="checkbox"><input type="checkbox" name="ck_juridica" id="ck_juridica" value="ck_juridica"  checked >Jurídica </label>
                                                 <label class="checkbox"><input type="checkbox" name="inputWalls" id="inputWalls" value="fisica" checked  style="padding-left:30px;">Física</label>
-
-
                                                 <div class="btn-group" style="padding-left:30px;">
                                                     <ul class="avancada">
                                                         <li>
@@ -248,7 +231,6 @@ if(isSet($_GET['busca'])){
                                                                     <span class="sr-only"></span>
                                                                   </button>
                                                                   <ul class="dropdown-menu">
-
                                                                      <li></li>
                                                                      <li>AC</li>
                                                                      <li>AL</li>
@@ -277,82 +259,65 @@ if(isSet($_GET['busca'])){
                                                                      <li>SE</li>
                                                                      <li>SP</li>
                                                                      <li>TO</li>
-
                                                                   </ul>
                                                                 </div>
                                                         </li>
                                                         <li>
                                                             <div class="btn-group ">
-                                                                  <button type="button" class="btn btn-default" style="width:130px;">Orgão</button>
-                                                                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                                                    <span class="caret"></span>
-                                                                    <span class="sr-only"></span>
-                                                                  </button>
-                                                                  <ul class="dropdown-menu">
-                                                                    <li></li>
-                                                                   
-                                                                    <?php
-
-                                                                    foreach ($orgao as $key => $obj){                                                                   
-                                                                       
-                                                                       echo "<li>".utf8_encode($obj->orgao)."</li>";
-                                                                                                                                              
-                                                                    }
-
-                                                                    ?>
-                                                                  </ul>
-                                                                </div>
+                                                              <button type="button" class="btn btn-default" style="width:130px;">Orgão</button>
+                                                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                                <span class="caret"></span>
+                                                                <span class="sr-only"></span>
+                                                              </button>
+                                                              <ul class="dropdown-menu">
+                                                                <li></li>
+                                                                <?php
+                                                                foreach ($orgao as $key => $obj){                    
+                                                                   echo "<li>".utf8_encode($obj->orgao)."</li>";
+                                                                }
+                                                                ?>
+                                                              </ul>
+                                                            </div>
                                                         </li>
                                                         <li>
                                                             <div class="btn-group ">
-                                                                  <button type="button" class="btn btn-default" style="width:130px;">Motivo</button>
-                                                                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                                                    <span class="caret"></span>
-                                                                    <span class="sr-only"></span>
-                                                                  </button>
-                                                                  <ul class="dropdown-menu">
-                                                                     <li></li>
-                                                                   
-                                                                    <?php
+                                                              <button type="button" class="btn btn-default" style="width:130px;">Motivo</button>
+                                                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                                <span class="caret"></span>
+                                                                <span class="sr-only"></span>
+                                                              </button>
+                                                              <ul class="dropdown-menu">
+                                                                 <li></li>
+                                                               
+                                                                <?php
 
-                                                                    foreach ($tipo_sancao as $key => $obj){                                                                   
-                                                                       
-                                                                       echo "<li>".utf8_encode($obj->tipo_sancao)."</li>";
-                                                                                                                                              
-                                                                    }
-
-                                                                    ?>
-                                                                    
-                                                                  </ul>
-                                                                </div>
+                                                                foreach ($tipo_sancao as $key => $obj){                       
+                                                                   echo "<li>".utf8_encode($obj->tipo_sancao)."</li>";
+                                                                }
+                                                                ?>
+                                                                
+                                                              </ul>
+                                                            </div>
                                                         </li>
-
-                                              </ul>
+                                                    </ul>
                                                 </div>
-                                            
                                             </div>
-
                                              <div class="accordion-inner" style="border-top:0" >
-                                                
-                                                              <div class="clear-margim span3">
-                                                                    <label for="data_inicio" class="">Data Ínicio</label>
-                                                                    <input id="data_inicio" name="data_inicio" class="form-control" type="text" style="width:150px;">
-                                                              </div>
-                                                       
-                                                              <div class="clear-margim span3">
-                                                                    <label for="data_fim" class="">Data Fim</label>
-                                                                    <input id="data_fim" name="data_fim" class="form-control" type="text" style="width:150px;">
-                                                              </div>
-                                                              <div class="clear-margim span4">
-                                                                    <label for="num_processo" class="">N° Processo</label>
-                                                                    <input id="num_processo" name="num_processo" class="form-control" type="text" style="width:230px;">
-                                                              </div>                                                        
-
-                                                </div>                                        
-
-                                            
-                                                                                            
-                                          </div>
+                                                  <div class="clear-margim span3">
+                                                        <label for="data_inicio" class="">Data Ínicio</label>
+                                                        <input id="data_inicio" name="data_inicio" class="form-control" type="text" style="width:150px;">
+                                                  </div>
+                                           
+                                                  <div class="clear-margim span3">
+                                                        <label for="data_fim" class="">Data Fim</label>
+                                                        <input id="data_fim" name="data_fim" class="form-control" type="text" style="width:150px;">
+                                                  </div>
+                                                  <div class="clear-margim span4">
+                                                        <label for="num_processo" class="">N° Processo</label>
+                                                        <input id="num_processo" name="num_processo" class="form-control" type="text" style="width:230px;">
+                                                  </div>
+                                                </div>                                      
+                                            </div>
                                         </div>
                                     </div>
                            </div>
@@ -404,81 +369,38 @@ if(isSet($_GET['busca'])){
                     </div>
                 </div>
             </div>
-
-            <div id="myfirstchart" style="height: 250px;"></div>
-
             <div class="row_1">
                 <div class="container" id="graphs">
                     <h3 class="border">What We Do</h3>
                     <div class="row">
                         <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-1.png" alt=""></div>
-                            <h6><a href="#">Strategy</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
-                        </article>
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-2.png" alt=""></div>
-                            <h6><a href="#">user experience</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
-                        </article>
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-3.png" alt=""></div>
-                            <h6><a href="#">design</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
-                        </article>
-                    </div>
-                    <div class="row">
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-4.png" alt=""></div>
-                            <h6><a href="#">development</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
-                        </article>
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-5.png" alt=""></div>
-                            <h6><a href="#">Wordpress</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
-                        </article>
-                        <article class="span4 box_1">
-                            <div class="icon_bg"><img src="images/icon-6.png" alt=""></div>
-                            <h6><a href="#">ceo</a></h6>
-                            <p>Lorem ipsum dolor sit ametet<br>uer adipiscing elit, sed diam nonummy nibh euismod tincidu.</p>
-                            <a href="#" class="btn btn_1">read more</a>
+                            <div id="myfirstchart" style="height: 250px;"></div>
                         </article>
                     </div>
                 </div>
             </div>
-            <div class="row_1" >
-                 <div id="contact">
-                <div class="map_wrapper" >
-                    <div class="row_1" id="work">
-                        <div class="container" id="work">
-                            <h3 class="border">Top Inidônios</h3>
-                            <div class="row gallery_wrapper">
-                                <?php
-                                foreach ($ranking as $key => $obj){
-                                ?>
-                                <section class="span3 gallery_item gallery_item_<?=($key+1)?>">
-                                    <figure class="">                           
-                                        <img src="images/gallery_item_bg <?=($key%2 + 1)?>.png" alt="">
-                                        <figcaption>                   
-                                            <p><strong><?=($key+1)?> - </strong><?=$obj->nome?></p>
-                                            <h2><?=$obj->uf_pessoa?></h2>
-                                            <h2><?=$obj->qtd?></h2>
-                                        </figcaption>
-                                    </figure>
-                                </section>  
-                                <?php  
-                                }
-                                ?>
-                            </div>
-                            </div>
-                        </div>
+            <div class="row_1" id="ranking">
+                <div class="container">
+                    <h3 class="border">Top Inidônios</h3>
+                    <div class="row">
+                        <?php
+                        foreach ($ranking as $key => $obj){
+                        ?>
+                        <section class="span3 gallery_item gallery_item_<?=($key+1)?>">
+                            <figure class="">                           
+                                <img src="images/gallery_item_bg<?=($key%2 + 1)?>.png" alt="">
+                                <figcaption>                   
+                                    <p><strong><?=($key+1)?> - </strong><?=$obj->nome?></p>
+                                    <h2><?=$obj->uf_pessoa?></h2>
+                                    <h2><?=$obj->qtd?></h2>
+                                </figcaption>
+                            </figure>
+                        </section>  
+                        <?php  
+                        }
+                        ?>
                     </div>
+                </div>
             </div>
             <div id="about">
             	<div class="map_wrapper">
@@ -537,34 +459,32 @@ if(isSet($_GET['busca'])){
                 </div>
             </footer>
 		</div><!--/container-fill-->
-<script type="text/javascript">
-	$(window).load(function(){
-		$('#message_form').forms({
-			ownerEmail:'test@test.test'
-		});
-	})
-
-  new Morris.Donut({
-    // ID of the element in which to draw the chart.
-    element: 'myfirstchart',
-    // Chart data records -- each entry in this array corresponds to a point on
-    // the chart.
-    data: [
-      { label: '2008', value: 20 },
-      { label: '2009', value: 10 },
-      { label: '2010', value: 5 },
-      { label: '2011', value: 5 },
-      { label: '2012', value: 20 }
-    ],
-    // // The name of the data record attribute that contains x-values.
-    // xkey: 'year',
-    // // A list of names of data record attributes that contain y-values.
-    // ykeys: ['value'],
-    // // Labels for the ykeys -- will be displayed when you hover over the
-    // // chart.
-    // labels: ['Value']
-  }); 
-
-</script>
+        <script type="text/javascript">
+        	$(window).load(function(){
+        		$('#message_form').forms({
+        			ownerEmail:'test@test.test'
+        		});
+        	})
+            new Morris.Donut({
+                // ID of the element in which to draw the chart.
+                element: 'myfirstchart',
+                // Chart data records -- each entry in this array corresponds to a point on
+                // the chart.
+                data: [
+                  { label: '2008', value: 20 },
+                  { label: '2009', value: 10 },
+                  { label: '2010', value: 5 },
+                  { label: '2011', value: 5 },
+                  { label: '2012', value: 20 }
+                ],
+                // // The name of the data record attribute that contains x-values.
+                // xkey: 'year',
+                // // A list of names of data record attributes that contain y-values.
+                // ykeys: ['value'],
+                // // Labels for the ykeys -- will be displayed when you hover over the
+                // // chart.
+                // labels: ['Value']
+            }); 
+        </script>
 </body>
 </html>
