@@ -54,16 +54,16 @@
                         <button class="nav-button">menu</button>
                         <ul class="menu">
                             <li><a class="home" href="#home">Inicio</a></li>
+                            <li><a class="search" href="#search">Buscar</a></li>
+                            <li><a class="graphs" href="#graphs">Gráficos</a></li>                            
                             <li><a class="about" href="#about">Sobre</a></li>
-                            <li><a class="work" href="#work">Work</a></li>                            
-                            <li><a class="contact" href="#contact">Contato</a></li>
                         </ul>
                     </div>
                 </div>
 			</div><!--/container-->
 		</header>		
 		<div class="container-fill">
-			<div class="row_1" id="about">
+			<div class="row_1" id="search">
                 <div class="container">
                     <h3 class="border">Busca</h3>
                     <div class="row">
@@ -221,7 +221,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row_1" id="work">
+            <div class="row_1" id="graphs">
                 <div class="container">
                     <h3 class="border">Selected Work</h3>
                     <div class="row">
@@ -515,7 +515,7 @@
                     </div>
                 </div>
             </div>
-            <div id="contact">
+            <div id="about">
             	<div class="map_wrapper">
                     <div class="container">
                         <h3 class="border">Send Us a Message</h3>
