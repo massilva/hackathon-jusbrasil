@@ -264,7 +264,7 @@ if(isSet($_GET['busca'])){
 		<div class="container-fill">
 			<div class="row_1" id="search">
                 <div class="container">
-                    <h3 class="border">Busca</h3>
+                    <h3 ></h3>
                     <div class="row">
                         <form class="form-inline" action="index.php" method="get" >
                         <article id="busca" class="span12">
