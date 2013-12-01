@@ -6,7 +6,8 @@ if(isSet($_GET['busca'])){
     $nome = $busca['nome'];
     $cnpj = $busca['cnpj'];
     $resultado = array();
-    
+    $limite = isSet($_GET['l']) ? $_GET['l'] : 100;
+
     try {
         //PDO em ação!
         $pdo = new PDO ( "mysql:host=localhost;dbname=checar_empresa", "root", "123");
@@ -14,19 +15,21 @@ if(isSet($_GET['busca'])){
            die('Erro ao criar a conexão');
        }
        else{
+
             // Com o objeto PDO instanciado
             // preparo uma query a ser executada
             if(empty($nome) && empty($cnpj)){
-                $stmt = $pdo->prepare("SELECT * FROM ceis");
+                $stmt = $pdo->prepare("SELECT * FROM ceis LIMIT ".$limite);
             }
             else{
-                $stmt = $pdo->prepare("SELECT * FROM ceis WHERE nome like ? OR cnpj = ?");
-                $stmte->bindParam(1, $nome , PDO::PARAM_STR);
-                $stmte->bindParam(2, $cnpj , PDO::PARAM_STR);
+                $nome = "%".$nome .= "%";
+                $stmt = $pdo->prepare("SELECT * FROM ceis WHERE nome like %:nome% OR cnpj = :cnpj LIMIT ".$limite);
+                $stmt->bindParam(":nome", $nome , PDO::PARAM_STR);
+                $stmt->bindParam(":cnpj", $cnpj , PDO::PARAM_STR);
             }
             // Executa query
             $stmt->execute();
-         
+
             // lembra do mysql_fetch_array?
             //PDO:: FETCH_OBJ: retorna um objeto anônimo com nomes de propriedades que
             //correspondem aos nomes das colunas retornadas no seu conjunto de resultados
@@ -49,13 +52,12 @@ if(isSet($_GET['busca'])){
 <!DOCTYPE HTML>
 <html lang="en-us">
 <head>
-    <title>4everyone</title>
+    <title>ChecarEmpresa</title>
   	<meta charset="utf-8">
     <meta name="description" content="4everyone">
     <meta name="keywords" content="4everyone">
     <meta name="author" content="4everyone">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>	
-   
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.css">
     <link rel="stylesheet" href="css/style.css">
@@ -64,6 +66,7 @@ if(isSet($_GET['busca'])){
 	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 	<script type="text/javascript" src="js/jquery-latest.js"></script>
+    <script type="text/javascript" src="js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="js/bootstrap.js"></script>
     <script type="text/javascript" src="js/jquery.session.js"></script>
     <script type="text/javascript" src="js/parallax.js"></script>
@@ -90,22 +93,21 @@ if(isSet($_GET['busca'])){
 </head>
 	<body>
 		<div class="header_top_wrap">
-        	<h1>4everyone</h1>
-            <div class="container"><div class="slogan">It's suitable for corporate, creative, personal,<br>noncommercial needs!</div></div>
+        	<h1>ChecarEmpresa</h1>
+            <!-- <div class="container"><div class="slogan">Serve, ainda, como ferramenta de transparência para a sociedade em geral.<br>noncommercial needs!</div></div> -->
 		</div>
 
 		<header class="home_page">
 			<div class="container">
             	<div class="row">
                     <div class="span12">
-                        <a class="logo" href="index.htm">4everyone</a>
+                        <a class="logo" href="index.php">ChecarEmpresa</a>
                         <button class="nav-button">menu</button>
                         <ul class="menu">
-                            <li><a class="home" href="#home">Home</a></li>
-                            <li><a class="about" href="#about">Busca</a></li>
-                            <li><a class="work" href="#work">Work</a></li>
-                            <li><a href="blog.htm">Blog</a></li>
-                            <li><a class="contact" href="#contact">Contact</a></li>
+                            <li><a class="home" href="#home">Inicio</a></li>
+                            <li><a class="about" href="#about">Sobre</a></li>
+                            <li><a class="work" href="#work">Work</a></li>               
+                            <li><a class="contact" href="#contact">Contato</a></li>
                         </ul>
                     </div>
                 </div>
@@ -130,10 +132,48 @@ if(isSet($_GET['busca'])){
                                 <input type="submit" value="Filtrar" class="btn btn_1">
                             </div>
                         </article>
-                        <article id="resultado" class="span12">
-                            <?php if(isSet($_GET['busca'])){
-                                //var_dump($resultado);
-                            } ?>
+                        <article id="resultado">
+                            <?php if(isSet($_GET['busca'])){ ?>
+                                <div class="table-responsive span12">
+                                  <table id="table_resultado" class="table table-striped">
+                                    <thead>
+                                    <tr role="row">
+                                        <th>#</th>
+                                        <th>Nome</th>
+                                        <th>CNPJ/CPF</th>
+                                        <th>Tipo de Sanção</th>
+                                        <th>Data de inicio da Sanção</th>
+                                        <th>Data de fim da Sanção</th>
+                                        <th>Orgão Sancionador</th>
+                                        <th>Origem da Informação</th>
+                                        <th>Data da Informação</th>
+                                    <tr>
+                                    </thread>
+                                    <tbody>
+                                        <?php if(empty($resultado)){
+                                            echo "<tr><td colspan='100'>Sem resultado.</td></tr>";
+                                        }else{
+                                            foreach ($resultado as $key => $obj){
+                                               echo "<tr>";
+                                               echo "<td>".($key+1)."</td>";
+                                               echo "<td>".$obj->nome."</td>";
+                                               echo "<td>".$obj->cnpj_cpf."</td>";
+                                               echo "<td>".utf8_encode($obj->tipo_sancao)."</td>";
+                                               echo "<td>".utf8_encode($obj->data_inicio)."</td>";
+                                               echo "<td>".utf8_encode($obj->data_fim)."</td>";
+                                               echo "<td>".utf8_encode($obj->orgao)."</td>";
+                                               echo "<td>".utf8_encode($obj->origem_informacao)."</td>";
+                                               echo "<td>".utf8_encode($obj->data_informacao)."</td>";
+                                               echo "</tr>";
+                                            }
+                                        }?>
+                                    </tbody>
+                                  </table>
+                                  <?php
+                                  echo "<a href='index.php?busca[nome]=".$busca['nome']."&busca[cnpj]=".$busca['cnpj']."&l=".($limite+100)."' class='btn btn_1 right'>MAIS</a>
+                                    </div>";
+                                    ?>
+                            <?php } ?>
                         </article>
                         </form>
                     </div>
@@ -532,7 +572,7 @@ if(isSet($_GET['busca'])){
                 <div class="container">
                     <div class="row">
                         <div class="span12 text-center">
-                            &copy; 2013 Yashma Themes &nbsp; | &nbsp; all Rights Reserved
+                            &copy; 2013
                         </div>
                     </div>
                 </div>
@@ -542,7 +582,7 @@ if(isSet($_GET['busca'])){
 	$(window).load(function(){
 		$('#message_form').forms({
 			ownerEmail:'test@test.test'
-		})
+		});
 	})
 </script>
 </body>

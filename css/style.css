@@ -260,6 +260,7 @@ a:hover {
 a.logo {
 	text-indent: -9999px;
 	float: left;
+	size:50px;
 	width: 195px;
 	height: 40px;
 	background:url(../images/logo.png) left top no-repeat;
@@ -1090,11 +1091,76 @@ h3 {
 	-webkit-border-radius: 6px;
 
 	border: 1px solid #999;
-	padding: 10px;
 	background: #fff;	
 }
 
 #busca input,
 #busca .btn{
 	padding: 8px;
+	font-size: 14pt;
+	height: 30px;
+}
+
+#busca, #resultado{
+	padding: 10px;
+}
+
+#resultado .table{
+	font-size: 12pt;
+}
+
+.right{
+	float: right;
+}
+
+/** DATATABLE **/
+#table_resultado,
+.dataTables_wrapper{
+	background: #fff;
+	margin-top: 0;
+	padding-top: 10px;
+}
+
+#table_resultado_filter{
+	display: none;
+}
+
+#table_resultado tr th,
+.dataTables_wrapper tr th{
+	border-bottom: 2px solid #000;
+	background: #ccc;
+	color: #333;
+}
+
+div.dataTables_length label {
+	width: 460px;
+	float: left;
+	text-align: left;
+}
+
+div.dataTables_length select {
+	width: 75px;
+}
+
+div.dataTables_filter label {
+	float: right;
+	width: 460px;
+}
+
+div.dataTables_info {
+	padding-top: 8px;
+}
+
+div.dataTables_paginate {
+	float: right;
+	margin: 0;
+}
+
+table {
+	margin: 1em 0;
+	clear: both;
+}
+
+table.dataTable th:active {
+	outline: none;
 }
