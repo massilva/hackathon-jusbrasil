@@ -66,6 +66,8 @@ $orgao= getOrgao($pdo);
 
 
 
+
+
 if(isSet($_GET['busca'])){
 
     $busca = $_GET['busca'];
@@ -77,7 +79,7 @@ if(isSet($_GET['busca'])){
     try {
         //PDO em ação!
 
-        $pdo = new PDO ( "mysql:host=us-cdbr-east-04.cleardb.com;dbname=heroku_3acb595e064fe48", "bd5233fd978702", "57345e20");
+        $pdo = new PDO("mysql:host=localhost;dbname=checar_empresa", "root", "");
 
         if(!$pdo){
            die('Erro ao criar a conexão');
@@ -125,6 +127,7 @@ if(isSet($_GET['busca'])){
     <meta name="keywords" content="4everyone">
     <meta name="author" content="4everyone">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>	
+    <link rel="stylesheet" href="css/select2.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.css">
     <link rel="stylesheet" href="css/style.css">
@@ -134,6 +137,7 @@ if(isSet($_GET['busca'])){
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 	<script type="text/javascript" src="js/jquery-latest.js"></script>
     <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="js/select2.js"></script>
     <script type="text/javascript" src="js/bootstrap.js"></script>
     <script type="text/javascript" src="js/jquery.session.js"></script>
     <script type="text/javascript" src="js/parallax.js"></script>
@@ -142,10 +146,15 @@ if(isSet($_GET['busca'])){
     <script type="text/javascript" src="js/script.js"></script>
 	<script type="text/javascript">
 
+   
+    
+   
 
     overflow = true;
 
     $(document).ready(function() {
+
+        $("#e1").select2();
 
          $('#lbl_busca').click(function() { 
           if(overflow){
@@ -234,122 +243,111 @@ if(isSet($_GET['busca'])){
                                         </div>
                                          <div id="collapseOne" class="accordion-body collapse" style="overflow:auto">
                                             <div class="accordion-inner">
-                                                <label>Tipo:</label>
-                                                <label class="checkbox"><input type="checkbox" name="ck_juridica" id="ck_juridica" value="ck_juridica"  checked >Jurídica </label>
-                                                <label class="checkbox"><input type="checkbox" name="inputWalls" id="inputWalls" value="fisica" checked  style="padding-left:30px;">Física</label>
+                                                <div class="clear-margim span3">
 
+                                                    <label>Tipo:</label>
+                                                    <label class="checkbox"><input type="checkbox" name="ck_juridica" id="ck_juridica" value="ck_juridica"  checked >Jurídica </label>
+                                                    <label class="checkbox"><input type="checkbox" name="inputWalls" id="inputWalls" value="fisica" checked  style="padding-left:30px;">Física</label>
 
-                                                <div class="btn-group" style="padding-left:30px;">
+                                                </div>
+                                                <div class="btn-group span3" >
                                                     <ul class="avancada">
                                                         <li>
                                                             <div class="btn-group ">
-                                                                  <button type="button" class="btn btn-default" style="width:90px;">UF</button>
-                                                                  <button id="dd_uf" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                                                    <span class="caret"></span>
-                                                                    <span class="sr-only"></span>
-                                                                  </button>
-                                                                  <ul class="dropdown-menu">
-
-                                                                     <li></li>
-                                                                     <li>AC</li>
-                                                                     <li>AL</li>
-                                                                     <li>AM</li>
-                                                                     <li>AP</li>
-                                                                     <li>BA</li>
-                                                                     <li>CE</li>
-                                                                     <li>DF</li>
-                                                                     <li>ES</li>
-                                                                     <li>GO</li>
-                                                                     <li>MA</li>
-                                                                     <li>MG</li>
-                                                                     <li>MS</li>
-                                                                     <li>MT</li>
-                                                                     <li>PA</li>
-                                                                     <li>PB</li>
-                                                                     <li>PE</li>
-                                                                     <li>PI</li>
-                                                                     <li>PR</li>
-                                                                     <li>RJ</li>
-                                                                     <li>RN</li>
-                                                                     <li>RO</li>
-                                                                     <li>RR</li>
-                                                                     <li>RS</li>
-                                                                     <li>SC</li>
-                                                                     <li>SE</li>
-                                                                     <li>SP</li>
-                                                                     <li>TO</li>
-
-                                                                  </ul>
+                                                                  <select class="dropdown" name="Combo_Estados">
+                                                                        <option value="UF">UF</option>
+                                                                        <option value="AC">AC</option>
+                                                                        <option value="AL">AL</option>
+                                                                        <option value="AM">AM</option>
+                                                                        <option value="AP">AP</option>
+                                                                        <option value="BA">BA</option>
+                                                                        <option value="CE">CE</option>
+                                                                        <option value="DF">DF</option>
+                                                                        <option value="ES">ES</option>
+                                                                        <option value="GO">GO</option>
+                                                                        <option value="MA">MA</option>
+                                                                        <option value="MG">MG</option>
+                                                                        <option value="MS">MS</option>
+                                                                        <option value="MT">MT</option>
+                                                                        <option value="PA">PA</option>
+                                                                        <option value="PB">PB</option>
+                                                                        <option value="PE">PE</option>
+                                                                        <option value="PI">PI</option>
+                                                                        <option value="PR">PR</option>
+                                                                        <option value="RJ">RJ</option>
+                                                                        <option value="RN">RN</option>
+                                                                        <option value="RO">RO</option>
+                                                                        <option value="RR">RR</option>
+                                                                        <option value="RS">RS</option>
+                                                                        <option value="SC">SC</option>
+                                                                        <option value="SE">SE</option>
+                                                                        <option value="SP">SP</option>
+                                                                        <option value="TO">TO</option>
+                                                                        </select>
                                                                 </div>
                                                         </li>
                                                         <li>
-                                                            <div class="btn-group ">
-                                                                  <button type="button" class="btn btn-default" style="width:130px;">Orgão</button>
-                                                                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                                                    <span class="caret"></span>
-                                                                    <span class="sr-only"></span>
-                                                                  </button>
-                                                                  <ul class="dropdown-menu">
-                                                                    <li></li>
-                                                                   
+                                                            <div class="btn-group">
+                                                                 <select class="dropdown" name="Combo_Orgao">
+                                                                    <option value="ORGAO">ORGAO</option>
                                                                     <?php
+                                                                    
 
                                                                     foreach ($orgao as $key => $obj){                                                                   
                                                                        
-                                                                       echo "<li>".utf8_encode($obj->orgao)."</li>";
-                                                                                                                                              
-                                                                    }
-
-                                                                    ?>
-                                                                  </ul>
-                                                                </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="btn-group ">
-                                                                  <button type="button" class="btn btn-default" style="width:130px;">Motivo</button>
-                                                                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                                                    <span class="caret"></span>
-                                                                    <span class="sr-only"></span>
-                                                                  </button>
-                                                                  <ul class="dropdown-menu">
-                                                                     <li></li>
-                                                                   
-                                                                    <?php
-
-                                                                    foreach ($tipo_sancao as $key => $obj){                                                                   
-                                                                       
-                                                                       echo "<li>".utf8_encode($obj->tipo_sancao)."</li>";
-                                                                                                                                              
+                                                                       echo "<option value='" .utf8_encode($obj->orgao) . "'>" . utf8_encode($obj->orgao) . "</option>";
+                                                                                                                                                                                                                     
                                                                     }
 
                                                                     ?>
                                                                     
-                                                                  </ul>
-                                                                </div>
+                                                                  </select>
+                                                                 
+                                                            </div>
                                                         </li>
+                                                        <li>
+                                                            <div class="btn-group ">
+                                                                 
+                                                                 <select class="dropdown" name="Combo_Motivos">
+                                                                    <option value="MOTIVO">MOTIVO</option>
+                                                                    <?php
+                                                                    var_dump($tipo_sancao);
+
+                                                                    foreach ($tipo_sancao as $key => $obj){                                                                   
+                                                                       
+                                                                       echo "<option value='" .utf8_encode($obj->tipo_sancao) . "'>" . utf8_encode($obj->tipo_sancao) . "</option>";
+                                                                                                                                                                                                                     
+                                                                    }
+
+                                                                    ?>
+                                                                    
+                                                                </select>
+                                                            </div>
+                                                        </li>
+                                                        
+                                                       
+                                                                                        
+
+                                                         
 
                                               </ul>
                                                 </div>
                                             
                                             </div>
 
-                                             <div class="accordion-inner" style="border-top:0" >
-                                                
-                                                              <div class="clear-margim span3">
-                                                                    <label for="data_inicio" class="">Data Ínicio</label>
-                                                                    <input id="data_inicio" name="data_inicio" class="form-control" type="text" style="width:150px;">
-                                                              </div>
-                                                       
-                                                              <div class="clear-margim span3">
-                                                                    <label for="data_fim" class="">Data Fim</label>
-                                                                    <input id="data_fim" name="data_fim" class="form-control" type="text" style="width:150px;">
-                                                              </div>
-                                                              <div class="clear-margim span4">
-                                                                    <label for="num_processo" class="">N° Processo</label>
-                                                                    <input id="num_processo" name="num_processo" class="form-control" type="text" style="width:230px;">
-                                                              </div>                                                        
+                                            <div class="accordion-inner" style="border-top:0">
+                                                <div class="clear-margim" style="padding-top:30px" >
+                                                    <label for="data_inicio" class="">Data Ínicio</label>
+                                                    <input id="data_inicio" name="data_inicio" class="" type="text" style="width:150px;">
+                                                    <label for="data_fim" style="padding-left:30px;" class="">Data Fim</label>
+                                                    <input id="data_fim" name="data_fim" class="form-control" type="text" style="width:150px;">
+                                                    <label for="num_processo" style="padding-left:30px;" class="">N° Processo</label>
+                                                    <input id="num_processo" name="num_processo" class="form-control" type="text" style="width:230px;">
 
-                                                </div>                                        
+
+                                                </div>
+                                            </div>
+
 
                                             
                                                                                             
