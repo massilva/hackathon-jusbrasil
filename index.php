@@ -6,6 +6,31 @@ if(!$pdo){
    die('Erro ao criar a conexão');
 }
 
+function getInidonioByEstado($pdo){
+    $top = array();
+    try{
+       if($pdo){
+            // Com o objeto PDO instanciado
+            // preparo uma query a ser executada
+            $stmt = $pdo->prepare("SELECT COUNT(*) as qtd, uf_pessoa FROM `ceis` WHERE uf_pessoa <> '--' GROUP BY uf_pessoa ORDER BY qtd DESC");
+            
+            // Executa query
+            $stmt->execute();
+
+            // lembra do mysql_fetch_array?
+            //PDO:: FETCH_OBJ: retorna um objeto anônimo com nomes de propriedades que
+            //correspondem aos nomes das colunas retornadas no seu conjunto de resultados
+            //Ou seja o objeto "anônimo" possui os atributos resultantes de sua query
+            while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
+                $top[] = $obj;
+            }
+       }        
+    } catch(PDOException $e){
+        echo $e->getMessage();
+    }   
+    return $top;
+}
+
 function getTopInidonio($pdo){
     $ranking = array();
     try {
@@ -31,11 +56,6 @@ function getTopInidonio($pdo){
     }    
     return $ranking;
 }
-
-$ranking = getTopInidonio($pdo);
-
-$tipo_sancao = array();
-$orgao = array();
 
 function getTipoSancao($pdo){        
     if(!$pdo){
@@ -67,6 +87,11 @@ function getOrgao($pdo){
     return $orgao;
 }
 
+$tipo_sancao = array();
+$orgao = array();
+
+$ranking = getTopInidonio($pdo);
+$byEstado = getInidonioByEstado($pdo);
 $tipo_sancao= getTipoSancao($pdo);
 $orgao= getOrgao($pdo);
 
@@ -369,29 +394,25 @@ if(isSet($_GET['busca'])){
                     </div>
                 </div>
             </div>
+            <?php
+            $estado = array();
+            foreach ($byEstado as $key => $obj){
+                $estado[$key]["x"] = $obj->uf_pessoa;
+                $estado[$key]["y"] = $obj->qtd;
+            }
+            ?>
             <div class="row_1">
                 <div class="container" id="graphs">
                     <h3 class="border">Dados</h3>
                     <div class="row">
-                        <article class="span8">                            
-                      
-                        <div id="graph"></div>
-                          </article>
+                        <article class="span8">
+                            <div id="graph"></div>
+                        </article>
                         <script type="text/javascript">
                         // Use Morris.Bar
                         Morris.Bar({
                           element: 'graph',
-                          data: [
-                            {x: '2011 Q1', y: 25},
-                            {x: '2011 Q2', y: 1},
-                            {x: '2011 Q3', y: 2},
-                            {x: '2011 Q4', y: 3},
-                            {x: '2012 Q1', y: 4},
-                            {x: '2012 Q2', y: 5},
-                            {x: '2012 Q3', y: 6},
-                            {x: '2012 Q4', y: 7},
-                            {x: '2013 Q1', y: 8}
-                          ],
+                          data: <?=json_encode($estado)?>,
                           xkey: 'x',
                           ykeys: ['y'],
                           labels: ['Y'],
