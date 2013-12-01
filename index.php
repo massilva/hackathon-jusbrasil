@@ -6,6 +6,61 @@ if(!$pdo){
    die('Erro ao criar a conexão');
 }
 
+function getTresMaiores($pdo){
+    $pessoa = array();
+    try{
+       if($pdo){
+            // Com o objeto PDO instanciado
+            // preparo uma query a ser executada
+            $stmt = $pdo->prepare("SELECT nome, COUNT(*) as qtd, uf_pessoa, cnpj_cpf FROM `ceis` GROUP BY cnpj_cpf ORDER BY qtd desc LIMIT 3");
+
+            // Executa query
+            $stmt->execute();
+
+            // lembra do mysql_fetch_array?
+            //PDO:: FETCH_OBJ: retorna um objeto anônimo com nomes de propriedades que
+            //correspondem aos nomes das colunas retornadas no seu conjunto de resultados
+            //Ou seja o objeto "anônimo" possui os atributos resultantes de sua query
+            while($obj = $stmt->fetch(PDO::FETCH_OBJ)){
+                $pessoa[] = $obj;
+            }
+       }        
+    } catch(PDOException $e){
+        echo $e->getMessage();
+    }   
+    return $pessoa;
+}
+
+function getDetalheMotivo($pdo){
+    $pessoas = getTresMaiores($pdo);
+    $motivos = array();
+    try{
+       if($pdo){
+            foreach ($pessoas as $key => $obj){
+                // Com o objeto PDO instanciado
+                // preparo uma query a ser executada
+                $stmt = $pdo->prepare("SELECT COUNT(tipo_sancao) as qtd, tipo_sancao, nome, uf_pessoa, cnpj_cpf FROM ceis WHERE cnpj_cpf = :cnpj GROUP BY tipo_sancao ORDER BY qtd DESC");
+                $stmt->bindParam(":cnpj", $obj->cnpj_cpf, PDO::PARAM_STR);
+
+                // Executa query
+                $stmt->execute();
+
+                // lembra do mysql_fetch_array?
+                //PDO:: FETCH_OBJ: retorna um objeto anônimo com nomes de propriedades que
+                //correspondem aos nomes das colunas retornadas no seu conjunto de resultados
+                //Ou seja o objeto "anônimo" possui os atributos resultantes de sua query
+                while($objt = $stmt->fetch(PDO::FETCH_OBJ )){
+                    $motivos[] = $objt;
+                }
+                
+            }
+       }        
+    } catch(PDOException $e){
+        echo $e->getMessage();
+    }   
+    return $motivos;
+}
+
 function getMotivo($pdo){
     $sancao = array();
     try{
@@ -120,6 +175,7 @@ $byEstado = getInidonioByEstado($pdo);
 $tipo_sancao= getTipoSancao($pdo);
 $orgao= getOrgao($pdo);
 $tipoSancao = getMotivo($pdo);
+$motivos = getDetalheMotivo($pdo);
 
 if(isSet($_GET['busca'])){
     $busca = $_GET['busca'];
@@ -451,19 +507,21 @@ if(isSet($_GET['busca'])){
                     <h3 class="border">Top Inidônios</h3>
                     <div class="row">
                         <?php
-                        foreach ($ranking as $key => $obj){
+                        foreach ($motivos as $key => $obj){
                         ?>
                         <section class="span3 gallery_item gallery_item_<?=($key+1)?>">
                             <figure class="">                           
                                 <img src="images/gallery_item_bg<?=($key%2 + 1)?>.png" alt="">
                                 <figcaption>                   
-                                    <p><strong><?=($key+1)?> - </strong><?=$obj->nome?></p>
+                                    <p><strong><?=($key+1)?>&deg - </strong><?=$obj->nome?></p>
+                                    <p>
+                                    <h5><?=$obj->qtd?> - <?=utf8_encode($obj->tipo_sancao)?></h5>
                                     <h2><?=$obj->uf_pessoa?></h2>
-                                    <h2><?=$obj->qtd?></h2>
+                                    </p>
                                 </figcaption>
                             </figure>
                         </section>  
-                        <?php  
+                        <?php
                         }
                         ?>
                     </div>
