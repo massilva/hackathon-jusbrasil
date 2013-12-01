@@ -17,6 +17,7 @@ $(document).ready(function() {
 		});
     	return false;
 	});
+
     $('a.search').click(function(){
     	$('html, body').animate({
     		scrollTop:$('#search').offset().top
@@ -25,6 +26,7 @@ $(document).ready(function() {
 		});
     	return false;
     });
+
     $('a.graphs').click(function(){
     	$('html, body').animate({
     		scrollTop:$('#graphs').offset().top
@@ -33,6 +35,7 @@ $(document).ready(function() {
 		});
     	return false;
     });
+
     $('a.ranking').click(function(){
     	$('html, body').animate({
     		scrollTop:$('#ranking').offset().top
@@ -41,6 +44,7 @@ $(document).ready(function() {
 		});
     	return false;
     });
+
 	$('a.about').click(function(){
     	$('html, body').animate({
     		scrollTop:$('#about').offset().top
@@ -49,7 +53,6 @@ $(document).ready(function() {
 		});
     	return false;
     });
-    
     
 });
 

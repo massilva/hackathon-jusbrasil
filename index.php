@@ -6,7 +6,7 @@ if(!$pdo){
    die('Erro ao criar a conexão');
 }
 
-function getMotivo($pdo){
+function POSTMotivo($pdo){
     $sancao = array();
     try{
        if($pdo){
@@ -26,12 +26,12 @@ function getMotivo($pdo){
             }
        }        
     } catch(PDOException $e){
-        echo $e->getMessage();
+        echo $e->POSTMessage();
     }   
     return $sancao;
 }
 
-function getInidonioByEstado($pdo){
+function POSTInidonioByEstado($pdo){
     $top = array();
     try{
        if($pdo){
@@ -51,12 +51,12 @@ function getInidonioByEstado($pdo){
             }
        }        
     } catch(PDOException $e){
-        echo $e->getMessage();
+        echo $e->POSTMessage();
     }   
     return $top;
 }
 
-function getTopInidonio($pdo){
+function POSTTopInidonio($pdo){
     $ranking = array();
     try {
        if($pdo){
@@ -77,12 +77,12 @@ function getTopInidonio($pdo){
        }       
     // tratamento da exeção
     } catch ( PDOException $e ) {
-        echo $e->getMessage();
+        echo $e->POSTMessage();
     }    
     return $ranking;
 }
 
-function getTipoSancao($pdo){        
+function POSTTipoSancao($pdo){        
     if(!$pdo){
         die('Erro ao criar a conexão!');
     }
@@ -97,7 +97,7 @@ function getTipoSancao($pdo){
     return $tipo_sancao;
 }
 
-function getOrgao($pdo){
+function POSTOrgao($pdo){
     if(!$pdo){
        die('Erro ao criar a conexão!');
     }
@@ -115,29 +115,29 @@ function getOrgao($pdo){
 $tipo_sancao = array();
 $orgao = array();
 
-$ranking = getTopInidonio($pdo);
-$byEstado = getInidonioByEstado($pdo);
-$tipo_sancao= getTipoSancao($pdo);
-$orgao= getOrgao($pdo);
-$tipoSancao = getMotivo($pdo);
+$ranking = POSTTopInidonio($pdo);
+$byEstado = POSTInidonioByEstado($pdo);
+$tipo_sancao= POSTTipoSancao($pdo);
+$orgao= POSTOrgao($pdo);
+$tipoSancao = POSTMotivo($pdo);
 
-
-if(isSet($_GET['busca'])){
-    $busca = $_GET['busca'];
+if(isSet($_POST['busca'])){
+    
+    $busca = $_POST['busca'];
     $nome = $busca['nome'];
     $cnpj = $busca['cnpj'];
     $uf = $busca['uf'];
     $orgao_busca = $busca['orgao'];
-    $motivo = $busca['motivo'];
     $processo = $busca['processo'];
+    
     $resultado = array();
-    $limite = isSet($_GET['l']) ? $_GET['l'] : 100;
+    $limite = isSet($_POST['l']) ? $_POST['l'] : 100;
     
     try {
 
         // Com o objeto PDO instanciado
         // preparo uma query a ser executada
-        if(empty($nome) && empty($cnpj) && $uf == "UF" && $orgao_busca == "ORGAO" && $motivo == "MOTIVO" && empty($processo)){
+        if(empty($nome) && empty($cnpj) && $uf == "UF" && $orgao_busca == "ORGAO" && empty($processo)){
             $stmt = $pdo->prepare("SELECT * FROM ceis LIMIT ".$limite);
         }
         else{
@@ -146,22 +146,17 @@ if(isSet($_GET['busca'])){
                 $uf = "";
             if($orgao_busca == "ORGAO")
                 $orgao_busca = "";
-            if($motivo == "MOTIVO")
-                $motivo = "";
             
             $uf = "%".$uf."%";
-            $motivo = "%".$motivo."%";
             $orgao_busca = "%".$orgao_busca."%";
             $nome = "%".$nome."%";           
-            $stmt = $pdo->prepare("SELECT * FROM ceis WHERE (nome like :nome OR cnpj_cpf = :cnpj) AND uf_pessoa like :uf_pessoa  AND orgao like :orgao_busca AND tipo_sancao like :tipo_sancao AND num_processo = :num_processo  LIMIT ".$limite);
+            $stmt = $pdo->prepare("SELECT * FROM ceis WHERE (nome like :nome OR cnpj_cpf = :cnpj) AND uf_pessoa like :uf_pessoa  AND orgao like :orgao_busca AND num_processo = :num_processo  LIMIT ".$limite);
             $stmt->bindParam(":nome", utf8_decode($nome) , PDO::PARAM_STR);
             $stmt->bindParam(":cnpj", $cnpj , PDO::PARAM_STR);
             $stmt->bindParam(":uf_pessoa", $uf , PDO::PARAM_STR);
             $stmt->bindParam(":orgao_busca", utf8_decode($orgao_busca) , PDO::PARAM_STR);
-            $stmt->bindParam(":tipo_sancao", utf8_decode($motivo) , PDO::PARAM_STR);
             $stmt->bindParam(":num_processo", $processo , PDO::PARAM_STR);
 
-           
         }
         // Executa query
         $stmt->execute();
@@ -173,9 +168,10 @@ if(isSet($_GET['busca'])){
         while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
             $resultado[] = $obj;
         } 
+        $pdo = null;
     // tratamento da exeção
     } catch ( PDOException $e ) {
-        echo $e->getMessage();
+        echo $e->POSTMessage();
     }
     
 }
@@ -185,11 +181,11 @@ if(isSet($_GET['busca'])){
 <html lang="en-us">
 <head>
     <title>ChecarEmpresa</title>
-  	<meta charset="utf-8">
+    <meta charset="utf-8">
     <meta name="description" content="4everyone">
     <meta name="keywords" content="4everyone">
     <meta name="author" content="4everyone">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>	
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
     <link rel="stylesheet" href="css/select2.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.css">
@@ -224,30 +220,30 @@ if(isSet($_GET['busca'])){
           }
          });   
     });
-	$(window).scroll(function () {
-		if (jQuery(this).scrollTop() > 550) {
-			jQuery('header').addClass('scrolled');
-		} else {
-			jQuery('header').removeClass('scrolled');
-		}
-		$('.flexslider').flexslider({
-			animation: "fade",
-			animationSpeed: 500,
-			smoothHeight: true,
-			animationLoop: true,
-			touch: true,
-			directionNav: false
-		});
-	});
+    $(window).scroll(function () {
+        if (jQuery(this).scrollTop() > 550) {
+            jQuery('header').addClass('scrolled');
+        } else {
+            jQuery('header').removeClass('scrolled');
+        }
+        $('.flexslider').flexslider({
+            animation: "fade",
+            animationSpeed: 500,
+            smoothHeight: true,
+            animationLoop: true,
+            touch: true,
+            directionNav: false
+        });
+    });
     </script>
 </head>
-	<body>
-		<div class="header_top_wrap">
-        	<h1>ChecarEmpresa</h1>
-		</div>
-		<header class="home_page">
-			<div class="container">
-            	<div class="row">
+    <body>
+        <div class="header_top_wrap">
+            <h1>ChecarEmpresa</h1>
+        </div>
+        <header class="home_page">
+            <div class="container">
+                <div class="row">
                     <div class="span12">
                         <a class="logo" href="index.php">ChecarEmpresa</a>
                         <ul class="menu">
@@ -259,14 +255,14 @@ if(isSet($_GET['busca'])){
                         </ul>
                     </div>
                 </div>
-			</div><!--/container-->
-		</header>		
-		<div class="container-fill">
-			<div class="row_1" id="search">
+            </div><!--/container-->
+        </header>       
+        <div class="container-fill">
+            <div class="row_1" id="search">
                 <div class="container">
-                    <h3 ></h3>
+                    <h3 class="border">Busca</h3>
                     <div class="row">
-                        <form class="form-inline" action="index.php" method="get" >
+                        <form class="form-inline" action="index.php" method="POST" >
                         <article id="busca" class="span12">
                             <div class="form-group span6">
                                 <label for="nome" class="span3">Nome, Razão social ou Nome fantasia</label>
@@ -288,7 +284,7 @@ if(isSet($_GET['busca'])){
                                                 Busca Avançada
                                             </a>
                                         </div>
-                                         <div id="collapseOne" class="accordion-body collapse" style="">
+                                         <div id="collapseOne" class="accordion-body collapse" style="overflow:auto">
                                             <div class="accordion-inner">
                                                 <div class="clear-margim span3">
                                                    <label for="num_processo" style="padding-left:30px;" class="">N° Processo</label>
@@ -338,22 +334,11 @@ if(isSet($_GET['busca'])){
                                                                     foreach ($orgao as $key => $obj){
                                                                        echo "<option value='" .utf8_encode($obj->orgao) . "'>" . utf8_encode($obj->orgao) . "</option>";
                                                                     }
+
                                                                     ?>
                                                                   </select>
                                                             </div>
                                                         </li>
-                                                        <li>
-                                                            <div class="btn-group ">
-                                                                 <select style="width:180px;" id="motivo" class="dropdown" name="busca[motivo]">
-                                                                    <option value="MOTIVO">MOTIVO</option>
-                                                                    <?php
-                                                                    foreach ($tipo_sancao as $key => $obj){
-                                                                       echo "<option value='" .utf8_encode($obj->tipo_sancao) . "'>" . utf8_encode($obj->tipo_sancao) . "</option>";
-                                                                    }
-                                                                    ?>
-                                                                </select>
-                                                            </div>
-                                                        </li>          
                                                   </ul>
                                              </div>
                                        </div>     
@@ -362,7 +347,7 @@ if(isSet($_GET['busca'])){
                            </div>
                         </article>
                         <article id="resultado">
-                            <?php if(isSet($_GET['busca'])){ ?>
+                            <?php if(isSet($_POST['busca'])){ ?>
                                 <div class="table-responsive span12">
                                   <table id="table_resultado" class="table table-striped">
                                     <thead>
@@ -401,9 +386,9 @@ if(isSet($_GET['busca'])){
                                   <?php
                                   echo "<a href='index.php?busca[nome]=".$busca['nome']."&busca[cnpj]=".$busca['cnpj']."&busca[processo]=".$busca['processo']."&busca[uf]=".$busca['uf']."&busca[orgao]=".$busca['orgao']."&busca[motivo]=".$busca['motivo']."&l=".($limite+100)."' class='btn btn_1 right'>MAIS</a>
                                     </div>";
-                                } 
-                            ?>
-                        </article>
+                                    ?>
+                            <?php } ?>
+                     </article>;
                       </form>
                     </div>
                 </div>
@@ -487,13 +472,13 @@ if(isSet($_GET['busca'])){
                 </div>
             </div>
             <div id="about">
-            	<div class="map_wrapper">
+                <div class="map_wrapper">
                     <div class="container">
                         <h3 class="border">Send Us a Message</h3>
                         <div class="row">
                             <section class="span3">
-                            	<div class="indent1">
-                                	<h6>postal address</h6>
+                                <div class="indent1">
+                                    <h6>postal address</h6>
                                     <h5><span>Ground Floor 49 Cheltenham Place Brighton</span></h5>
                                     <h5 class="color_1">Monday - Thursday 5:30AM - 10PM</h5>
                                     <h5 class="color_1">T - 123.456.7890<br>F - 123.789.3456</h5>
@@ -501,8 +486,8 @@ if(isSet($_GET['busca'])){
                                 </div>
                             </section>
                             <section class="span9">
-                            	<div class="indent2">
-                                	<h6>Do you have a cool idea? Drop us a line or two.</h6>
+                                <div class="indent2">
+                                    <h6>Do you have a cool idea? Drop us a line or two.</h6>
                                     <form id="message_form">
                                         <div class="success"></div>
                                         <fieldset>
@@ -542,13 +527,13 @@ if(isSet($_GET['busca'])){
                     </div>
                 </div>
             </footer>
-		</div><!--/container-fill-->
+        </div><!--/container-fill-->
         <script type="text/javascript">
-        	$(window).load(function(){
-        		$('#message_form').forms({
-        			ownerEmail:'test@test.test'
-        		});
-        	})
+            $(window).load(function(){
+                $('#message_form').forms({
+                    ownerEmail:'test@test.test'
+                });
+            })
         </script>
 </body>
 </html>
