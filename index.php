@@ -105,16 +105,17 @@ if(isSet($_GET['busca'])){
                         <button class="nav-button">menu</button>
                         <ul class="menu">
                             <li><a class="home" href="#home">Inicio</a></li>
+                            <li><a class="search" href="#search">Buscar</a></li>
+                            <li><a class="graphs" href="#graphs">Gráficos</a></li>                            
                             <li><a class="about" href="#about">Sobre</a></li>
-                            <li><a class="work" href="#work">Work</a></li>               
-                            <li><a class="contact" href="#contact">Contato</a></li>
+                          
                         </ul>
                     </div>
                 </div>
 			</div><!--/container-->
 		</header>		
 		<div class="container-fill">
-			<div class="row_1" id="about">
+			<div class="row_1" id="search">
                 <div class="container">
                     <h3 class="border">Busca</h3>
                     <div class="row">
@@ -312,7 +313,7 @@ if(isSet($_GET['busca'])){
                     </div>
                 </div>
             </div>
-            <div class="row_1" id="work">
+            <div class="row_1" id="graphs">
                 <div class="container">
                     <h3 class="border">Selected Work</h3>
                     <div class="row">
@@ -606,7 +607,50 @@ if(isSet($_GET['busca'])){
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
             <div id="contact">
+            	<div class="map_wrapper" >
+                    <div class="row_1" id="work">
+                        <div class="container" id="work">
+                            <h3 class="border">Top Inidônios</h3>
+                            
+                                <div class="row gallery_wrapper">
+                                    <section class="span3 gallery_item gallery_item_1">
+                                        <figure class="">                                            
+                                            <img src="images/gallery_item_bg 1.png" alt="">
+                                            <figcaption>                                                
+                                                <p><strong>1&ordm; - </strong>Wordpress Theme Front-End Development</p>
+                                                <h2>BA</h2>
+                                                <h2>20<span>%</span></h2>
+                                            </figcaption>
+                                        </figure>
+                                    </section>
+                                    <section class="span3 gallery_item gallery_item_2">
+                                        <figure class="">
+                                            <img src="images/gallery_item_bg 2.png" alt="">
+                                            <figcaption>                                                
+                                                <p><strong>2&ordm; - </strong>Wordpress Theme Front-End Development</p>
+                                                <h2>SP</h2>
+                                                <h2>20<span>%</span></h2>
+                                            </figcaption>
+                                        </figure>
+                                    </section>
+                                    <section class="span3 gallery_item gallery_item_3">
+                                        <figure class="">
+
+                                            <img src="images/gallery_item_bg 1.png" alt="">
+
+                                            <figcaption>
+                                                <p><strong>3&ordm; - </strong>Wordpress Theme Front-End Development</p>
+                                                <h2>RJ</h2>
+                                                <h2>60<span>%</span></h2>
+                                               
+                                            </figcaption>
+                                        </figure>
+                                    </section>
+                                </div>                            
+=======
+            <div id="about">
             	<div class="map_wrapper">
                     <div class="container">
                         <h3 class="border">Send Us a Message</h3>
@@ -649,11 +693,9 @@ if(isSet($_GET['busca'])){
                                     </form>
                                 </div>
                             </section>
+>>>>>>> d973033d95d1a1c78f05fcc1444f944cdd967cae
                         </div>
                     </div>
-                    <figure class="map">
-                        <iframe width="100%" src="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Brooklyn,+New+York,+NY,+United+States&amp;aq=0&amp;sll=37.0625,-95.677068&amp;sspn=61282355,146.513672&amp;ie=UTF8&amp;hq=&amp;hnear=Brooklyn,+Kings,+New+York&amp;ll=40.649974,-73.950005&amp;spn=0.01628,0.025663&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe>
-                    </figure>
                 </div>
             </div>
             <footer>
