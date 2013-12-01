@@ -430,12 +430,11 @@ if(isSet($_GET['busca'])){
                         });
                         </script>                       
                     </div>
-
                     <div class="row">
-                        <article class="span8">                            
-                      
-                        <div id="donutGraph"></div>
-                          </article>
+                        <h2 class="center span12">Inidonios por Motivo</h2>
+                        <article class="span12">
+                            <div id="donutGraph"></div>
+                        </article>
                         <script type="text/javascript">
                         new Morris.Donut({
                           element: 'donutGraph',
@@ -446,7 +445,7 @@ if(isSet($_GET['busca'])){
                             { label: '2011', value: 5 },
                             { label: '2012', value: 20 }
                           ],
-                      }); 
+                          }); 
                         </script>
                     </div>
            
