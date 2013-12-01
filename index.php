@@ -405,7 +405,8 @@ if(isSet($_GET['busca'])){
                 <div class="container" id="graphs">
                     <h3 class="border">Dados</h3>
                     <div class="row">
-                        <article class="span8">
+                        <h2 class="center span12">Inidonios por Estado</h2>
+                        <article class="span12">
                             <div id="graph"></div>
                         </article>
                         <script type="text/javascript">

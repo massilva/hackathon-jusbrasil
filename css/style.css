@@ -1125,6 +1125,9 @@ h3 {
 	float: right;
 }
 
+.center{
+	text-align: center;
+}
 /** DATATABLE **/
 #table_resultado,
 .dataTables_wrapper{
@@ -1180,3 +1183,5 @@ table.dataTable th:active {
 .clear-margim{
 	margin: 0 !important;
 }
+
+/****/
