@@ -1745,14 +1745,15 @@ select:focus:invalid:focus {
 }
 .btn-group ul.dropdown-menu li{
   display: block !important;
-  padding-left: 35px;
-  padding-right: 65px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .btn-group ul.avancada li{
   display: inline;
-  padding-left: 35px;
-  padding-right: 65px;
+  
+  padding-left: 25px;
+  padding-right: 5px;
 }
 
 .form-group2 ul li{
