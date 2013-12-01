@@ -126,20 +126,46 @@ if(isSet($_GET['busca'])){
     $busca = $_GET['busca'];
     $nome = $busca['nome'];
     $cnpj = $busca['cnpj'];
+    $uf = $busca['uf'];
+    $orgao_busca = $busca['orgao'];
+    $motivo = $busca['motivo'];
+    $processo = $busca['processo'];
     $resultado = array();
     $limite = isSet($_GET['l']) ? $_GET['l'] : 100;
+    
     try {
 
         // Com o objeto PDO instanciado
         // preparo uma query a ser executada
-        if(empty($nome) && empty($cnpj)){
+        if(empty($nome) && empty($cnpj) && $uf == "UF" && $orgao_busca == "ORGAO" && $motivo == "MOTIVO" && empty($processo)){
             $stmt = $pdo->prepare("SELECT * FROM ceis LIMIT ".$limite);
         }
         else{
-            $nome = "%".$nome."%";
-            $stmt = $pdo->prepare("SELECT * FROM ceis WHERE nome like :nome OR cnpj_cpf like :cnpj LIMIT ".$limite);
-            $stmt->bindParam(':nome', $nome , PDO::PARAM_STR);
-            $stmt->bindParam(':cnpj', $cnpj , PDO::PARAM_STR);
+
+
+
+            if($uf == "UF")
+                $uf = "";
+            if($orgao_busca == "ORGAO")
+                $orgao_busca = "";
+            if($motivo == "MOTIVO")
+                $motivo = "";
+            
+           $uf = "%".$uf."%";
+           $motivo = "%".$motivo."%";
+           $orgao_busca = "%".$orgao_busca."%";
+           $nome = "%".$nome."%";
+           
+            
+            $stmt = $pdo->prepare("SELECT * FROM ceis WHERE (nome like :nome OR cnpj_cpf = :cnpj) AND uf_pessoa like :uf_pessoa  AND orgao like :orgao_busca AND tipo_sancao like :tipo_sancao AND num_processo = :num_processo  LIMIT ".$limite);
+            $stmt->bindParam(":nome", utf8_decode($nome) , PDO::PARAM_STR);
+            $stmt->bindParam(":cnpj", $cnpj , PDO::PARAM_STR);
+            $stmt->bindParam(":uf_pessoa", $uf , PDO::PARAM_STR);
+            $stmt->bindParam(":orgao_busca", utf8_decode($orgao_busca) , PDO::PARAM_STR);
+            $stmt->bindParam(":tipo_sancao", utf8_decode($motivo) , PDO::PARAM_STR);
+            $stmt->bindParam(":num_processo", $processo , PDO::PARAM_STR);
+
+           
         }
         // Executa query
         $stmt->execute();
@@ -281,16 +307,15 @@ if(isSet($_GET['busca'])){
 
                                                 <div class="clear-margim span3">
 
-                                                    <label>Tipo:</label>
-                                                    <label class="checkbox"><input type="checkbox" name="ck_juridica" id="ck_juridica" value="ck_juridica"  checked >Jurídica </label>
-                                                    <label class="checkbox"><input type="checkbox" name="inputWalls" id="inputWalls" value="fisica" checked  style="padding-left:30px;">Física</label>
+                                                   <label for="num_processo" style="padding-left:30px;" class="">N° Processo</label>
+                                                   <input id="num_processo" name="busca[processo]" class="form-control" type="text" style="width:117px;">
 
                                                 </div>
                                                 <div class="btn-group span3" >
                                                     <ul class="avancada">
                                                         <li>
                                                             <div class="btn-group ">
-                                                                  <select class="dropdown" name="Combo_Estados">
+                                                                  <select id="uf" class="dropdown" name="busca[uf]">
                                                                         <option value="UF">UF</option>
                                                                         <option value="AC">AC</option>
                                                                         <option value="AL">AL</option>
@@ -324,8 +349,8 @@ if(isSet($_GET['busca'])){
                                                         </li>
                                                         <li>
                                                             <div class="btn-group">
-                                                                 <select class="dropdown" name="Combo_Orgao">
-                                                                    <option value="ORGAO">ORGAO</option>
+                                                                 <select id="orgao" class="dropdown" name="busca[orgao]">
+                                                                    <option value="ORGAO">ORGÃO</option>
                                                                     <?php
                                                                     
 
@@ -347,7 +372,7 @@ if(isSet($_GET['busca'])){
                                                             <div class="btn-group ">
 
                                                                  
-                                                                 <select class="dropdown" name="Combo_Motivos">
+                                                                 <select id="motivo" class="dropdown" name="busca[motivo]">
                                                                     <option value="MOTIVO">MOTIVO</option>
                                                                     <?php
                                                                     var_dump($tipo_sancao);
@@ -367,24 +392,10 @@ if(isSet($_GET['busca'])){
                                                   </ul>
                                              </div>
 
-                                       </div>
-                                                       
-
-
-                                            <div class="accordion-inner" style="border-top:0">
-                                                <div class="clear-margim" style="padding-top:30px" >
-                                                    <label for="data_inicio" class="">Data Ínicio</label>
-                                                    <input id="data_inicio" name="data_inicio" class="" type="text" style="width:150px;">
-                                                    <label for="data_fim" style="padding-left:30px;" class="">Data Fim</label>
-                                                    <input id="data_fim" name="data_fim" class="form-control" type="text" style="width:150px;">
-                                                    <label for="num_processo" style="padding-left:30px;" class="">N° Processo</label>
-                                                    <input id="num_processo" name="num_processo" class="form-control" type="text" style="width:230px;">
-
-
-                                                </div>
-                                            </div>                                                                                                                                                                            </div>                                             
-                                        </div>
-                                    </div>
+                                       </div>                                                     
+                                                                                                                                                                           </div>                                             
+                                  </div>
+                              </div>
                            </div>
                         </article>
                         <article id="resultado">
@@ -425,7 +436,7 @@ if(isSet($_GET['busca'])){
                                     </tbody>
                                   </table>
                                   <?php
-                                  echo "<a href='index.php?busca[nome]=".$busca['nome']."&busca[cnpj]=".$busca['cnpj']."&l=".($limite+100)."' class='btn btn_1 right'>MAIS</a>
+                                  echo "<a href='index.php?busca[nome]=".$busca['nome']."&busca[cnpj]=".$busca['cnpj']."&busca[processo]=".$busca['processo']."&busca[uf]=".$busca['uf']."&busca[orgao]=".$busca['orgao']."&busca[motivo]=".$busca['motivo']."&l=".($limite+100)."' class='btn btn_1 right'>MAIS</a>
                                     </div>";
                                     ?>
                             <?php } ?>
@@ -447,9 +458,9 @@ if(isSet($_GET['busca'])){
             ?>
             <div class="row_1">
                 <div class="container" id="graphs">
-                    <h3 class="border">Dados</h3>
+                    <!-- <h3 class="border">Dados</h3> -->
                     <div class="row">
-                        <h2 class="center span12">Inidonios por Estado</h2>
+                        <h3 class="center span12">Inidonios por Estado</h3>
                         <article class="span12">
                             <div id="graph"></div>
                         </article>
@@ -475,7 +486,7 @@ if(isSet($_GET['busca'])){
                         </script>                       
                     </div>
                     <div class="row">
-                        <h2 class="center span12">Inidonios por Motivo</h2>
+                        <h3 class="center span12">Inidonios por Motivo</h3>
                         <article class="span12">
                             <div id="donutGraph"></div>
                         </article>
