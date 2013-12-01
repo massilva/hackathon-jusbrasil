@@ -442,9 +442,9 @@ if(isSet($_GET['busca'])){
             ?>
             <div class="row_1">
                 <div class="container" id="graphs">
-                    <h3 class="border">Dados</h3>
+                    <!-- <h3 class="border">Dados</h3> -->
                     <div class="row">
-                        <h2 class="center span12">Inidonios por Estado</h2>
+                        <h3 class="center span12">Inidonios por Estado</h3>
                         <article class="span12">
                             <div id="graph"></div>
                         </article>
@@ -470,7 +470,7 @@ if(isSet($_GET['busca'])){
                         </script>                       
                     </div>
                     <div class="row">
-                        <h2 class="center span12">Inidonios por Motivo</h2>
+                        <h3 class="center span12">Inidonios por Motivo</h3>
                         <article class="span12">
                             <div id="donutGraph"></div>
                         </article>
