@@ -125,17 +125,20 @@ if(isSet($_GET['busca'])){
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/mobilemenu.css">
-	<link rel="icon" href="images/favicon.ico" type="image/x-icon">
-	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-	<script type="text/javascript" src="js/jquery-latest.js"></script>
+    <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <script type="text/javascript" src="js/jquery-latest.js"></script>
     <script type="text/javascript" src="js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="js/bootstrap.js"></script>
     <script type="text/javascript" src="js/jquery.session.js"></script>
     <script type="text/javascript" src="js/parallax.js"></script>
     <script type="text/javascript" src="js/jquery.flexslider.js"></script>
     <script type="text/javascript" src="js/message-form.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
-	<script type="text/javascript">
+	  <script type="text/javascript">
 
 
     overflow = true;
@@ -159,6 +162,7 @@ if(isSet($_GET['busca'])){
   
     
 });
+
 		$(window).scroll(function () {
 			if (jQuery(this).scrollTop() > 550) {
 				jQuery('header').addClass('scrolled');
@@ -400,6 +404,9 @@ if(isSet($_GET['busca'])){
                     </div>
                 </div>
             </div>
+
+            <div id="myfirstchart" style="height: 250px;"></div>
+
             <div class="row_1">
                 <div class="container" id="graphs">
                     <h3 class="border">What We Do</h3>
@@ -536,6 +543,28 @@ if(isSet($_GET['busca'])){
 			ownerEmail:'test@test.test'
 		});
 	})
+
+  new Morris.Donut({
+    // ID of the element in which to draw the chart.
+    element: 'myfirstchart',
+    // Chart data records -- each entry in this array corresponds to a point on
+    // the chart.
+    data: [
+      { label: '2008', value: 20 },
+      { label: '2009', value: 10 },
+      { label: '2010', value: 5 },
+      { label: '2011', value: 5 },
+      { label: '2012', value: 20 }
+    ],
+    // // The name of the data record attribute that contains x-values.
+    // xkey: 'year',
+    // // A list of names of data record attributes that contain y-values.
+    // ykeys: ['value'],
+    // // Labels for the ykeys -- will be displayed when you hover over the
+    // // chart.
+    // labels: ['Value']
+  }); 
+
 </script>
 </body>
 </html>
