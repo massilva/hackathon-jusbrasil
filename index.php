@@ -151,7 +151,6 @@ if(isSet($_GET['busca'])){
         while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
             $resultado[] = $obj;
         } 
-
     // tratamento da exeção
     } catch ( PDOException $e ) {
         echo $e->getMessage();
@@ -194,6 +193,12 @@ if(isSet($_GET['busca'])){
     overflow = true;
 
     $(document).ready(function() {
+<<<<<<< HEAD
+=======
+
+        $("#e1").select2();
+
+>>>>>>> 636c27025bd501f82ef53e2c284a714873129fce
          $('#lbl_busca').click(function() { 
           if(overflow){
             $('#collapseOne').css("overflow","initial");
