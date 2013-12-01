@@ -288,7 +288,7 @@ if(isSet($_GET['busca'])){
                                                 Busca Avançada
                                             </a>
                                         </div>
-                                         <div id="collapseOne" class="accordion-body collapse" style="overflow:auto">
+                                         <div id="collapseOne" class="accordion-body collapse" style="">
                                             <div class="accordion-inner">
                                                 <div class="clear-margim span3">
                                                    <label for="num_processo" style="padding-left:30px;" class="">N° Processo</label>
@@ -344,11 +344,9 @@ if(isSet($_GET['busca'])){
                                                         </li>
                                                         <li>
                                                             <div class="btn-group ">
-                                                                 <select id="motivo" class="dropdown" name="busca[motivo]">
+                                                                 <select style="width:180px;" id="motivo" class="dropdown" name="busca[motivo]">
                                                                     <option value="MOTIVO">MOTIVO</option>
                                                                     <?php
-                                                                    var_dump($tipo_sancao);
-
                                                                     foreach ($tipo_sancao as $key => $obj){
                                                                        echo "<option value='" .utf8_encode($obj->tipo_sancao) . "'>" . utf8_encode($obj->tipo_sancao) . "</option>";
                                                                     }
