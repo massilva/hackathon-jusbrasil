@@ -338,7 +338,6 @@ if(isSet($_GET['busca'])){
                                                                     foreach ($orgao as $key => $obj){
                                                                        echo "<option value='" .utf8_encode($obj->orgao) . "'>" . utf8_encode($obj->orgao) . "</option>";
                                                                     }
-
                                                                     ?>
                                                                   </select>
                                                             </div>
@@ -350,12 +349,9 @@ if(isSet($_GET['busca'])){
                                                                     <?php
                                                                     var_dump($tipo_sancao);
 
-                                                                    foreach ($tipo_sancao as $key => $obj){                                                                   
-                                                                       
+                                                                    foreach ($tipo_sancao as $key => $obj){
                                                                        echo "<option value='" .utf8_encode($obj->tipo_sancao) . "'>" . utf8_encode($obj->tipo_sancao) . "</option>";
-                                                                                                                                                                                                                     
                                                                     }
-
                                                                     ?>
                                                                 </select>
                                                             </div>
@@ -407,9 +403,9 @@ if(isSet($_GET['busca'])){
                                   <?php
                                   echo "<a href='index.php?busca[nome]=".$busca['nome']."&busca[cnpj]=".$busca['cnpj']."&busca[processo]=".$busca['processo']."&busca[uf]=".$busca['uf']."&busca[orgao]=".$busca['orgao']."&busca[motivo]=".$busca['motivo']."&l=".($limite+100)."' class='btn btn_1 right'>MAIS</a>
                                     </div>";
-                                    ?>
-                            <?php } ?>
-                     </article>;
+                                } 
+                            ?>
+                        </article>
                       </form>
                     </div>
                 </div>
