@@ -145,7 +145,7 @@ if(isSet($_GET['busca'])){
     <link rel="stylesheet" href="css/bootstrap-responsive.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/mobilemenu.css">
-    <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
+    <link rel="stylesheet" href="css/morris.css">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
@@ -157,7 +157,7 @@ if(isSet($_GET['busca'])){
     <script type="text/javascript" src="js/message-form.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+    <script src="js/morris.min.js"></script>
     <script type="text/javascript">
 
     overflow = true;
@@ -429,23 +429,23 @@ if(isSet($_GET['busca'])){
                         });
                         </script>                       
                     </div>
+
                     <div class="row">
-                        <article class="span8">
-                            <div id="graph2"></div>
-                        </article>
-                        <script type="type/javascript">
-                        Morris.Donut({
-                          element: 'graph2',
+                        <article class="span8">                            
+                      
+                        <div id="donutGraph"></div>
+                          </article>
+                        <script type="text/javascript">
+                        new Morris.Donut({
+                          element: 'donutGraph',
                           data: [
-                            {value: 70, label: 'foo'},
-                            {value: 15, label: 'bar'},
-                            {value: 10, label: 'baz'},
-                            {value: 5, label: 'A really really long label'}
+                            { label: '2008', value: 20 },
+                            { label: '2009', value: 10 },
+                            { label: '2010', value: 5 },
+                            { label: '2011', value: 5 },
+                            { label: '2012', value: 20 }
                           ],
-                          formatter: function (x) { return x + "%"}
-                        }).on('click', function(i, row){
-                          console.log(i, row);
-                        });
+                      }); 
                         </script>
                     </div>
            
@@ -537,26 +537,6 @@ if(isSet($_GET['busca'])){
         			ownerEmail:'test@test.test'
         		});
         	})
-            new Morris.Donut({
-                // ID of the element in which to draw the chart.
-                element: 'myfirstchart',
-                // Chart data records -- each entry in this array corresponds to a point on
-                // the chart.
-                data: [
-                  { label: '2008', value: 20 },
-                  { label: '2009', value: 10 },
-                  { label: '2010', value: 5 },
-                  { label: '2011', value: 5 },
-                  { label: '2012', value: 20 }
-                ],
-                // // The name of the data record attribute that contains x-values.
-                // xkey: 'year',
-                // // A list of names of data record attributes that contain y-values.
-                // ykeys: ['value'],
-                // // Labels for the ykeys -- will be displayed when you hover over the
-                // // chart.
-                // labels: ['Value']
-            }); 
         </script>
 </body>
 </html>
