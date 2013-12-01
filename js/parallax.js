@@ -17,25 +17,25 @@ $(document).ready(function() {
 		});
     	return false;
 	});
-    $('a.about').click(function(){
+    $('a.search').click(function(){
+    	$('html, body').animate({
+    		scrollTop:$('#search').offset().top
+    	}, 1000, function() {
+	    	parallaxScroll(); // Callback is required for iOS
+		});
+    	return false;
+    });
+    $('a.graphs').click(function(){
+    	$('html, body').animate({
+    		scrollTop:$('#graphs').offset().top
+    	}, 1000, function() {
+	    	parallaxScroll(); // Callback is required for iOS
+		});
+    	return false;
+    });
+	$('a.about').click(function(){
     	$('html, body').animate({
     		scrollTop:$('#about').offset().top
-    	}, 1000, function() {
-	    	parallaxScroll(); // Callback is required for iOS
-		});
-    	return false;
-    });
-    $('a.work').click(function(){
-    	$('html, body').animate({
-    		scrollTop:$('#work').offset().top
-    	}, 1000, function() {
-	    	parallaxScroll(); // Callback is required for iOS
-		});
-    	return false;
-    });
-	$('a.contact').click(function(){
-    	$('html, body').animate({
-    		scrollTop:$('#contact').offset().top
     	}, 1000, function() {
 	    	parallaxScroll(); // Callback is required for iOS
 		});
@@ -54,9 +54,9 @@ function parallaxScroll(){
 function redrawDotNav(){
 	var section1Top =  0;
 	// The top of each section is offset by half the distance to the previous section.
-	var section2Top =  $('#about').offset().top - (($('#work').offset().top - $('#about').offset().top) / 2);
-	var section3Top =  $('#work').offset().top - (($('#contact').offset().top - $('#work').offset().top) / 2);
-	var section4Top =  $('#contact').offset().top - (($(document).height() - $('#contact').offset().top) / 2);;
+	var section2Top =  $('#search').offset().top - (($('#graphs').offset().top - $('#search').offset().top) / 2);
+	var section3Top =  $('#graphs').offset().top - (($('#about').offset().top - $('#graphs').offset().top) / 2);
+	var section4Top =  $('#about').offset().top - (($(document).height() - $('#about').offset().top) / 2);;
 /*
 	$('ul.menu a').removeClass('active');
 	if($(document).scrollTop() >= section1Top && $(document).scrollTop() < section2Top){
