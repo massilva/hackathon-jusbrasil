@@ -495,7 +495,7 @@ if(isSet($_GET['busca'])){
                                     document.getElementById('map'));
                             geochart.draw(data,{
                                 width: 600,
-                                colors : ['#FFFF7E', '#FF9900', '#FF0000'],
+                                colors : ['#FFFFCC', '#FF9900', '#FF0000'],
                                 region: "BR", 
                                 resolution: "provinces"
                             });

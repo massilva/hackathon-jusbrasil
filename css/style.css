@@ -1119,6 +1119,7 @@ h3 {
 #map{
 	top: 190px;
 	left: 300px;
+	width: 600px;
 }
 
 #map path{
