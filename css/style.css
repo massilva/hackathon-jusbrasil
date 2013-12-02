@@ -1113,6 +1113,19 @@ h3 {
 	**/
 }
 
+#estados{
+	height: 500px;
+}
+#map{
+	top: 190px;
+	left: 300px;
+}
+
+#map path{
+	stroke-width:1; /* control the countries borders width */
+	stroke: #0d6cca; /* choose a color for the border */
+}
+
 #busca input,
 #busca .btn{
 	padding: 8px;

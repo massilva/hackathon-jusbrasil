@@ -465,8 +465,8 @@ if(isSet($_GET['busca'])){
             <?php
             $estado = array();
             foreach ($byEstado as $key => $obj){
-                $estado[$key]["x"] = $obj->uf_pessoa;
-                $estado[$key]["y"] = $obj->qtd;
+                $estado[$key][] = "BR-".$obj->uf_pessoa;
+                $estado[$key][] = $obj->qtd;
             }
             foreach ($tipoSancao as $key => $obj){
                 $motivo[$key]['label'] = utf8_encode($obj->tipo_sancao);
@@ -475,33 +475,45 @@ if(isSet($_GET['busca'])){
             ?>
             <div class="row_1">
                 <div class="container" id="graphs">
-                    <!-- <h3 class="border">Dados</h3> -->
+                    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+                    <script type="text/javascript">
+
+                        google.load('visualization', '1', {packages: ['geochart']});
+
+                        function drawVisualization() {
+                            var data = google.visualization.arrayToDataTable(
+                                [
+                                ['State','Num. de inidônios'],
+                                <?php
+                                foreach ($estado as $key => $est){
+                                    echo "['".$est[0]."',".$est[1]."],";
+                                }
+                                ?>
+                                ]);
+
+                            var geochart = new google.visualization.GeoChart(
+                                    document.getElementById('map'));
+                            geochart.draw(data,{
+                                width: 600,
+                                colors : ['#FFFF7E', '#FF9900', '#FF0000'],
+                                region: "BR", 
+                                resolution: "provinces"
+                            });
+                            google.visualization.events.addListener(geochart, 'select', function() {
+                                var selection = geochart.getSelection();
+                                var row = selection[0].row;
+                                var nomeEstado = data.getValue(row, 0);
+                                nomeEstado = nomeEstado.substr(3,2);
+                                window.location='';
+                            }); 
+                        }
+                        google.setOnLoadCallback(drawVisualization);
+                    </script>
                     <div class="row">
                         <h3 class="center border span12">Inidônios por Estado</h3>
-                        <article class="span12">
-                            <div id="graph"></div>
-                        </article>
-                        <script type="text/javascript">
-                        // Use Morris.Bar
-                        Morris.Bar({
-                          element: 'graph',
-                          data: <?=json_encode($estado)?>,
-                          xkey: 'x',
-                          ykeys: ['y'],
-                          labels: ['Quant.'],
-                          grid: true,
-                          barColors: function (row, series, type) {
-                            this.ymax = 15;
-                            if (type === 'bar') {
-                              var red = Math.ceil(255 * row.y / this.ymax);
-                              return 'rgb(' + red + ',0,0)';
-                            }
-                            else {
-                              return '#000';
-                            }
-                          }
-                        });
-                        </script>
+                        <div id="estados">
+                            <div id="map" class="center"></div>
+                        </div>
                         <h6 class="center legend span12">Relação de pessoas inidonia ou suspensa por estado</h6>
                     </div>
                     <div class="row">
