@@ -477,9 +477,7 @@ if(isSet($_GET['busca'])){
                 <div class="container" id="graphs">
                     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
                     <script type="text/javascript">
-
                         google.load('visualization', '1', {packages: ['geochart']});
-
                         function drawVisualization() {
                             var data = google.visualization.arrayToDataTable(
                                 [
