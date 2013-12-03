@@ -554,9 +554,9 @@ if(isSet($_GET['busca'])){
                         url = document.URL;
                         end = url.split("/");
                         if(url.indexOf("localhost") == -1){
-                            url_base = end[2];
+                            url_base = "";
                         }else{
-                            url_base = end[3];
+                            url_base = "/"+end[3];
                         }
 
                         google.load('visualization', '1', {packages: ['geochart']});
@@ -584,7 +584,7 @@ if(isSet($_GET['busca'])){
                                 var row = selection[0].row;
                                 var nomeEstado = data.getValue(row, 0);
                                 nomeEstado = nomeEstado.substr(3,2);
-                                window.location = "/"+url_base+'/index.php?busca[uf]='+nomeEstado+'#search';
+                                window.location = url_base+'/index.php?busca[uf]='+nomeEstado+'#search';
                             }); 
                         }
                         google.setOnLoadCallback(drawVisualization);
