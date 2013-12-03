@@ -1,4 +1,5 @@
 <?php
+
 //PDO em ação!
 $pdo = new PDO ( "mysql:host=us-cdbr-east-04.cleardb.com;dbname=heroku_3acb595e064fe48", "bd5233fd978702", "57345e20");
 
@@ -167,6 +168,22 @@ function getOrgao($pdo){
     return $orgao;
 }
 
+function buscaProfundidade($needle, $array, $nivel = 0){
+    foreach ($array as $key => $value)
+    { 
+        if(is_array($value)){
+            $buscado = buscaProfundidade($needle,$value,$nivel++);
+        }
+        if($value == $needle){
+            return array("nivel" => $nivel, "key"=>$key);
+        }
+        if(is_array($buscado)){
+            return $buscado;
+        }
+    }
+    return -1;
+}
+
 $tipo_sancao = array();
 $orgao = array();
 
@@ -177,14 +194,25 @@ $orgao= getOrgao($pdo);
 $tipoSancao = getMotivo($pdo);
 $motivos = getDetalheMotivo($pdo);
 
+$estados = array();
+foreach ($byEstado as $key => $obj){
+    $estados[$key][] = "BR-".$obj->uf_pessoa;
+    $estados[$key][] = $obj->qtd;
+}
+
+foreach ($tipoSancao as $key => $obj){
+    $motivo[$key]['label'] = utf8_encode($obj->tipo_sancao);
+    $motivo[$key]['value'] = $obj->qtd;
+}
+
 if(isSet($_GET['busca'])){
     $busca = $_GET['busca'];
-    $nome = $busca['nome'];
-    $cnpj = $busca['cnpj'];
-    $uf = $busca['uf'];
-    $orgao_busca = $busca['orgao'];
-    $processo = $busca['processo'];
-    $motivo2 = $busca['tipo_sancao'];
+    $nome = isSet($busca['nome']) ? $busca['nome'] : "";
+    $cnpj = isSet($busca['cnpj']) ? $busca['cnpj'] : "";
+    $uf = isSet($busca['uf']) ? $busca['uf'] : "";
+    $orgao_busca = isSet($busca['orgao']) ? $busca['orgao'] : "";
+    $processo = isSet($busca['processo']) ? $busca['processo'] : "";
+    $sancao = isSet($busca['tipo_sancao']) ? $busca['tipo_sancao'] : "";
     
     $resultado = array();
     $limite = isSet($_GET['l']) ? $_GET['l'] : 100;
@@ -193,34 +221,87 @@ if(isSet($_GET['busca'])){
 
         // Com o objeto PDO instanciado
         // preparo uma query a ser executada
-        if(empty($nome) && empty($cnpj) && $uf == "UF" && $orgao_busca == "ORGAO" && $motivo2 == "MOTIVO" && empty($processo)){
+        if(empty($nome) && empty($cnpj) && $uf == "UF" && $orgao_busca == "ORGAO" && $sancao == "MOTIVO" && empty($processo)){
             $stmt = $pdo->prepare("SELECT * FROM ceis LIMIT ".$limite);
         }
         else{
+            $consulta = "SELECT * FROM ceis WHERE";
 
-            if($uf == "UF")
-                $uf = "";
-            if($orgao_busca == "ORGAO")
-                $orgao_busca = "";
-             if($motivo2 == "MOTIVO")
-                $motivo2 = "";
+            if(!empty($nome)){
+                $consulta .= " nome like :nome";
+                $nome = "%".$nome."%"; 
+            }
+
+            if(!empty($cnpj)){
+                if(!empty($nome)){
+                    $consulta .= " AND";
+                }
+                $consulta .= " cnpj_cpf = :cnpj";
+            }
+
+            if(!empty($processo)){
+                if(!empty($nome) OR !empty($cnpj)){
+                    $consulta .= " AND";
+                }   
+                $consulta .= " num_processo = :num_processo";
+            }
             
-            $uf = "%".$uf."%";
-            $orgao_busca = "%".$orgao_busca."%";
-            $nome = "%".$nome."%";  
-            $motivo2 = "%".$motivo2."%";         
-            $stmt = $pdo->prepare("SELECT * FROM ceis WHERE (nome like :nome OR cnpj_cpf = :cnpj OR num_processo = :num_processo) AND uf_pessoa like :uf_pessoa  AND orgao like :orgao_busca AND tipo_sancao like :tipo_sancao  LIMIT ".$limite);
-            $stmt->bindParam(":nome", utf8_decode($nome) , PDO::PARAM_STR);
-            $stmt->bindParam(":cnpj", $cnpj , PDO::PARAM_STR);
-            $stmt->bindParam(":num_processo", $processo , PDO::PARAM_STR);
-            $stmt->bindParam(":uf_pessoa", $uf , PDO::PARAM_STR);
-            $stmt->bindParam(":orgao_busca", utf8_decode($orgao_busca) , PDO::PARAM_STR);
-            $stmt->bindParam(":tipo_sancao", utf8_decode($motivo2) , PDO::PARAM_STR);
+            $complemento = (!empty($nome) OR !empty($cnpj)) OR !empty($processo);
 
+            if(!empty($uf) AND $uf != "UF"){
+                if($complemento){
+                    $consulta .= " AND";
+                }
+                $consulta .= " uf_pessoa like :uf_pessoa";
+                $complemento = true;
+            }
+            
+            if(!empty($orgao_busca) AND $orgao_busca != "ORGAO"){
+                if($complemento){
+                    $consulta .= " AND";
+                }
+                $consulta .= " orgao like :orgao_busca";
+                $complemento = true;
+            }
+
+            if(!empty($sancao) AND $sancao != "MOTIVO"){
+                if($complemento){
+                    $consulta .= " AND";
+                }
+                $consulta .= " tipo_sancao like :tipo_sancao ";
+                $complemento = true;
+            }
+
+            $consulta .= " LIMIT ".$limite;
+            $stmt = $pdo->prepare($consulta);
+
+            if(!empty($nome)){
+                $stmt->bindParam(":nome", utf8_decode($nome) , PDO::PARAM_STR);
+            }
+
+            if(!empty($cnpj)){
+                $stmt->bindParam(":cnpj", $cnpj , PDO::PARAM_STR);
+            }
+
+            if(!empty($processo)){
+                $stmt->bindParam(":num_processo", utf8_decode($processo), PDO::PARAM_STR);
+            }
+
+            if(!empty($uf) AND $uf != "UF"){
+                $stmt->bindParam(":uf_pessoa", $uf , PDO::PARAM_STR);
+            }
+            
+            if(!empty($orgao_busca) AND $orgao_busca != "ORGAO"){
+                $stmt->bindParam(":orgao_busca", utf8_decode($orgao_busca), PDO::PARAM_STR);
+            }
+            
+            if(!empty($sancao) AND $sancao != "MOTIVO"){
+                $stmt->bindParam(":tipo_sancao", utf8_decode($sancao), PDO::PARAM_STR);
+            }
+            
         }
         // Executa query
         $stmt->execute();
-
         // lembra do mysql_fetch_array?
         //PDO:: FETCH_OBJ: retorna um objeto anônimo com nomes de propriedades que
         //correspondem aos nomes das colunas retornadas no seu conjunto de resultados
@@ -424,6 +505,7 @@ if(isSet($_GET['busca'])){
                                         <th>#</th>
                                         <th>Nome</th>
                                         <th>CNPJ/CPF</th>
+                                        <th>UF da Pessoa</th>
                                         <th>Tipo de Sanção</th>
                                         <th>Data de inicio da Sanção</th>
                                         <th>Data de fim da Sanção</th>
@@ -441,6 +523,7 @@ if(isSet($_GET['busca'])){
                                                echo "<td>".($key+1)."</td>";
                                                echo "<td>".$obj->nome."</td>";
                                                echo "<td>".$obj->cnpj_cpf."</td>";
+                                               echo "<td>".$obj->uf_pessoa."</td>";
                                                echo "<td>".utf8_encode($obj->tipo_sancao)."</td>";
                                                echo "<td>".utf8_encode($obj->data_inicio)."</td>";
                                                echo "<td>".utf8_encode($obj->data_fim)."</td>";
@@ -453,37 +536,36 @@ if(isSet($_GET['busca'])){
                                     </tbody>
                                   </table>
                                   <?php
-                                  echo "<a href='index.php?busca[nome]=".$busca['nome']."&busca[cnpj]=".$busca['cnpj']."&busca[processo]=".$busca['processo']."&busca[uf]=".$busca['uf']."&busca[orgao]=".$busca['orgao']."&busca[motivo]=".$busca['motivo']."&l=".($limite+100)."' class='btn btn_1 right'>MAIS +100</a>
+                                    if(count($resultado) == 100){
+                                    echo "<a href='index.php?busca[nome]=".$busca['nome']."&busca[cnpj]=".$busca['cnpj']."&busca[processo]=".$busca['processo']."&busca[uf]=".$busca['uf']."&busca[orgao]=".$busca['orgao']."&busca[motivo]=".$busca['motivo']."&l=".($limite+100)."' class='btn btn_1 right'>MAIS +100</a>
                                     </div>";
                                     } 
+                                } //FIM if(isSet($_GET['busca']))
                                 ?>
                      </article>
                       </form>
                     </div>
                 </div>
             </div>
-            <?php
-            $estado = array();
-            foreach ($byEstado as $key => $obj){
-                $estado[$key][] = "BR-".$obj->uf_pessoa;
-                $estado[$key][] = $obj->qtd;
-            }
-            foreach ($tipoSancao as $key => $obj){
-                $motivo[$key]['label'] = utf8_encode($obj->tipo_sancao);
-                $motivo[$key]['value'] = $obj->qtd;
-            }
-            ?>
             <div class="row_1">
                 <div class="container" id="graphs">
                     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
                     <script type="text/javascript">
+                        url = document.URL;
+                        end = url.split("/");
+                        if(url.indexOf("localhost") == -1){
+                            url_base = end[2];
+                        }else{
+                            url_base = end[3];
+                        }
+
                         google.load('visualization', '1', {packages: ['geochart']});
                         function drawVisualization() {
                             var data = google.visualization.arrayToDataTable(
                                 [
                                 ['State','Num. de inidônios'],
                                 <?php
-                                foreach ($estado as $key => $est){
+                                foreach ($estados as $key => $est){
                                     echo "['".$est[0]."',".$est[1]."],";
                                 }
                                 ?>
@@ -502,7 +584,7 @@ if(isSet($_GET['busca'])){
                                 var row = selection[0].row;
                                 var nomeEstado = data.getValue(row, 0);
                                 nomeEstado = nomeEstado.substr(3,2);
-                                window.location='';
+                                window.location = "/"+url_base+'/index.php?busca[uf]='+nomeEstado+'#search';
                             }); 
                         }
                         google.setOnLoadCallback(drawVisualization);
