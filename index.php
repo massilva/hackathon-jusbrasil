@@ -202,8 +202,12 @@ if(isSet($_GET['busca'])){
                 $uf = "";
             if($orgao_busca == "ORGAO")
                 $orgao_busca = "";
-             if($motivo2 == "MOTIVO")
+            if($motivo2 == "MOTIVO")
                 $motivo2 = "";
+            if(empty($processo)){
+                $processo = -1;
+            }
+
             
             $uf = "%".$uf."%";
             $orgao_busca = "%".$orgao_busca."%";
