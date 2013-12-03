@@ -470,7 +470,7 @@ if(isSet($_GET['busca'])){
                                                                     <option value="ORGAO">ORGÃO</option>
                                                                     <?php
                                                                     foreach ($orgao as $key => $obj){
-                                                                       echo "<option value='" .utf8_encode($obj->orgao) . "'>" . utf8_encode($obj->orgao) . "</option>";
+                                                                       echo "<option value='" .utf8_encode($obj->orgao) . "'>".strtoupper(utf8_encode($obj->orgao))."</option>";
                                                                     }
 
                                                                     ?>
@@ -527,7 +527,7 @@ if(isSet($_GET['busca'])){
                                                echo "<td>".utf8_encode($obj->tipo_sancao)."</td>";
                                                echo "<td>".utf8_encode($obj->data_inicio)."</td>";
                                                echo "<td>".utf8_encode($obj->data_fim)."</td>";
-                                               echo "<td>".utf8_encode($obj->orgao)."</td>";
+                                               echo "<td>".strtoupper(utf8_encode($obj->orgao))."</td>";
                                                echo "<td>".utf8_encode($obj->origem_informacao)."</td>";
                                                echo "<td>".utf8_encode($obj->data_informacao)."</td>";
                                                echo "</tr>";
