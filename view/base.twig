@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> {% block title %} Checar Empresa {% endblock %} </title>
+        {% block css %} {% endblock %}
+    </head>
+    <body>
+        <div class="header_top_wrap">
+            <h1>ChecarEmpresa</h1>
+        </div>
+        <header class="home_page">
+            <div class="container">
+                <div class="row">
+                    <div class="span12">
+                        <a class="logo" href="index.php">ChecarEmpresa</a>
+                        <ul class="menu">
+                            <li><a class="home" href="#home">Inicio</a></li>
+                            <li><a class="search" href="#search">Buscar</a></li>
+                            <li><a class="graphs" href="#graphs">Gráficos</a></li>
+                            <li><a class="ranking" href="#ranking">Ranking</a></li>
+                            <li><a class="about" href="#about">Sobre</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div><!--/container-->
+        </header> 
+        <div class="container-fill">
+            {% block search %} {% endblock %}
+            {% block graphs %} {% endblock %}
+       </div>
+    </body>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="span12 text-center">
+                    &copy; 2013
+                </div>
+            </div>
+        </div>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="//code.jquery.com/jquery.js"></script>
+    	{% block scripts %} {% endblock %}
+    </footer>
+</html>
