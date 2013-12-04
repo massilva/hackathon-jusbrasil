@@ -1,6 +1,6 @@
 <?php 
 
-class Model{
+class baseModel{
 	protected   $dbname,
 				$user,
 				$pass,

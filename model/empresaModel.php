@@ -190,137 +190,137 @@ class empresaModel extends baseModel {
         }
         return -1;
     }
-
-$tipo_sancao = array();
-$orgao = array();
-
-$ranking = getTopInidonio($pdo);
-$byEstado = getInidonioByEstado($pdo);
-$tipo_sancao= getTipoSancao($pdo);
-$orgao= getOrgao($pdo);
-$tipoSancao = getMotivo($pdo);
-$motivos = getDetalheMotivo($pdo);
-
-$estados = array();
-foreach ($byEstado as $key => $obj){
-    $estados[$key][] = "BR-".$obj->uf_pessoa;
-    $estados[$key][] = $obj->qtd;
 }
 
-foreach ($tipoSancao as $key => $obj){
-    $motivo[$key]['label'] = utf8_encode($obj->tipo_sancao);
-    $motivo[$key]['value'] = $obj->qtd;
-}
+// $tipo_sancao = array();
+// $orgao = array();
 
-if(isSet($_GET['busca'])){
-    $busca = $_GET['busca'];
-    $nome = isSet($busca['nome']) ? $busca['nome'] : "";
-    $cnpj = isSet($busca['cnpj']) ? $busca['cnpj'] : "";
-    $uf = isSet($busca['uf']) ? $busca['uf'] : "";
-    $orgao_busca = isSet($busca['orgao']) ? $busca['orgao'] : "";
-    $processo = isSet($busca['processo']) ? $busca['processo'] : "";
-    $sancao = isSet($busca['tipo_sancao']) ? $busca['tipo_sancao'] : "";
+// $ranking = getTopInidonio($pdo);
+// $byEstado = getInidonioByEstado($pdo);
+// $tipo_sancao= getTipoSancao($pdo);
+// $orgao= getOrgao($pdo);
+// $tipoSancao = getMotivo($pdo);
+// $motivos = getDetalheMotivo($pdo);
+
+// $estados = array();
+// foreach ($byEstado as $key => $obj){
+//     $estados[$key][] = "BR-".$obj->uf_pessoa;
+//     $estados[$key][] = $obj->qtd;
+// }
+
+// foreach ($tipoSancao as $key => $obj){
+//     $motivo[$key]['label'] = utf8_encode($obj->tipo_sancao);
+//     $motivo[$key]['value'] = $obj->qtd;
+// }
+
+// if(isSet($_GET['busca'])){
+//     $busca = $_GET['busca'];
+//     $nome = isSet($busca['nome']) ? $busca['nome'] : "";
+//     $cnpj = isSet($busca['cnpj']) ? $busca['cnpj'] : "";
+//     $uf = isSet($busca['uf']) ? $busca['uf'] : "";
+//     $orgao_busca = isSet($busca['orgao']) ? $busca['orgao'] : "";
+//     $processo = isSet($busca['processo']) ? $busca['processo'] : "";
+//     $sancao = isSet($busca['tipo_sancao']) ? $busca['tipo_sancao'] : "";
     
-    $resultado = array();
-    $limite = isSet($_GET['l']) ? $_GET['l'] : 100;
+//     $resultado = array();
+//     $limite = isSet($_GET['l']) ? $_GET['l'] : 100;
     
-    try {
+//     try {
 
-        // Com o objeto PDO instanciado
-        // preparo uma query a ser executada
-        if(empty($nome) && empty($cnpj) && $uf == "UF" && $orgao_busca == "ORGAO" && $sancao == "MOTIVO" && empty($processo)){
-            $stmt = $pdo->prepare("SELECT * FROM ceis LIMIT ".$limite);
-        }
-        else{
-            $consulta = "SELECT * FROM ceis WHERE";
+//         // Com o objeto PDO instanciado
+//         // preparo uma query a ser executada
+//         if(empty($nome) && empty($cnpj) && $uf == "UF" && $orgao_busca == "ORGAO" && $sancao == "MOTIVO" && empty($processo)){
+//             $stmt = $pdo->prepare("SELECT * FROM ceis LIMIT ".$limite);
+//         }
+//         else{
+//             $consulta = "SELECT * FROM ceis WHERE";
 
-            if(!empty($nome)){
-                $consulta .= " nome like :nome";
-                $nome = "%".$nome."%"; 
-            }
+//             if(!empty($nome)){
+//                 $consulta .= " nome like :nome";
+//                 $nome = "%".$nome."%"; 
+//             }
 
-            if(!empty($cnpj)){
-                if(!empty($nome)){
-                    $consulta .= " AND";
-                }
-                $consulta .= " cnpj_cpf = :cnpj";
-            }
+//             if(!empty($cnpj)){
+//                 if(!empty($nome)){
+//                     $consulta .= " AND";
+//                 }
+//                 $consulta .= " cnpj_cpf = :cnpj";
+//             }
 
-            if(!empty($processo)){
-                if(!empty($nome) OR !empty($cnpj)){
-                    $consulta .= " AND";
-                }   
-                $consulta .= " num_processo = :num_processo";
-            }
+//             if(!empty($processo)){
+//                 if(!empty($nome) OR !empty($cnpj)){
+//                     $consulta .= " AND";
+//                 }   
+//                 $consulta .= " num_processo = :num_processo";
+//             }
             
-            $complemento = (!empty($nome) OR !empty($cnpj)) OR !empty($processo);
+//             $complemento = (!empty($nome) OR !empty($cnpj)) OR !empty($processo);
 
-            if(!empty($uf) AND $uf != "UF"){
-                if($complemento){
-                    $consulta .= " AND";
-                }
-                $consulta .= " uf_pessoa like :uf_pessoa";
-                $complemento = true;
-            }
+//             if(!empty($uf) AND $uf != "UF"){
+//                 if($complemento){
+//                     $consulta .= " AND";
+//                 }
+//                 $consulta .= " uf_pessoa like :uf_pessoa";
+//                 $complemento = true;
+//             }
             
-            if(!empty($orgao_busca) AND $orgao_busca != "ORGAO"){
-                if($complemento){
-                    $consulta .= " AND";
-                }
-                $consulta .= " orgao like :orgao_busca";
-                $complemento = true;
-            }
+//             if(!empty($orgao_busca) AND $orgao_busca != "ORGAO"){
+//                 if($complemento){
+//                     $consulta .= " AND";
+//                 }
+//                 $consulta .= " orgao like :orgao_busca";
+//                 $complemento = true;
+//             }
 
-            if(!empty($sancao) AND $sancao != "MOTIVO"){
-                if($complemento){
-                    $consulta .= " AND";
-                }
-                $consulta .= " tipo_sancao like :tipo_sancao ";
-                $complemento = true;
-            }
+//             if(!empty($sancao) AND $sancao != "MOTIVO"){
+//                 if($complemento){
+//                     $consulta .= " AND";
+//                 }
+//                 $consulta .= " tipo_sancao like :tipo_sancao ";
+//                 $complemento = true;
+//             }
 
-            $consulta .= " LIMIT ".$limite;
-            $stmt = $pdo->prepare($consulta);
+//             $consulta .= " LIMIT ".$limite;
+//             $stmt = $pdo->prepare($consulta);
 
-            if(!empty($nome)){
-                $stmt->bindParam(":nome", utf8_decode($nome) , PDO::PARAM_STR);
-            }
+//             if(!empty($nome)){
+//                 $stmt->bindParam(":nome", utf8_decode($nome) , PDO::PARAM_STR);
+//             }
 
-            if(!empty($cnpj)){
-                $stmt->bindParam(":cnpj", $cnpj , PDO::PARAM_STR);
-            }
+//             if(!empty($cnpj)){
+//                 $stmt->bindParam(":cnpj", $cnpj , PDO::PARAM_STR);
+//             }
 
-            if(!empty($processo)){
-                $stmt->bindParam(":num_processo", utf8_decode($processo), PDO::PARAM_STR);
-            }
+//             if(!empty($processo)){
+//                 $stmt->bindParam(":num_processo", utf8_decode($processo), PDO::PARAM_STR);
+//             }
 
-            if(!empty($uf) AND $uf != "UF"){
-                $stmt->bindParam(":uf_pessoa", $uf , PDO::PARAM_STR);
-            }
+//             if(!empty($uf) AND $uf != "UF"){
+//                 $stmt->bindParam(":uf_pessoa", $uf , PDO::PARAM_STR);
+//             }
             
-            if(!empty($orgao_busca) AND $orgao_busca != "ORGAO"){
-                $stmt->bindParam(":orgao_busca", utf8_decode($orgao_busca), PDO::PARAM_STR);
-            }
+//             if(!empty($orgao_busca) AND $orgao_busca != "ORGAO"){
+//                 $stmt->bindParam(":orgao_busca", utf8_decode($orgao_busca), PDO::PARAM_STR);
+//             }
             
-            if(!empty($sancao) AND $sancao != "MOTIVO"){
-                $stmt->bindParam(":tipo_sancao", utf8_decode($sancao), PDO::PARAM_STR);
-            }
+//             if(!empty($sancao) AND $sancao != "MOTIVO"){
+//                 $stmt->bindParam(":tipo_sancao", utf8_decode($sancao), PDO::PARAM_STR);
+//             }
             
-        }
-        // Executa query
-        $stmt->execute();
-        // lembra do mysql_fetch_array?
-        //PDO:: FETCH_OBJ: retorna um objeto anônimo com nomes de propriedades que
-        //correspondem aos nomes das colunas retornadas no seu conjunto de resultados
-        //Ou seja o objeto "anônimo" possui os atributos resultantes de sua query
-        while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
-            $resultado[] = $obj;
-        } 
-        $pdo = null;
-    // tratamento da exeção
-    } catch ( PDOException $e ) {
-        echo $e->getMessage();
-    }
-    
-}
+//         }
+//         // Executa query
+//         $stmt->execute();
+//         // lembra do mysql_fetch_array?
+//         //PDO:: FETCH_OBJ: retorna um objeto anônimo com nomes de propriedades que
+//         //correspondem aos nomes das colunas retornadas no seu conjunto de resultados
+//         //Ou seja o objeto "anônimo" possui os atributos resultantes de sua query
+//         while($obj = $stmt->fetch(PDO::FETCH_OBJ )){         
+//             $resultado[] = $obj;
+//         } 
+//         $pdo = null;
+//     // tratamento da exeção
+//     } catch ( PDOException $e ) {
+//         echo $e->getMessage();
+//     }    
+// }
 ?>

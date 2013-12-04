@@ -1,18 +1,18 @@
 {% extends "base.twig" %}
 
 {% block css %}
-    <!-- <link rel="stylesheet" href="css/select2.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/bootstrap-responsive.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/mobilemenu.css">
-    <link rel="stylesheet" href="css/morris.css">
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" /> -->
+    <link rel="stylesheet" href="../view/css/select2.css">
+    <link rel="stylesheet" href="../view/css/bootstrap.css">
+    <link rel="stylesheet" href="../view/css/bootstrap-responsive.css">
+    <link rel="stylesheet" href="../view/css/style.css">
+    <link rel="stylesheet" href="../view/css/mobilemenu.css">
+    <link rel="stylesheet" href="../view/css/morris.css">
+    <link rel="icon" href="../view/images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../view/images/favicon.ico" type="image/x-icon" />
 {% endblock %}
 
 {% block search %}
-    <!-- <div class="row_1" id="search">
+    <div class="row_1" id="search">
         <div class="container">
             <h3 class="border">Busca</h3>
             <div class="row">
@@ -85,10 +85,9 @@
                                                          <select id="orgao" class="dropdown" name="busca[orgao]">
                                                             <option value="ORGAO">ORGÃO</option>
                                                             <?php
-                                                            // foreach ($orgao as $key => $obj){
-                                                            //    echo "<option value='" .utf8_encode($obj->orgao) . "'>".strtoupper(utf8_encode($obj->orgao))."</option>";
-                                                            // }
-
+                                                            foreach ($orgao as $key => $obj){
+                                                               echo "<option value='" .utf8_encode($obj->orgao) . "'>".strtoupper(utf8_encode($obj->orgao))."</option>";
+                                                            }
                                                             ?>
                                                           </select>
                                                     </div>
@@ -98,9 +97,9 @@
                                                          <select style="width:180px;" id="motivo" class="dropdown" name="busca[tipo_sancao]">
                                                             <option value="MOTIVO">MOTIVO</option>
                                                             <?php
-                                                            // foreach ($tipo_sancao as $key => $obj){
-                                                            //    echo "<option value='" .utf8_encode($obj->tipo_sancao) . "'>" . utf8_encode($obj->tipo_sancao) . "</option>";
-                                                            // }
+                                                            foreach ($tipo_sancao as $key => $obj){
+                                                               echo "<option value='" .utf8_encode($obj->tipo_sancao) . "'>" . utf8_encode($obj->tipo_sancao) . "</option>";
+                                                            }
                                                             ?>
                                                         </select>
                                                     </div>
@@ -113,7 +112,7 @@
                    </div>
                 </article>
                 <article id="resultado">
-                    <?php  // if(isSet($_GET['busca'])){ ?>
+                    {# <?php  if(isSet($_GET['busca'])){ ?>
                         <div class="table-responsive span12">
                           <table id="table_resultado" class="table table-striped">
                             <thead>
@@ -131,42 +130,42 @@
                             <tr>
                             </thead>
                             <tbody>
-                                // <?php  // if(empty($resultado)){
-                                //     echo "<tr><td colspan='100'>Sem resultado.</td></tr>";
-                                // }else{
-                                //     foreach ($resultado as $key => $obj){
-                                //        echo "<tr>";
-                                //        echo "<td>".($key+1)."</td>";
-                                //        echo "<td>".$obj->nome."</td>";
-                                //        echo "<td>".$obj->cnpj_cpf."</td>";
-                                //        echo "<td>".$obj->uf_pessoa."</td>";
-                                //        echo "<td>".utf8_encode($obj->tipo_sancao)."</td>";
-                                //        echo "<td>".utf8_encode($obj->data_inicio)."</td>";
-                                //        echo "<td>".utf8_encode($obj->data_fim)."</td>";
-                                //        echo "<td>".strtoupper(utf8_encode($obj->orgao))."</td>";
-                                //        echo "<td>".utf8_encode($obj->origem_informacao)."</td>";
-                                //        echo "<td>".utf8_encode($obj->data_informacao)."</td>";
-                                //        echo "</tr>";
+                                <?php  if(empty($resultado)){
+                                    echo "<tr><td colspan='100'>Sem resultado.</td></tr>";
+                                }else{
+                                    foreach ($resultado as $key => $obj){
+                                       echo "<tr>";
+                                       echo "<td>".($key+1)."</td>";
+                                       echo "<td>".$obj->nome."</td>";
+                                       echo "<td>".$obj->cnpj_cpf."</td>";
+                                       echo "<td>".$obj->uf_pessoa."</td>";
+                                       echo "<td>".utf8_encode($obj->tipo_sancao)."</td>";
+                                       echo "<td>".utf8_encode($obj->data_inicio)."</td>";
+                                       echo "<td>".utf8_encode($obj->data_fim)."</td>";
+                                       echo "<td>".strtoupper(utf8_encode($obj->orgao))."</td>";
+                                       echo "<td>".utf8_encode($obj->origem_informacao)."</td>";
+                                       echo "<td>".utf8_encode($obj->data_informacao)."</td>";
+                                       echo "</tr>";
                                     }
                                 }?>
                             </tbody>
                           </table>
                           <?php
-                            // if(count($resultado) == 100){
-                            // echo "<a href='index.php?busca[nome]=".$busca['nome']."&busca[cnpj]=".$busca['cnpj']."&busca[processo]=".$busca['processo']."&busca[uf]=".$busca['uf']."&busca[orgao]=".$busca['orgao']."&busca[motivo]=".$busca['motivo']."&l=".($limite+100)."' class='btn btn_1 right'>MAIS +100</a>
-                            // </div>";
+                            if(count($resultado) == 100){
+                            echo "<a href='index.php?busca[nome]=".$busca['nome']."&busca[cnpj]=".$busca['cnpj']."&busca[processo]=".$busca['processo']."&busca[uf]=".$busca['uf']."&busca[orgao]=".$busca['orgao']."&busca[motivo]=".$busca['motivo']."&l=".($limite+100)."' class='btn btn_1 right'>MAIS +100</a>
+                            </div>";
                             } 
                         } //FIM if(isSet($_GET['busca']))
-                        ?>
+                        ?> #}
              </article>
               </form>
             </div>
         </div>
-    </div> -->
+    </div>
 {% endblock %}
 
 {% block graphs %}
-    <!-- <div class="row_1">
+    <div class="row_1">
         <div class="container" id="graphs">
             <script type="text/javascript" src="https://www.google.com/jsapi"></script>
             <script type="text/javascript">
@@ -184,8 +183,8 @@
                         [
                         ['State','Num. de inidônios'],
                         <?php
-                        // foreach ($estados as $key => $est){
-                            // echo "['".$est[0]."',".$est[1]."],";
+                        foreach ($estados as $key => $est){
+                            echo "['".$est[0]."',".$est[1]."],";
                         }
                         ?>
                         ]);
@@ -223,30 +222,30 @@
                 <script type="text/javascript">
                 new Morris.Donut({
                   element: 'donutGraph',
-                  data: <?= // json_encode($motivo)?>,
+                  data: <?= json_encode($motivo)?>,
                   }); 
                 </script>
             </div>
         </div>
-    </div> -->
+    </div>
 {% endblock %}
 
 {% block ranking %}
-    <!-- <div class="row_1" id="ranking">
+    <div class="row_1" id="ranking">
         <div class="container">
             <h3 class="border">Top Inidônios</h3>
             <div class="row">
                 <?php
-                // foreach ($motivos as $key => $obj){
+                foreach ($motivos as $key => $obj){
                 ?>
-                // <section class="span3 gallery_item gallery_item_<?=//($key+1)?>">
+                    <section class="span3 gallery_item gallery_item_<?=($key+1)?>">
                     <figure class="">                           
-                        <img src="images/gallery_item_bg<?=//($key%2 + 1)?>.png" alt="">
+                        <img src="images/gallery_item_bg<?=($key%2 + 1)?>.png" alt="">
                         <figcaption>                   
-                            <p><strong><?=//($key+1)?>&deg - </strong><?=//$obj->nome?></p>
+                            <p><strong><?=($key+1)?>&deg - </strong><?=$obj->nome?></p>
                             <p>
-                            <h5><?=//$obj->qtd?> - <?=//utf8_encode($obj->tipo_sancao)?></h5>
-                            <h2><?=//$obj->uf_pessoa?></h2>
+                            <h5><?=$obj->qtd?> - <?=utf8_encode($obj->tipo_sancao)?></h5>
+                            <h2><?=$obj->uf_pessoa?></h2>
                             </p>
                         </figcaption>
                     </figure>
@@ -256,11 +255,11 @@
                 ?>
             </div>
         </div>
-    </div> -->
+    </div>
 {% endblock %}
 
 {% block about %}
-    <!-- <div id="about">
+    <div id="about">
         <div class="map_wrapper">
             <div class="container">
                 <h3 class="border">Sobre</h3>
@@ -272,58 +271,20 @@
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 {% endblock %}
             
 {% block scripts %}
-     <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    // <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-    // <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    // <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-    // <script type="text/javascript" src="js/select2.js"></script>
-    // <script type="text/javascript" src="js/bootstrap.js"></script>
-    // <script type="text/javascript" src="js/jquery.session.js"></script>
-    // <script type="text/javascript" src="js/parallax.js"></script>
-    // <script type="text/javascript" src="js/jquery.flexslider.js"></script>
-    // <script type="text/javascript" src="js/message-form.js"></script>
-    // <script type="text/javascript" src="js/script.js"></script>    
-    // <script type="text/javascript" src="js/morris.min.js"></script> -->
-    // <script type="text/javascript"> -->
-    //     overflow = true;
-
-    //     $(document).ready(function() {
-    //          $('#lbl_busca').click(function() { 
-    //           if(overflow){
-    //             $('#collapseOne').css("overflow","initial");
-    //             overflow=false;
-    //           }else{
-                
-    //             $('#collapseOne').css("overflow","auto");
-    //             overflow=true;
-    //           }
-    //          });   
-    //     });
-    //     $(window).scroll(function () {
-    //         if (jQuery(this).scrollTop() > 550) {
-    //             jQuery('header').addClass('scrolled');
-    //         } else {
-    //             jQuery('header').removeClass('scrolled');
-    //         }
-    //         $('.flexslider').flexslider({
-    //             animation: "fade",
-    //             animationSpeed: 500,
-    //             smoothHeight: true,
-    //             animationLoop: true,
-    //             touch: true,
-    //             directionNav: false
-    //         });
-    //     });
-    // </script>
-    // <script type="text/javascript">
-    //     $(window).load(function(){
-    //         $('#message_form').forms({
-    //             ownerEmail:'test@test.test'
-    //         });
-    //     })
-    // </script>
+     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+     <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+     <script type="text/javascript" src="../view/js/jquery.dataTables.js"></script>
+     <script type="text/javascript" src="../view/js/select2.js"></script>
+     <script type="text/javascript" src="../view/js/bootstrap.js"></script>
+     <script type="text/javascript" src="../view/js/jquery.session.js"></script>
+     <script type="text/javascript" src="../view/js/parallax.js"></script>
+     <script type="text/javascript" src="../view/js/jquery.flexslider.js"></script>
+     <script type="text/javascript" src="../view/js/message-form.js"></script>
+     <script type="text/javascript" src="../view/js/script.js"></script>    
+     <script type="text/javascript" src="../view/js/morris.min.js"></script>        
 {% endblock %}
