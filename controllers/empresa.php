@@ -35,12 +35,12 @@ function index()
 	foreach($byEstados as $key => $obj)
 	{
 		$estados[($key+1)][] = "BR-".$obj->uf_pessoa;
-    	$estados[($key+1)][] = $obj->qtd;
+    	$estados[($key+1)][] = (int)$obj->qtd;
 	}
 
 	$motivos = json_encode($motivos);
 	$estados = json_encode($estados);
-	
+
 	foreach($ranking as $r)
 		$r->tipo_sancao = utf8_encode($r->tipo_sancao);
 	
