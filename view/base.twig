@@ -24,23 +24,28 @@
                         </ul>
                     </div>
                 </div>
-            </div><!--/container-->
+            </div>
         </header> 
         <div class="container-fill">
             {% block search %} {% endblock %}
+
             {% block graphs %} {% endblock %}
-       </div>
-    </body>
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="span12 text-center">
-                    &copy; 2013
+
+            {% block ranking %} {% endblock %}
+
+            {% block about %} {% endblock %}
+            <footer>
+                <div class="container">
+                    <div class="row">
+                        <div class="span12 text-center">
+                            &copy; 2013
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="//code.jquery.com/jquery.js"></script>
-    	{% block scripts %} {% endblock %}
-    </footer>
+                <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+                <script src="//code.jquery.com/jquery.js"></script>
+                {% block scripts %} {% endblock %}
+            </footer>
+       </div>
+    </body>    
 </html>
