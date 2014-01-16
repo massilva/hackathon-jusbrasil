@@ -10,13 +10,30 @@ $action = isset($_GET['action']) ? $_GET['action'] : 'index';
 $loader = new Twig_Loader_Filesystem('../view');
 $twig = new Twig_Environment($loader);
 
+$empresa = new empresaModel();
+
 if ($action === 'index')
 	index();
 
 function index()
 {
-	global $twig;
-	echo $twig->render('index.twig');
+	global $twig, $empresa;
+	$estados = array();
+	$orgaos;
+	$motivos = array();
+	$mot = $empresa->getMotivo();
+	$ranking = $empresa->getDetalheMotivo();
+
+	foreach($mot as $key => $m)
+	{
+		$motivos[$key]['label'] = utf8_encode($m->tipo_sancao);
+		$motivos[$key]['value'] = $m->qtd;
+	}
+
+	foreach($ranking as $r)
+		$r->tipo_sancao = utf8_encode($r->tipo_sancao);
+	
+	echo $twig->render('index.twig', array('estados' => $estados, 'orgaos' => $orgaos, 'motivos' => $motivos, 'ranking' => $ranking));
 }
 
 ?>

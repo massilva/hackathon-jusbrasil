@@ -1,0 +1,23 @@
+{% block ranking %}
+    <div class="row_1" id="ranking">
+        <div class="container">
+            <h3 class="border">Top Inidônios</h3>
+            <div class="row">
+                {% for r in ranking %}
+                	<section class= "{{ "span3 gallery_item gallery_item_" ~ (loop.index)}}" >
+                        <figure>                          
+                            <img src="{{ "../view/images/gallery_item_bg" ~ (loop.index%2 + 1) ~ ".png" }}" alt="">
+                            <figcaption>                  
+                                <p><strong>{{ loop.index }}&deg - </strong>{{ r.nome }}</p>
+                                <p>
+                                <h5>{{ r.qtd }} - {{ r.tipo_sancao }} </h5>
+                                <h2>{{ r.uf_pessoa }} </h2>
+                                </p>
+                            </figcaption>
+                        </figure>
+                    </section>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

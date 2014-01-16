@@ -1,0 +1,27 @@
+{% block graphs %}
+    <div class="row_1" id="graphs">
+        <div class="container">
+            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+            <div class="row">
+                <h3 class="center border span12">Inidônios por Estado</h3>
+                <div id="estados">
+                    <div id="map" class="center"></div>
+                </div>
+                <h6 class="center legend span12">Relação de pessoas inidonia ou suspensa por estado</h6>
+            </div>
+            <div class="row">
+                <h3 class="center border span12">Inidônios por Motivo</h3>
+                <article class="span12">
+                    <div id="donutGraph"></div>
+                    <style type="text/javascript">
+                        new Morris.Donut({
+                            element: 'donutGraph',
+                            data: [{"label":"Proibi\u00e7\u00e3o - Lei de Improbidade","value":3484}]
+                            {# {{ motivos|json_encode() }}, #}
+                        });
+                    </style>
+                </article>
+            </div>
+        </div>
+    </div>
+{% endblock %}
