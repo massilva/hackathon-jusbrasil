@@ -30,6 +30,8 @@ function index()
 		$motivos[$key]['value'] = $m->qtd;
 	}
 
+	$motivos = json_encode($motivos);
+
 	foreach($ranking as $r)
 		$r->tipo_sancao = utf8_encode($r->tipo_sancao);
 	

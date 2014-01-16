@@ -13,13 +13,21 @@
                 <h3 class="center border span12">Inidônios por Motivo</h3>
                 <article class="span12">
                     <div id="donutGraph"></div>
-                    <style type="text/javascript">
-                        new Morris.Donut({
-                            element: 'donutGraph',
-                            data: [{"label":"Proibi\u00e7\u00e3o - Lei de Improbidade","value":3484}]
-                            {# {{ motivos|json_encode() }}, #}
+                    <script type="text/javascript">
+                        $(window).load(function(){
+                            var motivo = '{{ motivos }}';
+                            motivo = jQuery.parseJSON(motivo.replace(/&quot;/g,'"'));
+                            new Morris.Donut({
+                              element: 'donutGraph',
+                              data: motivo,
+                              colors:["#FF0000","#FF3300","#FF6600","#FF9900","#FFAA00","#FFBB00","#FFCC00","#FFDD00","#FFEE00","#FFFF00"],
+                              formatter:function (y, data) { return toReal(y); }
+                            });
                         });
-                    </style>
+                        function toReal(value){
+                          return (value+"").replace(".", ":").replace(",", ".").replace(":", ",");
+                        }
+                        </script>
                 </article>
             </div>
         </div>
