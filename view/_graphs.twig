@@ -13,23 +13,59 @@
                 <h3 class="center border span12">Inidônios por Motivo</h3>
                 <article class="span12">
                     <div id="donutGraph"></div>
-                    <script type="text/javascript">
-                        $(window).load(function(){
-                            var motivo = '{{ motivos }}';
-                            motivo = jQuery.parseJSON(motivo.replace(/&quot;/g,'"'));
-                            new Morris.Donut({
-                              element: 'donutGraph',
-                              data: motivo,
-                              colors:["#FF0000","#FF3300","#FF6600","#FF9900","#FFAA00","#FFBB00","#FFCC00","#FFDD00","#FFEE00","#FFFF00"],
-                              formatter:function (y, data) { return toReal(y); }
-                            });
-                        });
-                        function toReal(value){
-                          return (value+"").replace(".", ":").replace(",", ".").replace(":", ",");
-                        }
-                        </script>
                 </article>
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        function toReal(value){
+          return (value+"").replace(".", ":").replace(",", ".").replace(":", ",");
+        }
+        
+        function drawMap(){
+            url = document.URL;
+            end = url.split("/");
+            if(url.indexOf("localhost") == -1){
+                url_base = "";
+            }else{
+                url_base = "/"+end[3];
+            }
+            google.load('visualization', '1', {packages: ['geochart']});
+            function drawVisualization(){
+                var estados = '{{ estados }}';
+                estados = jQuery.parseJSON(estados.replace(/&quot;/g,'"'));
+                var data = google.visualization.arrayToDataTable(estados);
+                var geochart = new google.visualization.GeoChart(
+                        document.getElementById('map'));
+                geochart.draw(data,{
+                    width: 600,
+                    colors : ['#FFFFCC', '#FF9900', '#FF0000'],
+                    region: "BR", 
+                    resolution: "provinces"
+                });
+                google.visualization.events.addListener(geochart, 'select', function() {
+                    var selection = geochart.getSelection();
+                    var row = selection[0].row;
+                    var nomeEstado = data.getValue(row, 0);
+                    nomeEstado = nomeEstado.substr(3,2);
+                    window.location = url_base+'/index.php?busca[uf]='+nomeEstado+'#search';
+                }); 
+            }
+            google.setOnLoadCallback(drawVisualization);
+        }
+
+        $(window).load(function(){
+            var motivo = '{{ motivos }}';
+            motivo = jQuery.parseJSON(motivo.replace(/&quot;/g,'"'));
+            new Morris.Donut({
+              element: 'donutGraph',
+              data: motivo,
+              colors:["#FF0000","#FF3300","#FF6600","#FF9900","#FFAA00","#FFBB00","#FFCC00","#FFDD00","#FFEE00","#FFFF00"],
+              formatter:function (y, data) { return toReal(y); }
+            });
+        });
+        
+        drawMap();
+    </script>
 {% endblock %}
