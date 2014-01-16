@@ -67,7 +67,7 @@ function redrawDotNav(){
 	// The top of each section is offset by half the distance to the previous section.
 	var section2Top =  $('#search').offset().top - (($('#graphs').offset().top - $('#search').offset().top) / 2);
 	var section3Top =  $('#graphs').offset().top - (($('#about').offset().top - $('#graphs').offset().top) / 2);
-	var section4Top =  $('#about').offset().top - (($(document).height() - $('#about').offset().top) / 2);;
+	var section4Top =  $('#about').offset().top - (($(document).height() - $('#about').offset().top) / 2);
 /*
 	$('ul.menu a').removeClass('active');
 	if($(document).scrollTop() >= section1Top && $(document).scrollTop() < section2Top){
