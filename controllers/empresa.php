@@ -18,11 +18,13 @@ if ($action === 'index')
 function index()
 {
 	global $twig, $empresa;
+	$orgaos = array();
 	$estados = array();
-	$orgaos;
+	$estados[0] = array('State','Num. de inidônios');
 	$motivos = array();
 	$mot = $empresa->getMotivo();
 	$ranking = $empresa->getDetalheMotivo();
+	$byEstados = $empresa->getInidonioByEstado();
 
 	foreach($mot as $key => $m)
 	{
@@ -30,12 +32,18 @@ function index()
 		$motivos[$key]['value'] = $m->qtd;
 	}
 
+	foreach($byEstados as $key => $obj)
+	{
+		$estados[($key+1)][] = "BR-".$obj->uf_pessoa;
+    	$estados[($key+1)][] = (int)$obj->qtd;
+	}
+
 	$motivos = json_encode($motivos);
+	$estados = json_encode($estados);
 
 	foreach($ranking as $r)
 		$r->tipo_sancao = utf8_encode($r->tipo_sancao);
 	
 	echo $twig->render('index.twig', array('estados' => $estados, 'orgaos' => $orgaos, 'motivos' => $motivos, 'ranking' => $ranking));
 }
-
 ?>
