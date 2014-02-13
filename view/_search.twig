@@ -1,72 +1,119 @@
 {% block search %}
 <div class="row_1" id="search">
-        <div class="container">
-            <h3 class="border">Busca</h3>
-            <div class="row">
-                <form class="form-inline" action="index.php#search" method="get" >
-                <article id="busca" class="span12">
-                    <div class="form-group span6">
-                        <label for="nome" class="span3">Nome, Razão social ou Nome fantasia</label>
-                        <input id="nome" name="busca[nome]" class="form-control" type="text">
-                    </div>
-                    <div class="form-group span4">
-                        <label for="cnpj" class="">CNPJ/CPF</label>
-                        <input id="cnpj" name="busca[cnpj]" class="form-control" type="text">
-                    </div>
-                    <div class="form-group span1">
-                        <input type="submit" value="Filtrar" class="btn btn_1">
-                    </div>
-                    <div class="form-group span11">
-                       <div class="accordion" id="accordion2">
-                            <div class="accordion-group" style="border:0;padding-left:15px;">
-                                <div class="accordion-heading">
-                                    <a id="lbl_busca" class=" accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" style="color:gray;
-                                    text-decoration: underline;  font-size:15px;">
-                                        Busca Avançada
-                                    </a>
+    <div class="container">
+        <h3 class="border">Busca</h3>
+        <div class="row">
+            <form class="form-inline" action="index.php?action=search" method="get" >
+            <article id="busca" class="span12">
+                <div class="form-group span6">
+                    <label for="nome" class="span3">Nome, Razão social ou Nome fantasia</label>
+                    <input id="nome" name="busca[nome]" class="form-control" type="text">
+                </div>
+                <div class="form-group span4">
+                    <label for="cnpj" class="">CNPJ/CPF</label>
+                    <input id="cnpj" name="busca[cnpj]" class="form-control" type="text">
+                </div>
+                <div class="form-group span1">
+                    <input type="submit" value="Filtrar" class="btn btn_1">
+                </div>
+                <div class="form-group span11">
+                   <div class="accordion" id="accordion2">
+                        <div class="accordion-group" style="border:0;padding-left:15px;">
+                            <div class="accordion-heading">
+                                <a id="lbl_busca" class=" accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" style="color:gray;
+                                text-decoration: underline;  font-size:15px;">
+                                    Busca Avançada
+                                </a>
+                            </div>
+                            <div id="collapseOne" class="accordion-body collapse" style="overflow:auto">
+                                <div class="accordion-inner">
+                                    <div class="clear-margim span3">
+                                       <label for="num_processo" style="padding-left:30px;" class="">N° Processo</label>
+                                       <input id="num_processo" name="busca[processo]" class="form-control" type="text" style="width:117px;">
+                                    </div>
+                                    <div class="btn-group span3" >
+                                        <ul class="avancada">
+                                            <li>
+                                                <div class="btn-group ">
+                                                      <select id="uf" class="dropdown" name="busca[uf]">
+                                                            <option value="UF">UF</option>
+                                                            <option value="AC">AC</option>
+                                                            <option value="AL">AL</option>
+                                                      </select>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="btn-group">
+                                                    <select id="orgao" class="dropdown" name="busca[orgao]">
+                                                        <option value="ORGAO">ORGÃO</option>
+                                                    </select>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="btn-group ">
+                                                    <select style="width:180px;" id="motivo" class="dropdown" name="busca[tipo_sancao]">
+                                                        <option value="MOTIVO">MOTIVO</option>
+                                                    </select>
+                                                </div>
+                                            </li>    
+                                        </ul>
                                 </div>
-                                <div id="collapseOne" class="accordion-body collapse" style="overflow:auto">
-                                    <div class="accordion-inner">
-                                        <div class="clear-margim span3">
-                                           <label for="num_processo" style="padding-left:30px;" class="">N° Processo</label>
-                                           <input id="num_processo" name="busca[processo]" class="form-control" type="text" style="width:117px;">
-                                        </div>
-                                        <div class="btn-group span3" >
-                                            <ul class="avancada">
-                                                <li>
-                                                    <div class="btn-group ">
-                                                          <select id="uf" class="dropdown" name="busca[uf]">
-                                                                <option value="UF">UF</option>
-                                                                <option value="AC">AC</option>
-                                                                <option value="AL">AL</option>
-                                                          </select>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="btn-group">
-                                                        <select id="orgao" class="dropdown" name="busca[orgao]">
-                                                            <option value="ORGAO">ORGÃO</option>
-                                                        </select>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="btn-group ">
-                                                        <select style="width:180px;" id="motivo" class="dropdown" name="busca[tipo_sancao]">
-                                                            <option value="MOTIVO">MOTIVO</option>
-                                                        </select>
-                                                    </div>
-                                                </li>    
-                                          </ul>
-                                     </div>
-                               </div>     
-                          </div>
-                      </div>
-                   </div>
-                </article>
-                <article id="resultado">
-             </article>
-              </form>
-            </div>
+                            </div>     
+                        </div>
+                    </div>
+                </div>
+            </article> 
+            <article id="resultado">
+                <div class="table-responsive span12">
+                    <table id="table_resultado" class="table table-striped">
+                        <thead>
+                            <tr role="row">
+                                <th>#</th>
+                                <th>Nome</th>
+                                <th>CNPJ/CPF</th>
+                                <th>UF da Pessoa</th>
+                                <th>Tipo de Sanção</th>
+                                <th>Data de inicio da Sanção</th>
+                                <th>Data de fim da Sanção</th>
+                                <th>Orgão Sancionador</th>
+                                <th>Origem da Informação</th>
+                                <th>Data da Informação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in resultado %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ r.nome }}</td>
+                                    <td>{{ r.cnpj }}</td>
+                                    <td>{{ r.uf_pessoa }}</td>
+                                    <td>{{ r.tipo_sancao }}</td>
+                                    <td>{{ r.data_inicio }}</td>
+                                    <td>{{ r.data_fim }}</td>
+                                    <td>{{ r.orgao|upper }}</td>
+                                    <td>{{ r.origem_informacao }}</td>
+                                    <td>{{ r.data_informacao }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% if resultado|length >= 100 %}
+                        <a href='
+                        {{ 
+                            "index.php?busca[nome]=" ~ busca.nome ~ 
+                            "&busca[cnpj]=" ~ busca.cnpj ~ 
+                            "&busca[processo]=" ~ busca.processo ~ 
+                            "&busca[uf]=" ~ busca.uf ~ 
+                            "&busca[orgao]=" ~ busca.orgao ~ 
+                            "&busca[tipo_sancao]=" ~ busca.tipo_sancao ~ 
+                            "&l=" ~ busca.limite 
+                        }}'                       
+                        class='btn btn_1 right'>MAIS +100</a>
+                    {% endif %} 
+                </div>
+            </article>
+            </form>
         </div>
     </div>
+</div>
 {% endblock %}
